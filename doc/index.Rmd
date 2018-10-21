@@ -1,0 +1,18 @@
+---
+title: "Policy Change Index (PCI)"
+subtitle: "A Machine Learning Framework to Predict Policy Changes in China"
+---
+
+&nbsp;
+
+#### **Policy Change Index and major events in China, 1951 Q1 to 2018 Q3**
+
+[here insert the main figure]
+
+&nbsp;
+
+#### **What's new**
+
+- Oct 22, 2018: Both the [research paper](https://github.com/open-source-economics/PCI/blob/master/reading_china.pdf) and the [GitHub repository](https://github.com/open-source-economics/PCI) were made available.
+
+- Jun 23, 2018: We received with gratitude NVIDIA Corporation's Academic GPU Grant, with the donation of a Titan Xp for this research.
