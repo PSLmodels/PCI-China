@@ -13,6 +13,6 @@ subtitle: "A Machine Learning Framework to Predict Policy Changes in China"
 
 #### **What's new**
 
-- Oct 22, 2018: Both the [research paper](https://github.com/open-source-economics/PCI/blob/master/reading_china.pdf) and the [GitHub repository](https://github.com/open-source-economics/PCI) were made available.
+- Oct 22, 2018: Both the [research paper](../blob/master/docs/Reading_China.pdf) and the [GitHub repository](http://github.com/open-source-economics/PCI) were made available.
 
 - Jun 23, 2018: We received with gratitude NVIDIA Corporation's Academic GPU Grant, with the donation of a Titan Xp for this research.

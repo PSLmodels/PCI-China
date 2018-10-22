@@ -1,3 +1,9 @@
+Website: www.policychangeindex.com
+
+Authors: [Julian TszKin Chan](http://sites.google.com/site/ctszkin/) and [Weifeng Zhong](http://www.weifengzhong.com)
+
+Please email all comments/questions to ctszkin [AT] gmail.com or weifeng [AT] weifengzhong.com
+
 What is the Policy Change Index (PCI) of China?
 -----------------------------------------------
 China's industrialization process has long been a product of government direction, be it coercive central planning or ambitious industrial policy. For the first time in the literature, we develop a quantitative indicator of China's policy priorities over a long period of time, which we call the Policy Change Index (PCI) of China. The PCI is a leading indicator that runs from 1951 to the most recent quarter and can be updated in the future. In other words, the PCI not only helps us understand the past of China's industrialization but also allows us to make short-term predictions about its future directions.
@@ -5,6 +11,10 @@ China's industrialization process has long been a product of government directio
 The design of the PCI has two building blocks: (1) it takes as input data the full text of the *People's Daily* --- the official newspaper of the Communist Party of China --- since it was founded in 1946; (2) it employs a set of machine learning techniques to "read" the articles and detect changes in the way the newspaper prioritizes policy issues.
 
 The source of the PCI's predictive power rests on the fact that the *People's Daily* is at the nerve center of the China's propaganda system and that propaganda changes often precede policy changes. Before the great transformation from the central planning under Mao to the economic reform program after Mao, for example, considerable efforts were made by the Chinese government to promote the idea of reform, move public opinion, and mobilize resources toward the new agenda. Therefore, by detecting (real-time) changes in propaganda, the PCI is, effectively, predicting (future) changes in policy.
+
+For details about the methodology and findings of this project, please see the following research paper:
+
+- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](../blob/master/docs/Reading_China.pdf)).
 
 
 Disclaimer
@@ -60,3 +70,9 @@ body_int                                 object
 dtype: object
 ```
 where ```title_int``` and ```body_int``` are the word embeddings (numeric vectors) of the title and body of each article.
+
+
+Citing the Policy Change Index (PCI)
+------------------------------------
+
+Please cite the source of your analysis as "Policy Change Index of China release #.#.#, author's calculations." If you wish to link to the PCI, http://www.policychangeindex.com is preferred. Additionally, we strongly recommend that you describe the input data used in your analysis and provide a link to the materials required to replicate it.

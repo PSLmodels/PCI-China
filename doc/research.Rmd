@@ -6,10 +6,10 @@ title: "Research"
 
 #### **Research Papers**
 
-- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper No. 2018-XX (the latest version available [here](https://github.com/open-source-economics/PCI/blob/master/reading_china.pdf)).
+- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](../blob/master/docs/Reading_China.pdf)).
 
 &nbsp;
 
-#### **Commentaries**
+<!-- #### **Commentaries** -->
 
-- To be filled in...
+<!-- - To be filled in... -->
