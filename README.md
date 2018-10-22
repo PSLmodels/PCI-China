@@ -14,7 +14,7 @@ The source of the PCI's predictive power rests on the fact that the *People's Da
 
 For details about the methodology and findings of this project, please see the following research paper:
 
-- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](../blob/master/docs/Reading_China.pdf)).
+- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](docs/Reading_China.pdf)).
 
 
 Disclaimer
@@ -132,4 +132,4 @@ Please cite the source of the latest Policy Change Index (PCI) of China by the w
 
 For academic work, please cite the following research paper:
 
-- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](../blob/master/docs/Reading_China.pdf)).
+- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](docs/Reading_China.pdf)).
