@@ -24,15 +24,14 @@ Results will change as the underlying models improve. A fundamental reason for a
 
 Usage
 ---------------
-Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI of China
+Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI of China.
 
-- `proc_data.py`:              Process and prepare the raw data from the People's Daily for building the neural network model.
-- `pci.py`:                    Train a neural network model to construct the PCI of a quarter.
-- `compile_model_results.py`:  Compile the results from all models and export to a csv file.
+- `proc_data.py`:              Process and prepare the raw data from the *People's Daily* for building the neural network models.
+- `pci.py`:                    Train a neural network model to construct the PCI for a specified year-quarter.
+- `compile_model_results.py`:  Compile the results from all models and export them to a `.csv` file.
 - `generate_figures.r`:        Generate figures.
 
-Users can check out description of the arguments for each python function using the `--help` option. For example, 
-
+Users can check out the descriptions of the arguments for each python function using the `--help` option. For example:
 
 ```{shell}
 ~/Policy-Change-Index/PCI-China>python proc_data.py --help
@@ -79,7 +78,8 @@ optional arguments:
 
 Data
 ----
-The raw data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder ```PCI-China/data/raw/pd/```. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the ```.pkl``` format. For example, the raw data for the first quarter of 2018 should be in the file ```2018_Q1.pkl```. Below is the list of column names and types of each raw data file:
+The raw data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/raw/pd/`. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the `.pkl` format. For example, the raw data for the first quarter of 2018 should be in the file `2018_Q1.pkl`. Below is the list of column names and types of each raw data file:
+
 ```{python}
 >>> df1 = pd.read_pickle("./PCI-China/data/raw/pd/2018_Q1.pkl")
 >>> df1.dtypes
@@ -93,9 +93,11 @@ body             object
 id                int64
 dtype: object
 ```
-where ```title``` and ```body``` are the Chinese texts of the title and body of each article.
 
-The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder ```PCI-China/data/proc/by_year/```. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the ```.pkl``` format. For example, the processed data for the first quarter of 2018 should be in the file ```2018_Q1.pkl```. Provided with the raw data, the processed data are the output of running ```proc_data.sh```. Below is the list of column names and types of each processed data file:
+where `title` and `body` are the Chinese texts of the title and body of each article.
+
+The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/proc/by_year/`. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the `.pkl` format. For example, the processed data for the first quarter of 2018 should be in the file `2018_Q1.pkl`. Provided with the raw data, the processed data are the output of running `proc_data.sh`. Below is the list of column names and types of each processed data file:
+
 ```{python}
 >>> df2 = pd.read_pickle("./PCI-China/data/proc/by_year/2018_Q1.pkl")
 >>> df2.dtypes
@@ -119,10 +121,15 @@ title_int                                object
 body_int                                 object
 dtype: object
 ```
-where ```title_int``` and ```body_int``` are the word embeddings (numeric vectors) of the title and body of each article.
+
+where `title_int` and `body_int` are the word embeddings (numeric vectors) of the title and body of each article.
 
 
-Citing the Policy Change Index (PCI)
-------------------------------------
+Citing the Policy Change Index (PCI) of China
+---------------------------------------------
 
-Please cite the source of your analysis as "Policy Change Index of China release #.#.#, author's calculations." If you wish to link to the PCI, http://www.policychangeindex.com is preferred. Additionally, we strongly recommend that you describe the input data used in your analysis and provide a link to the materials required to replicate it.
+Please cite the source of the latest Policy Change Index (PCI) of China by the website: http://www.policychangeindex.com.
+
+For academic work, please cite the following research paper:
+
+- Chan and Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](../blob/master/docs/Reading_China.pdf)).
