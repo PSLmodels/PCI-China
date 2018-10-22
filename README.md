@@ -25,10 +25,11 @@ Results will change as the underlying models improve. A fundamental reason for a
 Usage
 ---------------
 Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI of China
-- proc_data.py:              Process and prepare the raw data from the People's Daily for building the neural network model.
-- pci.py:                    Train a neural network model to construct the PCI of a quarter.
-- compile_model_results.py:  Compile the results from all models and export to a csv file.
-- generate_figures.r:        Generate figures.
+
+- `proc_data.py`:              Process and prepare the raw data from the People's Daily for building the neural network model.
+- `pci.py`:                    Train a neural network model to construct the PCI of a quarter.
+- `compile_model_results.py`:  Compile the results from all models and export to a csv file.
+- `generate_figures.r`:        Generate figures.
 
 Users can check out description of the arguments for each python function using the `--help` option. For example, 
 
