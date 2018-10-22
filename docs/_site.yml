@@ -1,0 +1,32 @@
+name: "Policy Change Index"                                # CHANGE HERE 
+output_dir: "."
+navbar:
+  title: "Policy Change Index"                             # CHANGE HERE 
+  type: inverse
+  left:
+    # - text: "Home"
+      # icon: fa-home
+      # href: home.html
+    - text: "Overview"
+      # icon: fa-user 
+      href: overview.html
+    - text: "Research"
+      # icon: fa-file-pdf-o
+      href: research.html
+    - text: "Media"
+      # icon: fa-file-pdf-o
+      href: media.html
+    - text: "Presentations"
+      # icon: fa-file-pdf-o
+      href: presentations.html
+  right:
+    - text: "About Us"
+      # icon: fa-file-pdf-o
+      href: about_us.html
+    - text: "GitHub"
+      # icon: fa-github
+      href: https://github.com/open-source-economics/PCI
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate

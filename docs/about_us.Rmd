@@ -1,0 +1,27 @@
+---
+title: "About Us"
+---
+
+&nbsp;
+
+#### **Julian TszKin Chan, PhD**
+
+Senior Economist, Bates White Economic Consulting
+
+Email: ctszkin@gmail.com
+
+Website: http://sites.google.com/site/ctszkin/
+
+Julian TszKin Chan is a senior economist at Bates White Economic Consulting. His research focuses on econometrics, machine learning, and their applications to network and text data. He has a Ph.D. in economics from Boston University. He also holds an M.Econ. degree in economics from the University of Hong Kong and a B.Soc.Sc. in economics from the Chinese University of Hong Kong.
+
+&nbsp;
+
+#### **Weifeng Zhong, PhD**
+
+Research Fellow, American Enterprise Institute
+
+Email: weifeng@weifengzhong.com
+
+Website: http://www.weifengzhong.com
+
+Weifeng Zhong is a research fellow in economic policy studies at the American Enterprise Institute, where his research focuses on Chinese economic issues and political economy. His recent work has been on the application of text-analytic and machine-learning techniques to political economy issues such as the US presidential election, income inequality, and predicting policy changes in China. He has been published in a variety of scholarly journals, including the *Journal of Institutional and Theoretical Economics*. In the popular press, his writings have appeared in the *Financial Times*, *Foreign Affairs*, *The National Interest*, and *Real Clear Politics*, among others. He has a Ph.D. and an M.Sc. in managerial economics and strategy from Northwestern University. He also holds M.Econ. and M.Phil. degrees in economics from the University of Hong Kong and a B.A. in business administration from Shantou University in China.
