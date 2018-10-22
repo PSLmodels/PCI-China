@@ -22,10 +22,59 @@ Disclaimer
 Results will change as the underlying models improve. A fundamental reason for adopting open source methods in this project is so that people from all backgrounds can contribute to the models that our society uses to assess and predict changes in public policy; when community-contributed improvements are incorporated, the model will produce better results.
 
 
-Getting Started
+Usage
 ---------------
-TODO
+Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI of China
+- proc_data.py:              Process and prepare the raw data from the People's Daily for building the neural network model.
+- pci.py:                    Train a neural network model to construct the PCI of a quarter.
+- compile_model_results.py:  Compile the results from all models and export to a csv file.
+- generate_figures.r:        Generate figures.
 
+Users can check out description of the arguments for each python function using the `--help` option. For example, 
+
+
+```{shell}
+~/Policy-Change-Index/PCI-China>python proc_data.py --help
+Using TensorFlow backend.
+usage: proc_data.py [-h] [--data_path DATA_PATH] [--k_fold K_FOLD]
+
+optional arguments:
+  -h, --help                show this help message and exit
+  --data_path DATA_PATH     Path to the data folder
+  --k_fold K_FOLD           Sample the data into k sub-samples. Define training,
+                            validation and testing data in the specification.
+```
+
+```{shell}
+~/Policy-Change-Index/PCI-China>python pci.py --help
+Using TensorFlow backend.
+usage: pci.py [-h] [--model MODEL] [--year YEAR] [--quarter QUARTER]
+              [--gpu GPU] [--iterator ITERATOR] [--root ROOT]
+              [--temperature TEMPERATURE] [--discount DISCOUNT]
+              [--bandwidth BANDWIDTH]
+
+optional arguments:
+  -h, --help                 show this help message and exit
+  --model MODEL              Available models: window_5_years, window_10_years
+  --year YEAR                Target year
+  --quarter QUARTER          Target quarter
+  --gpu GPU                  Which gpu to use
+  --iterator ITERATOR        Iterator in simulated annealing
+  --root ROOT                Root directory
+  --temperature TEMPERATURE  Temperature in simulated annealing
+  --discount DISCOUNT        Discount factor in simulated annealing
+  --bandwidth BANDWIDTH      Bandwidth in simulated annealing
+```
+
+```{shell}
+~/Policy-Change-Index/PCI-China>python compile_model_results.py --help
+usage: compile_model_results.py [-h] [--model MODEL] [--root ROOT]
+
+optional arguments:
+  -h, --help                 show this help message and exit
+  --model MODEL              Available models: window_5_years, window_10_years
+  --root ROOT                Root folder
+```
 
 Data
 ----
