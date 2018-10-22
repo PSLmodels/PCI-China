@@ -23,7 +23,7 @@ subtitle: "(including scheduled)"
 
 - Regulatory Studies Center, George Washington University.
 
-- TEXATA Summit: Big Data Analytics Conference of Texas, Austin, TX.
+- TEXATA Summit: Big Data Analytics Conference of Texas, Austin, TX. ([slides, ~20 mins](http://www.policychangeindex.com/Reading_China_slides_TEXATA.pdf))
 
 - International Conference on Communication & Media Studies (ICCMS), Berkeley, CA.
 
