@@ -12,7 +12,7 @@ Email: ctszkin@gmail.com
 
 Website: http://sites.google.com/site/ctszkin/
 
-Julian TszKin Chan is a senior economist at Bates White Economic Consulting. His research focuses on the Econometrics and machine learning methods, applications of network and text data. He has a Ph.D. in economics from Boston University. He also holds an M.Econ. degree in economics from the University of Hong Kong and a B.Soc.Sc. in economics from the Chinese University of Hong Kong.
+Julian TszKin Chan is a senior economist at Bates White Economic Consulting. His research focuses on econometrics, machine learning, and their applications to network and text data. He has a Ph.D. in economics from Boston University. He also holds an M.Econ. degree in economics from the University of Hong Kong and a B.Soc.Sc. in economics from the Chinese University of Hong Kong.
 
 
 #### **Weifeng Zhong, PhD**
