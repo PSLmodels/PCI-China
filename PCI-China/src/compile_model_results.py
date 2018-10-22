@@ -2,7 +2,7 @@ import pickle, glob, os, sys, pathlib, copy, argparse
 import pandas as pd
 from src.hyper_parameters import *
 
-def compile_results(model, root="./"):
+def compile_model_results(model, root="./"):
     if model != "window_5_years" and model != "window_10_years":
         print('Error: model must be "window_5_years" or "window_10_years"' )
         sys.exit(1)
@@ -15,8 +15,11 @@ def compile_results(model, root="./"):
         dic_list.append(tmp.to_dictionary())
 
     df = pd.DataFrame(dic_list)
-    print(df)
-    df.to_csv(os.path.join(root,'visualization',  model , '/results.csv'), index=False)
+    df['diff'] = df.test_F1 - df.forecast_F1
+    df['pci'] = abs(df.test_F1 - df.forecast_F1)
+
+    df.to_csv(root + '/visualization/' +  model + '/results.csv', index=False)
+
     return df
 
 if __name__ == "__main__":
@@ -30,4 +33,4 @@ if __name__ == "__main__":
         print('Error: model must be "window_5_years" or "window_10_years"' )
         sys.exit(1)
 
-    compile_results(args.model)
+    compile_model_results(args.model, args.root)

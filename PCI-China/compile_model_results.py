@@ -1,7 +1,7 @@
 import pickle, glob, os, sys, pathlib, copy, argparse
 import pandas as pd
 from src.hyper_parameters import *
-from src.compile_results import *
+from src.compile_model_results import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -15,4 +15,4 @@ if __name__ == "__main__":
         print('Error: model must be "window_5_years" or "window_10_years"' )
         sys.exit(1)
 
-    compile_results(args.model)
+    compile_model_results(args.model)
