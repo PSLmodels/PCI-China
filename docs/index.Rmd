@@ -7,12 +7,12 @@ subtitle: "A Machine Learning Framework to Predict Policy Changes in China"
 
 #### **Policy Change Index and major events in China, 1951 Q1 to 2018 Q3**
 
-![](pci_with_events_5y.png)
+![](http://www.policychangeindex.com/pci_with_events_5y.png)
 
 &nbsp;
 
 #### **What's new**
 
-- Oct 22, 2018: Both the [research paper](Reading_China.pdf) and the [GitHub repository](http://github.com/open-source-economics/PCI) were made available.
+- Oct 22, 2018: Both the [research paper](http://www.policychangeindex.com/Reading_China.pdf) and the [GitHub repository](http://github.com/open-source-economics/PCI) were made available.
 
 - Jun 23, 2018: We received with gratitude NVIDIA Corporation's Academic GPU Grant, with the donation of a Titan Xp for this research.
