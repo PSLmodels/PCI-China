@@ -6,7 +6,7 @@ title: "Research"
 
 #### **Research Papers**
 
-- Chan, Julian TszKin and Weifeng Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](http://www.policychangeindex.com/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [**No. 2018-11**](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [**here**](http://www.policychangeindex.com/Reading_China.pdf)).
 
 &nbsp;
 
