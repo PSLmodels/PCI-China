@@ -17,6 +17,6 @@ We developed a machine learning algorithm to "read" the *People's Daily* --- the
 
 #### **What's new**
 
-- Oct 22, 2018: Both the [research paper](http://www.policychangeindex.com/Reading_China.pdf) and the [GitHub repository](http://github.com/open-source-economics/PCI) were made available.
+- Oct 22, 2018: Both the [**research paper**](http://www.policychangeindex.com/Reading_China.pdf) and the [**GitHub repository**](http://github.com/open-source-economics/PCI) were made available.
 
 - Jun 23, 2018: We received with gratitude NVIDIA Corporation's Academic GPU Grant, with the donation of a Titan Xp for this research.

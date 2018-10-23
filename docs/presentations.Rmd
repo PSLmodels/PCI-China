@@ -11,6 +11,8 @@ subtitle: "(including scheduled)"
 
 #### **Nov 2018**
 
+- Université Paris-Dauphine, Paris.
+
 - Data Natives, Berlin.
 
 - Artificial Intelligence International Conference (A2IC) conference, Barcelona.
@@ -23,9 +25,9 @@ subtitle: "(including scheduled)"
 
 - Regulatory Studies Center, George Washington University.
 
-- TEXATA Summit: Big Data Analytics Conference of Texas, Austin, TX. ([slides, ~20 mins](http://www.policychangeindex.com/Reading_China_slides_TEXATA.pdf))
+- TEXATA Summit: Big Data Analytics Conference of Texas, Austin, TX. ([**slides**](http://www.policychangeindex.com/Reading_China_slides_TEXATA.pdf))
 
-- International Conference on Communication & Media Studies (ICCMS), Berkeley, CA.
+- International Conference on Communication & Media Studies (ICCMS), Berkeley, CA. ([**slides**](http://www.policychangeindex.com/Reading_China_slides_ICCMS.pdf))
 
 - International Studies Association - South (ISA-South) conference, Ashland, VA.
 
