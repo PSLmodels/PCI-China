@@ -12,6 +12,7 @@ We developed a machine learning algorithm to "read" the *People's Daily* --- the
 #### **Policy Change Index and major events in China, 1951 Q1 to 2018 Q3**
 
 ![](http://www.policychangeindex.com/pci_with_events_5y.png)
+Note: The PCI series is a predictor of policy changes. A spike in the PCI signals an upcoming policy change, while a vertical bar marks the occurrence of an actual policy change labeled by the respective event.
 
 &nbsp;
 

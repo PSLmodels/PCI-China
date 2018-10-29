@@ -4,7 +4,7 @@ title: "Overview"
 
 &nbsp;
 
-China's industrialization process has long been a product of government direction, be it coercive central planning or ambitious industrial policy. For the first time in the literature, we develop a quantitative indicator of China's policy priorities over a long period of time, which we call the Policy Change Index (PCI) of China. The PCI is a leading indicator that runs from 1951 to the most recent quarter --- the third quarter of 2018 --- and can be updated in the future. In other words, the PCI not only helps us understand the past of China's industrialization but also allows us to make short-term predictions about its future directions.
+China's industrialization process has long been a product of government direction, be it coercive central planning or ambitious industrial policy. For the first time in the literature, we develop a quantitative indicator of China's policy priorities over a long period of time, which we call the Policy Change Index (PCI) of China. The PCI is a leading indicator that covers the period from 1951 to the most recent quarter --- the third quarter of 2018 --- and can be updated in the future. In other words, the PCI not only helps us understand the past of China's industrialization but also allows us to make short-term predictions about its future directions.
 
 The design of the PCI has two building blocks: (1) it takes as input data the full text of the *People's Daily* --- the official newspaper of the Communist Party of China --- since it was founded in 1946; (2) it employs a set of machine learning techniques to "read" the articles and detect changes in the way the newspaper prioritizes policy issues.
 
@@ -32,6 +32,7 @@ The nearby figure plots the quarterly PCI of China from 1951 to the most recent 
 
 #### **Policy Change Index and major events in China, 1951 Q1 to 2018 Q3**
 ![](pci_with_events_5y.png)
+Note: The PCI series is a predictor of policy changes. A spike in the PCI signals an upcoming policy change, while a vertical bar marks the occurrence of an actual policy change labeled by the respective event.
 
 &nbsp;
 
@@ -43,4 +44,4 @@ Furthermore, we show that, by reading articles mis-classified by the algorithm, 
 
 ## Potential Applications
 
-The design of the PCI has an added feature: It is "context-free." That is, predicting the occurrences of policy change, in itself, does *not* require the researcher's understanding of the Chinese context (its language, history, politics, etc.). The key ingredient of the algorithm is merely the page on which each article appears. This feature, therefore, suggests that the method could be applicable to a wide range of other settings, such as the possibility of predicting policy change in other (ex-)Communist regimes (e.g., Cuba and North Korea), measuring decentralization in central-local government relations (such as in China), measuring media bias in democracies (such as the US), and predicting changes in lawmaker's voting behavior and in judges' judicial or ideological leaning. Section 6 of our [**research paper**](http://www.policychangeindex.com/Reading_China.pdf) discusses these potential applications in more detail.
+The design of the PCI has an added feature: It is "context-free." That is, predicting the occurrences of policy change, in itself, does *not* require the researcher's understanding of the Chinese context (its language, history, politics, etc.). The key ingredient of the algorithm is merely the page on which each article appears. This feature, therefore, suggests that the method could be applicable to a wide range of other settings, such as the possibility of predicting policy change in other (ex-)Communist regimes (e.g., Cuba and North Korea), measuring decentralization in central-local government relations (such as in China), measuring media bias in democracies (such as the US), and predicting changes in lawmakers' voting behavior and in judges' judicial or ideological leaning. Section 6 of our [**research paper**](http://www.policychangeindex.com/Reading_China.pdf) discusses these potential applications in more detail.

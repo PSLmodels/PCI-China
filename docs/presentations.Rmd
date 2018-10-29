@@ -11,6 +11,8 @@ subtitle: "(including scheduled)"
 
 #### **Nov 2018**
 
+- Policy Simulation Library meetup, Washington, DC.
+
 - Université Paris-Dauphine, Paris.
 
 - Data Natives, Berlin.
@@ -23,7 +25,7 @@ subtitle: "(including scheduled)"
 
 #### **Oct 2018**
 
-- Regulatory Studies Center, George Washington University.
+- Regulatory Studies Center, George Washington University. ([**slides**](http://www.policychangeindex.com/Reading_China_slides_GWU.pdf))
 
 - TEXATA Summit: Big Data Analytics Conference of Texas, Austin, TX. ([**slides**](http://www.policychangeindex.com/Reading_China_slides_TEXATA.pdf))
 
