@@ -4,4 +4,4 @@ title: "Media"
 
 &nbsp;
 
-<!-- To be filled in... -->
+- October 25, [*Dataconomy*](http://dataconomy.com/2018/10/data-natives-2018-best-talks/), "Ethics to Ecotech: 5 Unmissable Talks at Data Natives 2018."
