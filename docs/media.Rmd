@@ -4,4 +4,6 @@ title: "Media"
 
 &nbsp;
 
-- October 25, [*Dataconomy*](http://dataconomy.com/2018/10/data-natives-2018-best-talks/), "Ethics to Ecotech: 5 Unmissable Talks at Data Natives 2018."
+- October 30, [***South China Morning Post***](http://www.scmp.com/news/china/politics/article/2170759/predicting-beijings-thinking-help-artificial-intelligence-and), "Predicting Beijing's Thinking with the Help of Artificial Intelligence and *People's Daily*."
+
+- October 25, [***Dataconomy***](http://dataconomy.com/2018/10/data-natives-2018-best-talks/), "Ethics to Ecotech: 5 Unmissable Talks at Data Natives 2018."
