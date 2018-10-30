@@ -30,7 +30,7 @@ The nearby figure plots the quarterly PCI of China from 1951 to the most recent 
 
 &nbsp;
 
-#### **Policy Change Index and major events in China, 1951 Q1 to 2018 Q3**
+#### **Figure: Policy Change Index and major events in China, 1951 Q1 to 2018 Q3**
 ![](pci_with_events_5y.png)
 Note: The PCI series is a predictor of policy changes. A spike in the PCI signals an upcoming policy change, while a vertical bar marks the occurrence of an actual policy change labeled by the respective event.
 
