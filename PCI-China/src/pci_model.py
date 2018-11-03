@@ -302,7 +302,7 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         best_hyper_pars.perf  = my_model.summary()
         best_hyper_pars.save(curr_folder, 'best_pars.pkl')
         best_hyper_pars.save(curr_folder, 'prev_pars.pkl')
-        new_hyper_pars.save(history_folder)
+        best_hyper_pars.save(history_folder)
         
     if i == 1 :
         best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
