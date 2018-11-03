@@ -1,7 +1,7 @@
 from time import time
 from src.hyper_parameters import *
 
-def get_fixed_5_years(year_target, qt_target, root = "./"):
+def get_fixed_5_years(year_target, month_target, root = "./"):
     fixed = {
                 'year_window' : 5, 
                 'batch_size': 256,
@@ -10,18 +10,18 @@ def get_fixed_5_years(year_target, qt_target, root = "./"):
                 'testing_group' : [1],
                 'validation_group' : [2],
                 'training_group' : [3,4,5],
-                'data_directory' : root + '/data/proc/by_year', 
+                'data_directory' : root + '/data/proc/by_month', 
                 'embedding_path' : root + '/data/proc/embedding_matrix.pkl', 
                 'model_folder' : root + '/models/window_5_years/',
                 'year_target' : year_target,
-                'qt_target' : qt_target,
+                'month_target' : month_target,
                 'body_text_combined' : 1,
                 'frontpage' : 1, # 1:first page; 0: page1-3
                 'mod_id' : str(round((time())))
             }    
     return fixed
 
-def gen_hyper_pars_5_years(year_target, qt_target, root):
+def gen_hyper_pars_5_years(year_target, month_target, root):
     x = hyper_parameters(
         varirate ={
             'meta_layer' : 2,
@@ -44,12 +44,12 @@ def gen_hyper_pars_5_years(year_target, qt_target, root):
             'decay': 0.0001,
             'w': 0.3
         },
-        fixed = get_fixed_5_years(year_target, qt_target, root)
+        fixed = get_fixed_5_years(year_target, month_target, root)
     )
     return x 
 
 
-def get_fixed_10_years(year_target, qt_target, root = "./"):
+def get_fixed_10_years(year_target, month_target, root = "./"):
     fixed = {
                 'year_window' : 10, 
                 'batch_size': 256,
@@ -58,18 +58,18 @@ def get_fixed_10_years(year_target, qt_target, root = "./"):
                 'testing_group' : [1],
                 'validation_group' : [2],
                 'training_group' : [3,4,5],
-                'data_directory' : root + '/data/proc/by_year', 
+                'data_directory' : root + '/data/proc/by_month', 
                 'embedding_path' : root + '/data/proc/embedding_matrix.pkl', 
                 'model_folder' : root + '/models/window_10_years/',
                 'year_target' : year_target,
-                'qt_target' : qt_target,
+                'month_target' : month_target,
                 'body_text_combined' : 1,
                 'frontpage' : 1, # 1:first page; 0: page1-3
                 'mod_id' : str(round((time())))
             }    
     return fixed
 
-def gen_hyper_pars_10_years(year_target, qt_target, root):
+def gen_hyper_pars_10_years(year_target, month_target, root):
     x = hyper_parameters(
         varirate ={
             'meta_layer' : 2,
@@ -92,6 +92,6 @@ def gen_hyper_pars_10_years(year_target, qt_target, root):
             'decay': 0.0001,
             'w': 0.3
         },
-        fixed = get_fixed_10_years(year_target, qt_target, root)
+        fixed = get_fixed_10_years(year_target, month_target, root)
     )
     return x 

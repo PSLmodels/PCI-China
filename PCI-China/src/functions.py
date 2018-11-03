@@ -86,37 +86,36 @@ def calc_f1_df(x):
 
 
 
-def calc_prev_quarter(year, quarter, period=1 ):
+def calc_prev_month(year, month, period=1):
     if period == 1 :
-        if quarter == 1 :
-            return year-1 , 4
+        if month == 1 :
+            return year-1 , 12
         else :
-            return year, quarter - 1 
+            return year, month - 1 
     else :
-        y,q = calc_prev_quarter(year, quarter, 1)
-        return calc_prev_quarter(y, q, period - 1 )
+        y,m = calc_prev_month(year, month, 1)
+        return calc_prev_month(y, m, period - 1 )
 
-def calc_next_quarter(year, quarter, period=1):
+def calc_next_month(year, month, period=1):
     if period == 1 :
-        if quarter == 4 :
+        if month == 12 :
             return year+1 , 1
         else :
-            return year, quarter + 1
+            return year, month + 1
     else :
-        y,q = calc_prev_quarter(year, quarter, 1)
-        return calc_prev_quarter(y, q, period + 1 )
+        y,m = calc_prev_month(year, month, 1)
+        return calc_prev_month(y, m, period + 1 )
 
 
-def gen_filename(year, quarter):
-    return str(year) + "_Q" + str(quarter) 
+def gen_filename(year, month):
+    return str(year) + "_Q" + str(month)
 
 
-
-def build_output_folder_structure(year_target, qt_target, models_path, create=True):
+def build_output_folder_structure(year_target, month_target, models_path, create=True):
     if not os.path.exists(models_path):
         os.makedirs(models_path)
 
-    output_folder = models_path + str(year_target) + "_Q" + str(qt_target) + '/'
+    output_folder = models_path + str(year_target) + "_Q" + str(month_target) + '/'
     history_folder = output_folder + '/history/'
 
     if create:

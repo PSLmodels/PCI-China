@@ -26,8 +26,8 @@ class pci_model:
         df = pci_model.read_data(
             data_directory = self.hyper_pars.fixed['data_directory'], 
             year = self.hyper_pars.fixed['year_target'],
-            quarter = self.hyper_pars.fixed['qt_target'],
-            window_qt = self.hyper_pars.fixed['year_window'] * 4 
+            month = self.hyper_pars.fixed['month_target'],
+            window_month = self.hyper_pars.fixed['year_window'] * 12 
             )
 
         testing_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['testing_group'])]
@@ -53,17 +53,17 @@ class pci_model:
 
 
     @staticmethod
-    def read_data(data_directory, year, quarter,  window_qt = 0):
+    def read_data(data_directory, year, month, window_month = 0):
 
-        if window_qt == 0 :
-            filename = os.path.join(data_directory, gen_filename(year,quarter) + ".pkl")
+        if window_month == 0 :
+            filename = os.path.join(data_directory, gen_filename(year,month) + ".pkl")
             return pd.read_pickle(filename) 
         else:
             df = pd.DataFrame()
 
-            for i in range(1, window_qt+1):
-                y,q = calc_prev_quarter(year, quarter, i )
-                filename = os.path.join(data_directory, gen_filename(y,q) + ".pkl")
+            for i in range(1, window_month+1):
+                y,m = calc_prev_month(year, month, i)
+                filename = os.path.join(data_directory, gen_filename(y,m) + ".pkl")
                 if not os.path.exists(filename):
                     continue
                 df = df.append( pd.read_pickle(filename), sort = True )
@@ -136,7 +136,7 @@ class pci_model:
             df = pci_model.read_data(
                 data_directory = self.hyper_pars.fixed['data_directory'], 
                 year = self.hyper_pars.fixed['year_target'],
-                quarter = self.hyper_pars.fixed['qt_target']
+                month = self.hyper_pars.fixed['month_target']
             )
             Y , X, id = pci_model.prep_data(df, self.hyper_pars)
             Y_hat = self.model.predict(X) 
@@ -168,14 +168,14 @@ class pci_model:
         df = pci_model.read_data(data_directory = self.hyper_pars.fixed['data_directory'], year = range(
                 self.hyper_pars.fixed['year_target'] - self.hyper_pars.fixed['year_window'] + 1,  
                 self.hyper_pars.fixed['year_target']
-                ), quarter = self.hyper_pars.fixed['qt_target']
+                ), month = self.hyper_pars.fixed['month_target']
             )
 
         testing_df = copy.deepcopy( df[df.training_group == self.hyper_pars.fixed['testing_group']] )
         training_df = copy.deepcopy( df[df.training_group != self.hyper_pars.fixed['testing_group']] )
 
-        testing_df = testing_df[['id', 'year','quarter']]
-        training_df = training_df[['id', 'year','quarter']]
+        testing_df = testing_df[['id', 'year','month']]
+        training_df = training_df[['id', 'year','month']]
 
         testing_df['Y'] = self.Y_test
         testing_df['Y_hat'] = (self.model.predict(self.X_test) > 0.5) + 0 
@@ -193,7 +193,7 @@ class pci_model:
         out = out.append(tmp, sort = True)
 
         out['year_target'] =  self.hyper_pars.fixed['year_target']
-        out['qt_target'] =  self.hyper_pars.fixed['qt_target']
+        out['month_target'] =  self.hyper_pars.fixed['month_target']
         return(out)
 
 
@@ -266,9 +266,9 @@ def create_and_train_model(hyper_pars,gpu):
     return my_model
 
 
-def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, discount=0.05, bandwidth = 0.2):
+def run_pci_model(year_target, month_target, i, gpu, model, root="../", T=0.01, discount=0.05, bandwidth = 0.2):
     print('################################################')
-    print('year' + str(year_target) + '; quarter: ' + str(qt_target))
+    print('year' + str(year_target) + '; month: ' + str(month_target))
     print('################################################')
 
     if model == "window_5_years":
@@ -282,21 +282,21 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         sys.exit(1)
 
 
-    models_path = get_fixed(year_target, qt_target, root)['model_folder']
+    models_path = get_fixed(year_target, month_target, root)['model_folder']
 
-    history_folder, curr_folder = build_output_folder_structure(year_target, qt_target, models_path, create=True)
+    history_folder, curr_folder = build_output_folder_structure(year_target, month_target, models_path, create=True)
     gpu = str(gpu)
 
     ## if the best_pars, prev_pars, and model.hd5 are already in the folder:
     if not os.path.exists(curr_folder+'best_pars.pkl') :
-        prev_y, prev_q = calc_prev_quarter(year_target, qt_target)
-        junk, prev_folder = build_output_folder_structure(prev_y, prev_q, models_path, create=False)
+        prev_y, prev_m = calc_prev_month(year_target, month_target)
+        junk, prev_folder = build_output_folder_structure(prev_y, prev_m, models_path, create=False)
 
         if  os.path.exists(prev_folder+'best_pars.pkl') :
             best_hyper_pars = hyper_parameters.load(prev_folder + 'best_pars.pkl')
-            best_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+            best_hyper_pars.fixed = get_fixed(year_target, month_target, root)
         else:
-            best_hyper_pars = gen_hyper_pars(year_target, qt_target, root)
+            best_hyper_pars = gen_hyper_pars(year_target, month_target, root)
 
         my_model = create_and_train_model(best_hyper_pars, gpu)
         best_hyper_pars.perf  = my_model.summary()
@@ -306,7 +306,7 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         
     if i == 1 :
         best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
-        best_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+        best_hyper_pars.fixed = get_fixed(year_target, month_target, root)
 
         prev_hyper_pars = best_hyper_pars
         prev_hyper_pars.save(curr_folder, 'prev_pars.pkl')
@@ -314,12 +314,12 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
     else:
         best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
-        best_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+        best_hyper_pars.fixed = get_fixed(year_target, month_target, root)
         if (not os.path.exists(curr_folder+'prev_pars.pkl') ): 
             prev_hyper_pars = best_hyper_pars
         else:
             prev_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
-            prev_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+            prev_hyper_pars.fixed = get_fixed(year_target, month_target, root)
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
 
     ## run model
