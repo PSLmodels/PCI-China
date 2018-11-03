@@ -115,7 +115,7 @@ def build_output_folder_structure(year_target, month_target, models_path, create
     if not os.path.exists(models_path):
         os.makedirs(models_path)
 
-    output_folder = models_path + str(year_target) + "_Q" + str(month_target) + '/'
+    output_folder = models_path + str(year_target) + "_M" + str(month_target) + '/'
     history_folder = output_folder + '/history/'
 
     if create:
