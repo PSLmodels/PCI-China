@@ -1,1 +1,1 @@
-__all__ = ["compile_results", "functions","hyper_parameters","pci_model","proc_data","specs"]
+__all__ = ["compile_model_results", "functions","hyper_parameters","pci_model","proc_data","specs"]
