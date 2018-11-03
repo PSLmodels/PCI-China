@@ -22,7 +22,7 @@ def prepare_variables(data, embedding, year, quarter, k_fold, tokenizer ):
     del data["title"]
     del data["body"]
 
-    data = data.dropna(subset=['page'])
+    data = data.dropna(subset=['page']).copy()
     assert data['page'].isnull().sum(axis = 0) == 0 
 
     data['year'] = data['date'].dt.year
@@ -110,7 +110,7 @@ def proc_data(k_fold,path):
         pickle.dump(embedding_matrix, f)
 
 
-    for y,q in product(range(1956, 2019), range(1,4)):
+    for y,q in product(range(1946, 2019), range(1,4)):
         print(str(y) + ' - ' + str(q))
 
         filename = str(y)+"_Q"+str(q) +".pkl"
