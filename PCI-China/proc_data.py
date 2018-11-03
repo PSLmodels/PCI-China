@@ -1,5 +1,5 @@
 import argparse
-from src import * 
+from src import *
 
 
 if __name__ == "__main__":
@@ -8,4 +8,4 @@ if __name__ == "__main__":
     parser.add_argument("--k_fold", help="Sample the data into k sub-samples. Define training, validation and testing data in the specification.", type=int, default = 5)
     args = parser.parse_args()
 
-    proc_data(args.k_fold, args.data_path)
+    proc_data.proc_data(args.k_fold, args.data_path)
