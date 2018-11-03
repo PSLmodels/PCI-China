@@ -16,7 +16,7 @@ def stratify_sample(n,k):
 def cal_len(x):
     return(len(re.sub('UNK','U',''.join(x) )))
 
-def prepare_variables(data, embedding, year, quarter, k_fold, tokenizer ):
+def prepare_variables(data, embedding, year, month, k_fold, tokenizer ):
     data['title_seg'] = data.apply(lambda row: cut(row['title']), axis=1)
     data['body_seg'] = data.apply(lambda row: cut(row['body']), axis=1)
     del data["title"]
@@ -49,9 +49,9 @@ def prepare_variables(data, embedding, year, quarter, k_fold, tokenizer ):
 
     ## Create Stratum  
     data = data.sort_values(by='id')
-    np.random.seed(year * 10 + quarter)
+    np.random.seed(year * 100 + month)
 
-    data['training_group'] = data.groupby(['frontpage','year','quarter'] )['frontpage'].transform(lambda x: stratify_sample(x.shape[0],k_fold) )
+    data['training_group'] = data.groupby(['frontpage','year','month'] )['frontpage'].transform(lambda x: stratify_sample(x.shape[0],k_fold) )
 
     data['title_int'] = tokenizer.texts_to_sequences(data.title_seg)
     data['body_int'] = tokenizer.texts_to_sequences(data.body_seg)
@@ -64,8 +64,8 @@ def proc_data(k_fold,path):
     if not os.path.exists(path+"/proc/"):
         os.makedirs(path+"/proc/")
 
-    if not os.path.exists(path+"/proc/by_year/"):
-        os.makedirs(path+"/proc/by_year/")
+    if not os.path.exists(path+"/proc/by_month/"):
+        os.makedirs(path+"/proc/by_month/")
 
     ## Prepare embedding
     embedding_raw = pd.read_csv(path + "/raw/sgns_renmin_Word+Character+Ngram/sgns_renmin_Word+Character+Ngram.txt",
@@ -110,18 +110,18 @@ def proc_data(k_fold,path):
         pickle.dump(embedding_matrix, f)
 
 
-    for y,q in product(range(1946, 2019), range(1,4)):
-        print(str(y) + ' - ' + str(q))
+    for y,m in product(range(1946, 2019), range(1,13)):
+        print(str(y) + ' - ' + str(m))
 
-        filename = str(y)+"_Q"+str(q) +".pkl"
+        filename = str(y)+"_M"+str(m) +".pkl"
 
         if not os.path.exists(path + "/raw/pd/" + filename):
             continue
 
         data =  pd.read_pickle(path + "/raw/pd/" + filename)
 
-        df = prepare_variables(data, embedding, y, q, k_fold, tokenizer )
-        df.to_pickle(path + "/proc/by_year/" +str(y)+"_Q"+str(q) +".pkl")
+        df = prepare_variables(data, embedding, y, m, k_fold, tokenizer )
+        df.to_pickle(path + "/proc/by_month/" +str(y)+"_M"+str(m) +".pkl")
 
 
 
