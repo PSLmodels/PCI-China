@@ -16,7 +16,7 @@ def get_fixed_5_years(year_target, month_target, root = "./"):
                 'year_target' : year_target,
                 'month_target' : month_target,
                 'body_text_combined' : 1,
-                'frontpage' : 1, # 1:first page; 0: page1-3
+                'frontpage' : 0, # 1:first page; 0: page1-3
                 'mod_id' : str(round((time())))
             }    
     return fixed
@@ -64,7 +64,7 @@ def get_fixed_10_years(year_target, month_target, root = "./"):
                 'year_target' : year_target,
                 'month_target' : month_target,
                 'body_text_combined' : 1,
-                'frontpage' : 1, # 1:first page; 0: page1-3
+                'frontpage' : 0, # 1:first page; 0: page1-3
                 'mod_id' : str(round((time())))
             }    
     return fixed
