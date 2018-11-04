@@ -108,7 +108,7 @@ def calc_next_month(year, month, period=1):
 
 
 def gen_filename(year, month):
-    return str(year) + "_Q" + str(month)
+    return str(year) + "_M" + str(month)
 
 
 def build_output_folder_structure(year_target, month_target, models_path, create=True):
