@@ -1,6 +1,6 @@
 import itertools, pathlib, pickle, copy, random, os, glob , sys
 from time import time
-
+import datetime, monthdelta
 import pandas as pd
 import numpy as np
 import tensorflow as tf
@@ -20,23 +20,34 @@ class pci_model:
     def __init__(self, hyper_pars, embedding_matrix):
         self.hyper_pars = hyper_pars
         self.embedding_matrix = embedding_matrix
+
+        ## Check if the object exist, if so import the object, otherwise run setup()
         self.setup()
 
     def setup(self):
         df = pci_model.read_data(
-            data_directory = self.hyper_pars.fixed['data_directory'], 
+            data_pd = self.hyper_pars.fixed['data_pd'], 
             year = self.hyper_pars.fixed['year_target'],
-            quarter = self.hyper_pars.fixed['qt_target'],
-            window_qt = self.hyper_pars.fixed['year_window'] * 4 
+            month = self.hyper_pars.fixed['mt_target'],
+            month_apart = - self.hyper_pars.fixed['month_window'] 
             )
 
         testing_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['testing_group'])]
         training_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['training_group'])]
         val_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['validation_group'])]
 
+        forecast_df = pci_model.read_data(
+            data_pd = self.hyper_pars.fixed['data_pd'], 
+            year = self.hyper_pars.fixed['year_target'],
+            month = self.hyper_pars.fixed['mt_target'],
+            month_apart = self.hyper_pars.fixed['forecast_period'] 
+            )
+
         self.Y_train , self.X_train, self.id_train = pci_model.prep_data(training_df, self.hyper_pars)
         self.Y_test , self.X_test, self.id_test  = pci_model.prep_data(testing_df, self.hyper_pars)
         self.Y_val , self.X_val, self.id_val  = pci_model.prep_data(val_df, self.hyper_pars)
+        self.Y_forecast , self.X_forecast, self.id_forecast  = pci_model.prep_data(forecast_df, self.hyper_pars)
+
 
         all_Y = np.concatenate( (self.Y_train ,self.Y_test , self.Y_val) , 0 )
 
@@ -53,25 +64,50 @@ class pci_model:
 
 
     @staticmethod
-    def read_data(data_directory, year, quarter,  window_qt = 0):
+    def read_data(data_pd, year, quarter=None, month=None,  month_apart = 0):
+        if ((quarter==None) == (month==None)):
+            raise ValueError('Need specify either quarter or month.')
 
-        if window_qt == 0 :
-            filename = os.path.join(data_directory, gen_filename(year,quarter) + ".pkl")
-            return pd.read_pickle(filename) 
-        else:
-            df = pd.DataFrame()
+        if (quarter!=None):
+            month = (quarter - 1 ) * 3 + 1 
 
-            for i in range(1, window_qt+1):
-                y,q = calc_prev_quarter(year, quarter, i )
-                filename = os.path.join(data_directory, gen_filename(y,q) + ".pkl")
-                if not os.path.exists(filename):
-                    continue
-                df = df.append( pd.read_pickle(filename), sort = True )
+        from_date = datetime.date(year, month, 1) + monthdelta.monthdelta(month_apart)
+        to_date = datetime.date(year, month, 1)  
 
-            return df
+        conn = sqlite3.connect(data_pd)
+        df = pd.read_sql_query("select * from main where date >= Datetime('"+str(from_date)+" 00:00:00') and date < Datetime('"+str(to_date)+" 00:00:00')  ", conn)
+        conn.close()
+        df
 
     @staticmethod
     def prep_data(df, hyper_pars):
+
+        df['year'] = df['date'].dt.year
+        df['quarter'] = df['date'].dt.quarter
+        df['month'] = df['date'].dt.month
+        df['day'] = df['date'].dt.day
+        df['weekday'] = df['date'].dt.dayofweek + 1
+
+        ## Create useful variable for ML
+        df['frontpage'] = np.where(df['page']==1, 1, 0)
+        df['page1to3'] = np.where(df['page'].isin(range(1,4)), 1, 0)
+
+
+        df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+        df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+
+        df['title_len'] = df["title_seg"].apply(cal_len)
+        df['body_len'] = df["body_seg"].apply(cal_len)
+
+        df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
+        df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
+
+        df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
+
+        ## Create Stratum  
+        df['title_int'] = tokenizer.texts_to_sequences(df.title_seg)
+        df['body_int'] = tokenizer.texts_to_sequences(df.body_seg)
+        del df["title_seg"], df['body_seg']
 
         if hyper_pars.fixed['frontpage'] == 1 :
             Y = df.frontpage  
@@ -87,7 +123,16 @@ class pci_model:
 
         # TODO: Add backup for the normalization
         year2 = (df.month + 12*(df.year - 1946)) / 72
-        meta = np.column_stack((weekday0,weekday1,year2, df.month, df.title_len*10/263 ,df.body_len*10/88879, df.n_articles_that_day*10/393 ,df.n_pages_that_day*10/127, df.n_frontpage_articles_that_day*10/27))
+        meta = np.column_stack((
+                    weekday0,
+                    weekday1,
+                    year2, 
+                    df.month, 
+                    df.title_len*10/263 ,
+                    df.body_len*10/88879, 
+                    df.n_articles_that_day*10/393 ,
+                    df.n_pages_that_day*10/127, 
+                    df.n_frontpage_articles_that_day*10/27))
 
         all_text = df.title_int + df.body_int
 
@@ -133,13 +178,8 @@ class pci_model:
             Y_hat = self.model.predict(self.X_val)
             Y = self.Y_val
         elif type == "forecast":
-            df = pci_model.read_data(
-                data_directory = self.hyper_pars.fixed['data_directory'], 
-                year = self.hyper_pars.fixed['year_target'],
-                quarter = self.hyper_pars.fixed['qt_target']
-            )
-            Y , X, id = pci_model.prep_data(df, self.hyper_pars)
-            Y_hat = self.model.predict(X) 
+            Y_hat = self.model.predict(self.X_forecast) 
+            Y = self.Y_forecast
 
         Y_pred = Y_hat  > 0.5
 
@@ -164,37 +204,40 @@ class pci_model:
 
         return out
 
-    def export_prediction(self):
-        df = pci_model.read_data(data_directory = self.hyper_pars.fixed['data_directory'], year = range(
-                self.hyper_pars.fixed['year_target'] - self.hyper_pars.fixed['year_window'] + 1,  
-                self.hyper_pars.fixed['year_target']
-                ), quarter = self.hyper_pars.fixed['qt_target']
+    def summary_articles(self, root="./"):
+        Y_hat_test = self.model.predict(self.X_test)
+        testing_data = pd.DataFrame(data = self.id_test)
+        testing_data['Y'] = self.Y_test
+        testing_data['Y_hat'] = Y_hat_test
+        testing_data['Y_pred'] = Y_hat_test > 0.5
+
+        Y_hat = self.model.predict(self.X_forecast) 
+        Y = self.Y_forecast
+        forecast_data = pd.DataFrame(data = id)
+        forecast_data['Y'] = Y
+        forecast_data['Y_hat'] = Y_hat
+        forecast_data['Y_pred'] = Y_hat > 0.5
+
+
+        testing_df = pci_model.read_data(
+            data_pd = self.hyper_pars.fixed['data_pd'], 
+            year = self.hyper_pars.fixed['year_target'],
+            month = self.hyper_pars.fixed['mt_target'],
+            month_apart = - self.hyper_pars.fixed['month_window'] 
             )
 
-        testing_df = copy.deepcopy( df[df.training_group == self.hyper_pars.fixed['testing_group']] )
-        training_df = copy.deepcopy( df[df.training_group != self.hyper_pars.fixed['testing_group']] )
+        forecast_df = pci_model.read_data(
+            data_pd = self.hyper_pars.fixed['data_pd'], 
+            year = self.hyper_pars.fixed['year_target'],
+            month = self.hyper_pars.fixed['mt_target'],
+            month_apart = self.hyper_pars.fixed['forecast_period'] 
+            )
 
-        testing_df = testing_df[['id', 'year','quarter']]
-        training_df = training_df[['id', 'year','quarter']]
+        testing_data = pd.merge(testing_data, testing_df, on='id', how='left')
+        forecast_data = pd.merge(forecast_data, forecast_df, on='id', how='left')
 
-        testing_df['Y'] = self.Y_test
-        testing_df['Y_hat'] = (self.model.predict(self.X_test) > 0.5) + 0 
 
-        training_df['Y'] = self.Y_train
-        training_df['Y_hat'] = (self.model.predict(self.X_train) > 0.5) + 0 
-
-        testing_df['type'] = 'testing'
-        training_df['type'] = 'training'
-
-        out = training_df.append(testing_df, sort = True)
-
-        tmp = self.forecast_one_step_simple()
-        tmp['type'] = 'one_step'
-        out = out.append(tmp, sort = True)
-
-        out['year_target'] =  self.hyper_pars.fixed['year_target']
-        out['qt_target'] =  self.hyper_pars.fixed['qt_target']
-        return(out)
+        return testing_data, forecast_data
 
 
 
@@ -266,9 +309,9 @@ def create_and_train_model(hyper_pars,gpu):
     return my_model
 
 
-def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, discount=0.05, bandwidth = 0.2):
+def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, discount=0.05, bandwidth = 0.2):
     print('################################################')
-    print('year' + str(year_target) + '; quarter: ' + str(qt_target))
+    print('year' + str(year_target) + '; quarter: ' + str(mt_target))
     print('################################################')
 
     if model == "window_5_years":
@@ -282,21 +325,21 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         sys.exit(1)
 
 
-    models_path = get_fixed(year_target, qt_target, root)['model_folder']
+    models_path = get_fixed(year_target, mt_target, root)['model_folder']
 
-    history_folder, curr_folder = build_output_folder_structure(year_target, qt_target, models_path, create=True)
+    history_folder, curr_folder = build_output_folder_structure(year_target, mt_target, models_path, create=True)
     gpu = str(gpu)
 
     ## if the best_pars, prev_pars, and model.hd5 are already in the folder:
     if not os.path.exists(curr_folder+'best_pars.pkl') :
-        prev_y, prev_q = calc_prev_quarter(year_target, qt_target)
+        prev_y, prev_q = calc_prev_quarter(year_target, mt_target)
         junk, prev_folder = build_output_folder_structure(prev_y, prev_q, models_path, create=False)
 
         if  os.path.exists(prev_folder+'best_pars.pkl') :
             best_hyper_pars = hyper_parameters.load(prev_folder + 'best_pars.pkl')
-            best_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+            best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         else:
-            best_hyper_pars = gen_hyper_pars(year_target, qt_target, root)
+            best_hyper_pars = gen_hyper_pars(year_target, mt_target, root)
 
         my_model = create_and_train_model(best_hyper_pars, gpu)
         best_hyper_pars.perf  = my_model.summary()
@@ -306,7 +349,7 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         
     if i == 1 :
         best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
-        best_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+        best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
 
         prev_hyper_pars = best_hyper_pars
         prev_hyper_pars.save(curr_folder, 'prev_pars.pkl')
@@ -314,12 +357,12 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
     else:
         best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
-        best_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+        best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         if (not os.path.exists(curr_folder+'prev_pars.pkl') ): 
             prev_hyper_pars = best_hyper_pars
         else:
             prev_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
-            prev_hyper_pars.fixed = get_fixed(year_target, qt_target, root)
+            prev_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
 
     ## run model
@@ -343,3 +386,32 @@ def run_pci_model(year_target, qt_target, i, gpu, model, root="../", T=0.01, dis
         new_hyper_pars.save(curr_folder, 'best_pars.pkl')
         new_hyper_pars.save(curr_folder, 'prev_pars.pkl')
 
+
+def create_text_output(year_target, mt_target, gpu, model, root="../"):
+    if model == "window_5_years":
+        get_fixed = get_fixed_5_years
+        gen_hyper_pars = gen_hyper_pars_5_years
+    elif model == "window_10_years":
+        get_fixed = get_fixed_10_years
+        gen_hyper_pars = gen_hyper_pars_10_years
+    elif model == "window_5_years_pp1to3":
+        get_fixed = get_fixed_5_years_pp1to3
+        gen_hyper_pars = gen_hyper_pars_10_years_pp1to3
+    else:
+        print('Error: model must be "window_5_years", "window_10_years", or "window_5_years_pp1to3"' )
+        sys.exit(1)
+
+    models_path = get_fixed(year_target, mt_target, root)['model_folder']
+
+    history_folder, curr_folder = build_output_folder_structure(year_target, mt_target, models_path, create=True)
+    gpu = str(gpu)
+
+    best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
+    my_model = create_and_train_model(best_hyper_pars, gpu)
+
+    my_model.save("model", curr_folder)
+
+    testing_data, forecast_data = my_model.summary_articles()
+
+    testing_data.to_excel(curr_folder + 'testing_data.xlsx')
+    forecast_data.to_excel(curr_folder + 'forecast_data.xlsx')
