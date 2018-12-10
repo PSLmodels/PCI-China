@@ -4,7 +4,7 @@ import datetime, monthdelta
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-
+import sqlite3
 import sklearn 
 from sklearn.metrics import precision_recall_fscore_support
 
@@ -15,16 +15,14 @@ from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuD
 from src.specs import *
 from src.functions import *
 from src.hyper_parameters import *
+from keras.preprocessing.text import text_to_word_sequence
 
 class pci_model:
-    def __init__(self, hyper_pars, embedding_matrix):
+    def __init__(self, hyper_pars):
         self.hyper_pars = hyper_pars
-        self.embedding_matrix = embedding_matrix
+        tokenizer = self.load_tokenizer()
+        embedding = self.load_embedding()
 
-        ## Check if the object exist, if so import the object, otherwise run setup()
-        self.setup()
-
-    def setup(self):
         df = pci_model.read_data(
             data_pd = self.hyper_pars.fixed['data_pd'], 
             year = self.hyper_pars.fixed['year_target'],
@@ -32,9 +30,9 @@ class pci_model:
             month_apart = - self.hyper_pars.fixed['month_window'] 
             )
 
-        testing_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['testing_group'])]
-        training_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['training_group'])]
-        val_df = df.loc[df['training_group'].isin(self.hyper_pars.fixed['validation_group'])]
+        testing_df = df.loc[df['strata'].isin(self.hyper_pars.fixed['testing_group'])]
+        training_df = df.loc[df['strata'].isin(self.hyper_pars.fixed['training_group'])]
+        val_df = df.loc[df['strata'].isin(self.hyper_pars.fixed['validation_group'])]
 
         forecast_df = pci_model.read_data(
             data_pd = self.hyper_pars.fixed['data_pd'], 
@@ -43,11 +41,10 @@ class pci_model:
             month_apart = self.hyper_pars.fixed['forecast_period'] 
             )
 
-        self.Y_train , self.X_train, self.id_train = pci_model.prep_data(training_df, self.hyper_pars)
-        self.Y_test , self.X_test, self.id_test  = pci_model.prep_data(testing_df, self.hyper_pars)
-        self.Y_val , self.X_val, self.id_val  = pci_model.prep_data(val_df, self.hyper_pars)
-        self.Y_forecast , self.X_forecast, self.id_forecast  = pci_model.prep_data(forecast_df, self.hyper_pars)
-
+        self.Y_train , self.X_train, self.id_train = pci_model.prep_data(training_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_test , self.X_test, self.id_test  = pci_model.prep_data(testing_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_val , self.X_val, self.id_val  = pci_model.prep_data(val_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_forecast , self.X_forecast, self.id_forecast  = pci_model.prep_data(forecast_df, self.hyper_pars, embedding, tokenizer)
 
         all_Y = np.concatenate( (self.Y_train ,self.Y_test , self.Y_val) , 0 )
 
@@ -60,7 +57,25 @@ class pci_model:
         else:
             self.W[1] = tmp_w[0]
 
-        self.embedding_matrix = self.embedding_matrix[:,:(self.hyper_pars.varirate['n_embedding']+1)]
+
+    def load_embedding_matrix(self):
+        with open(self.hyper_pars.fixed['embedding_matrix_path'] , 'rb') as f:
+            embedding_matrix = pickle.load(f)
+        return embedding_matrix
+
+    def load_embedding(self):
+        with open(self.hyper_pars.fixed['embedding_path'] , 'rb') as f:
+            embedding = pickle.load(f)
+        return embedding
+
+    def load_tokenizer(self):
+        with open(self.hyper_pars.fixed['tokenizer'] , 'rb') as f:
+            tokenizer = pickle.load(f)
+        return tokenizer
+
+
+
+
 
 
     @staticmethod
@@ -71,16 +86,23 @@ class pci_model:
         if (quarter!=None):
             month = (quarter - 1 ) * 3 + 1 
 
-        from_date = datetime.date(year, month, 1) + monthdelta.monthdelta(month_apart)
-        to_date = datetime.date(year, month, 1)  
+        if month_apart < 0 :
+            from_date = datetime.date(year, month, 1) + monthdelta.monthdelta(month_apart)
+            to_date = datetime.date(year, month, 1)  
+        elif month_apart > 0 :
+            from_date = datetime.date(year, month, 1)  
+            to_date  = datetime.date(year, month, 1) + monthdelta.monthdelta(month_apart)
 
         conn = sqlite3.connect(data_pd)
         df = pd.read_sql_query("select * from main where date >= Datetime('"+str(from_date)+" 00:00:00') and date < Datetime('"+str(to_date)+" 00:00:00')  ", conn)
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+
         conn.close()
-        df
+        return df
 
     @staticmethod
-    def prep_data(df, hyper_pars):
+    def prep_data(df, hyper_pars,embedding, tokenizer):
+        df = copy.deepcopy(df)
 
         df['year'] = df['date'].dt.year
         df['quarter'] = df['date'].dt.quarter
@@ -96,8 +118,8 @@ class pci_model:
         df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
         df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
 
-        df['title_len'] = df["title_seg"].apply(cal_len)
-        df['body_len'] = df["body_seg"].apply(cal_len)
+        df['title_len'] = df["title"].str.len()
+        df['body_len'] = df["body"].str.len()
 
         df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
         df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
@@ -143,17 +165,17 @@ class pci_model:
 
         return Y, X, df.id
 
-    @staticmethod
-    def load(path,filename='', year_from='', year_to='' ):
-        if filename == '':
-            filename = str(year_from) + '_' + str(year_to) 
+    # @staticmethod
+    # def load(path,filename='', year_from='', year_to='' ):
+    #     if filename == '':
+    #         filename = str(year_from) + '_' + str(year_to) 
 
-        with open(path + '/' + filename + '.pkl', 'rb') as f:
-            x = pickle.load(f)
+    #     with open(path + '/' + filename + '.pkl', 'rb') as f:
+    #         x = pickle.load(f)
 
-        mm = keras.models.load_model(path + '/' + filename + '.hd5', custom_objects={'precision': precision, 'recall' : recall, 'F1' : F1})
-        x.model = mm 
-        return x
+    #     mm = keras.models.load_model(path + '/' + filename + '.hd5', custom_objects={'precision': precision, 'recall' : recall, 'F1' : F1})
+    #     x.model = mm 
+    #     return x
 
 
     def save( self, filename='', path='./Output/'):
@@ -182,7 +204,6 @@ class pci_model:
             Y = self.Y_forecast
 
         Y_pred = Y_hat  > 0.5
-
 
         precision,recall,F1,junk = precision_recall_fscore_support(Y,Y_pred)
         out = dict()
@@ -241,50 +262,55 @@ class pci_model:
 
 
 
-def create_and_train_model(hyper_pars,gpu):
+def create_and_train_model(hyper_pars,gpu,path):
     os.environ['CUDA_VISIBLE_DEVICES'] = gpu
 
-    with open(hyper_pars.fixed['embedding_path'] , 'rb') as f:
+    with open(hyper_pars.fixed['embedding_matrix_path'] , 'rb') as f:
         embedding_matrix = pickle.load(f)
 
-    def model_fun(input):
-        obj = input.hyper_pars
-        input_title = Input(shape=(obj.varirate['lstm1_max_len'],))
+    def model_fun(input_pci_model):
+        pars = input_pci_model.hyper_pars.varirate
+        input_title = Input(shape=(pars['lstm1_max_len'],))
+        embedding_matrix = input_pci_model.load_embedding_matrix()
 
-        net_title = Embedding(input.embedding_matrix.shape[0] ,
-                input.embedding_matrix.shape[1],
-                weights=[input.embedding_matrix],
-                input_length=obj.varirate['lstm1_max_len'],
+        net_title = Embedding(embedding_matrix.shape[0] ,
+                embedding_matrix.shape[1],
+                weights=[embedding_matrix],
+                input_length=pars['lstm1_max_len'],
                 trainable=False)(input_title)
 
-        for i in range(1, obj.varirate['lstm1_layer']):
-            net_title = CuDNNGRU(obj.varirate['lstm1_neurons'], return_sequences=True)(net_title)
-        net_title = CuDNNGRU(obj.varirate['lstm1_neurons'])(net_title)
-        net_title = Dropout(obj.varirate['lstm1_dropout'])(net_title)
+        for i in range(1, pars['lstm1_layer']):
+            net_title = CuDNNGRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
+        net_title = CuDNNGRU(pars['lstm1_neurons'])(net_title)
+        net_title = Dropout(pars['lstm1_dropout'])(net_title)
 
-        input_meta = Input(shape=(  input.X_train[1].shape[1] ,))
-        net_meta = Dense(obj.varirate['meta_neurons'], activation='relu')(input_meta)
-        net_meta = Dropout(obj.varirate['meta_dropout'])(net_meta)
+        input_meta = Input(shape=(  input_pci_model.X_train[1].shape[1] ,))
+        net_meta = Dense(pars['meta_neurons'], activation='relu')(input_meta)
+        net_meta = Dropout(pars['meta_dropout'])(net_meta)
 
-        for i in range(1,obj.varirate['meta_layer']):
-            net_meta = Dense(obj.varirate['meta_neurons'], activation='relu')(net_meta)
-            net_meta = Dropout(obj.varirate['meta_dropout'])(net_meta)
+        for i in range(1,pars['meta_layer']):
+            net_meta = Dense(pars['meta_neurons'], activation='relu')(net_meta)
+            net_meta = Dropout(pars['meta_dropout'])(net_meta)
 
 
         net_combined = keras.layers.concatenate([net_title, net_meta])
-        for i in range(1,obj.varirate['fc_layer']+1):
-            net_combined = Dense(obj.varirate['fc_neurons'], activation='relu')(net_combined)
-            net_combined = Dropout(obj.varirate['fc_dropout'])(net_combined)
+        for i in range(1,pars['fc_layer']+1):
+            net_combined = Dense(pars['fc_neurons'], activation='relu')(net_combined)
+            net_combined = Dropout(pars['fc_dropout'])(net_combined)
         net_combined = Dense(1, activation='sigmoid')(net_combined)
 
         out = keras.models.Model(inputs=[input_title,input_meta], outputs=[net_combined] )
 
         return out
 
-
-    my_model = pci_model(
-        hyper_pars = hyper_pars,
-        embedding_matrix = embedding_matrix)
+    ## If the data file exists, load it. Otherwise, create a new one and save.
+    if os.path.exists(path + 'data.pkl') :
+        with open(path + 'data.pkl' , 'rb') as f:
+            my_model = pickle.load(f)
+    else :
+        my_model = pci_model(hyper_pars = hyper_pars)
+        with open(path + 'data.pkl' , 'wb') as f:
+            pickle.dump(my_model, f)
 
     my_model.model = model_fun(my_model)
 
@@ -311,7 +337,7 @@ def create_and_train_model(hyper_pars,gpu):
 
 def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, discount=0.05, bandwidth = 0.2):
     print('################################################')
-    print('year' + str(year_target) + '; quarter: ' + str(mt_target))
+    print('year' + str(year_target) + '; month: ' + str(mt_target))
     print('################################################')
 
     if model == "window_5_years":
@@ -331,7 +357,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
     gpu = str(gpu)
 
     ## if the best_pars, prev_pars, and model.hd5 are already in the folder:
-    if not os.path.exists(curr_folder+'best_pars.pkl') :
+    if not (os.path.exists(curr_folder+'best_pars.pkl') & os.path.exists(curr_folder+'prev_pars.pkl')):
         prev_y, prev_q = calc_prev_quarter(year_target, mt_target)
         junk, prev_folder = build_output_folder_structure(prev_y, prev_q, models_path, create=False)
 
@@ -341,12 +367,21 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         else:
             best_hyper_pars = gen_hyper_pars(year_target, mt_target, root)
 
-        my_model = create_and_train_model(best_hyper_pars, gpu)
+        my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
         best_hyper_pars.perf  = my_model.summary()
         best_hyper_pars.save(curr_folder, 'best_pars.pkl')
         best_hyper_pars.save(curr_folder, 'prev_pars.pkl')
         best_hyper_pars.save(history_folder)
-        
+        prev_hyper_pars = best_hyper_pars
+    if  (not os.path.exists(curr_folder+'best_pars.pkl')) & (os.path.exists(curr_folder+'prev_pars.pkl')):
+        best_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
+
+        my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
+        best_hyper_pars.perf  = my_model.summary()
+        best_hyper_pars.save(curr_folder, 'best_pars.pkl')
+        best_hyper_pars.save(curr_folder, 'prev_pars.pkl')
+        best_hyper_pars.save(history_folder)
+        prev_hyper_pars = best_hyper_pars
     if i == 1 :
         best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
@@ -366,7 +401,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
 
     ## run model
-    my_model = create_and_train_model(new_hyper_pars, gpu)
+    my_model = create_and_train_model(new_hyper_pars, gpu, curr_folder)
     new_hyper_pars.perf  = my_model.summary()
     new_hyper_pars.save(history_folder)
 
@@ -407,7 +442,7 @@ def create_text_output(year_target, mt_target, gpu, model, root="../"):
     gpu = str(gpu)
 
     best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
-    my_model = create_and_train_model(best_hyper_pars, gpu)
+    my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
 
     my_model.save("model", curr_folder)
 
