@@ -340,14 +340,14 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
     print('year' + str(year_target) + '; month: ' + str(mt_target))
     print('################################################')
 
-    if model == "window_5_years":
-        get_fixed = get_fixed_5_years
-        gen_hyper_pars = gen_hyper_pars_5_years
+    if model == "window_5_years_quarterly":
+        get_fixed = get_fixed_5_years_quarterly
+        gen_hyper_pars = gen_hyper_pars_5_years_quarterly
     elif model == "window_10_years":
         get_fixed = get_fixed_10_years
         gen_hyper_pars = gen_hyper_pars_10_years
     else:
-        print('Error: model must be "window_5_years" or "window_10_years"' )
+        print('Error: model must be "window_5_years_quarterly" or "window_10_years"' )
         sys.exit(1)
 
 
@@ -423,8 +423,8 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
 
 def create_text_output(year_target, mt_target, gpu, model, root="../"):
-    if model == "window_5_years":
-        get_fixed = get_fixed_5_years
+    if model == "window_5_years_quarterly":
+        get_fixed = get_fixed_5_years_quarterly
         gen_hyper_pars = gen_hyper_pars_5_years
     elif model == "window_10_years":
         get_fixed = get_fixed_10_years
@@ -433,7 +433,7 @@ def create_text_output(year_target, mt_target, gpu, model, root="../"):
         get_fixed = get_fixed_5_years_pp1to3
         gen_hyper_pars = gen_hyper_pars_10_years_pp1to3
     else:
-        print('Error: model must be "window_5_years", "window_10_years", or "window_5_years_pp1to3"' )
+        print('Error: model must be "window_5_years_quarterly", "window_10_years", or "window_5_years_pp1to3"' )
         sys.exit(1)
 
     models_path = get_fixed(year_target, mt_target, root)['model_folder']

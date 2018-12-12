@@ -4,7 +4,7 @@ do
     do
         for i in `seq 1 4` 
         do
-            python pci.py --model="window_5_years" --year=$y --month=$q --gpu=0 --iterator=$i
+            python pci.py --model="window_5_years_quarterly" --year=$y --month=$q --gpu=0 --iterator=$i
         done
     done
 done

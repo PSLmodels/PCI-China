@@ -1,7 +1,7 @@
 from time import time
 from src.hyper_parameters import *
 
-def get_fixed_5_years(year_target, mt_target, root = "./"):
+def get_fixed_5_years_quarterly(year_target, mt_target, root = "./"):
     fixed = {
                 'month_window' : 6 * 12, 
                 'forecast_period' : 3, 
@@ -15,7 +15,7 @@ def get_fixed_5_years(year_target, mt_target, root = "./"):
                 'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
                 'embedding_path' : root + '/data/output/embedding.pkl', 
                 'tokenizer' : root + "data/output/tokenizer.pkl",
-                'model_folder' : root + '/models/window_5_years/',
+                'model_folder' : root + '/models/window_5_years_quarterly/',
                 'year_target' : year_target,
                 'mt_target' : mt_target,
                 'body_text_combined' : 1,
@@ -24,7 +24,7 @@ def get_fixed_5_years(year_target, mt_target, root = "./"):
             }    
     return fixed
 
-def gen_hyper_pars_5_years(year_target, mt_target, root):
+def gen_hyper_pars_5_years_quarterly(year_target, mt_target, root):
     x = hyper_parameters(
         varirate ={
             'meta_layer' : 2,
@@ -47,7 +47,7 @@ def gen_hyper_pars_5_years(year_target, mt_target, root):
             'decay': 0.0001,
             'w': 0.3
         },
-        fixed = get_fixed_5_years(year_target, mt_target, root)
+        fixed = get_fixed_5_years_quarterly(year_target, mt_target, root)
     )
     return x 
 

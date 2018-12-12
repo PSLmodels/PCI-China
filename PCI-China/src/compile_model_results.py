@@ -3,8 +3,8 @@ import pandas as pd
 from src.hyper_parameters import *
 
 def compile_model_results(model, root="./"):
-    if model != "window_5_years" and model != "window_10_years":
-        print('Error: model must be "window_5_years" or "window_10_years"' )
+    if model != "window_5_years_quarterly" and model != "window_10_years":
+        print('Error: model must be "window_5_years_quarterly" or "window_10_years"' )
         sys.exit(1)
 
     listing = glob.glob(root + '/models/' + model + '/*/best_pars.pkl')
@@ -24,13 +24,13 @@ def compile_model_results(model, root="./"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", help="Model name: window_5_years, window_10_years")
+    parser.add_argument("--model", help="Model name: window_5_years_quarterly, window_10_years")
     parser.add_argument("--root", help="Root folder", default="./")
 
     args = parser.parse_args()
 
-    if args.model != "window_5_years" and args.model != "window_10_years":
-        print('Error: model must be "window_5_years" or "window_10_years"' )
+    if args.model != "window_5_years_quarterly" and args.model != "window_10_years":
+        print('Error: model must be "window_5_years_quarterly" or "window_10_years"' )
         sys.exit(1)
 
     compile_model_results(args.model, args.root)
