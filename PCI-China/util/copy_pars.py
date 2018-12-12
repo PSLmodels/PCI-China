@@ -1,8 +1,8 @@
-import os, pathlib, shutil
+import os
 from shutil import copyfile
+import argparse
 
-in_path = "C:/Users/kin24/Dropbox/Propaganda/PCI - quarterly - fixed data - compared scripts/PCI-China/models/window_5_years/"
-out_path = "./models/window_5_years/"
+def copy_pars(in_path, out_path)
 for i in range(1950,2019):
     for q in range(1,5):
         m = (q - 1 ) * 3 + 1 
@@ -15,3 +15,8 @@ for i in range(1950,2019):
 
             shutil.copy(in_path2 + "/best_pars.pkl", out_path2 +"/prev_pars.pkl")
 
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--in_path", help="input path")
+    parser.add_argument("--out_path", help="output path")

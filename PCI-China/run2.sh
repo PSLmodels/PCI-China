@@ -1,4 +1,4 @@
-for y in `seq 2010 2018` 
+for y in `seq 1976 1999` 
 do
     for q in 1 4 7 10
     do

@@ -128,7 +128,7 @@ prepare_data = function(model="window_5_years", root="../"){
 
     data %>%
         filter(year_target>=1951) %>%
-        mutate(date = as.Date(as.yearqtr(paste0(year_target, "Q", qt_target), format = "%YQ%q"), frac = 1),
+        mutate(date = as.Date(as.yearqtr(paste0(year_target, "M", mt_target+2), format = "%YM%m"), frac = 1),
                Variable = switch(model, 
                     "window_5_years" = "Five-year window",  
                     "window_10_years" = "Ten-year window")
