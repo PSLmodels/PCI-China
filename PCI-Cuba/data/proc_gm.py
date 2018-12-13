@@ -91,13 +91,8 @@ def proc_gm(input, create, seed, k_fold, output):
     df['title_seg'] = df['title'].apply(clean_up_token)
 
 
-    ## Make up the article bodies not available at the moment
-    df["body"] = ""
-    df["body_seg"] = ""
-
-
     ## Pick out wanted columns
-    df = df[['date', 'id', 'page', 'title', 'body', 'key_terms', 'strata', 'title_seg', 'body_seg']]
+    df = df[['date', 'id', 'page', 'title', 'key_terms', 'strata', 'title_seg']]
 
 
     ## Export to SQL
