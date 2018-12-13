@@ -15,3 +15,6 @@ PCI-Cuba/data/output/embedding_matrix.pkl
 PCI-Cuba/data/output/database.db
 PCI-Cuba/data/output/tokenizer.pkl
 .RHistory
+prev_pars.pkl
+data.pkl
+**/history/*

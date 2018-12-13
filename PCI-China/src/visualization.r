@@ -123,14 +123,14 @@ china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
     out
 }
 
-prepare_data = function(model="window_5_years", root="../"){
+prepare_data = function(model="window_5_years_quarterly", root="../"){
     data = read_csv(file.path(root,"visualization/",model,"/results.csv"))
 
     data %>%
         filter(year_target>=1951) %>%
-        mutate(date = as.Date(as.yearqtr(paste0(year_target, "Q", qt_target), format = "%YQ%q"), frac = 1),
+        mutate(date = as.Date(as.yearqtr(paste0(year_target, "M", mt_target+2), format = "%YM%m"), frac = 1),
                Variable = switch(model, 
-                    "window_5_years" = "Five-year window",  
+                    "window_5_years_quarterly" = "Five-year window",  
                     "window_10_years" = "Ten-year window")
                )%>% 
         arrange(date)

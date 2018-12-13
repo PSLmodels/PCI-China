@@ -112,11 +112,11 @@ def gen_filename(year, quarter):
 
 
 
-def build_output_folder_structure(year_target, qt_target, models_path, create=True):
+def build_output_folder_structure(year_target, mt_target, models_path, create=True):
     if not os.path.exists(models_path):
         os.makedirs(models_path)
 
-    output_folder = models_path + str(year_target) + "_Q" + str(qt_target) + '/'
+    output_folder = models_path + str(year_target) + "_M" + str(mt_target) + '/'
     history_folder = output_folder + '/history/'
 
     if create:
