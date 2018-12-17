@@ -41,21 +41,26 @@ class pci_model:
             month_apart = self.hyper_pars.fixed['forecast_period'] 
             )
 
-        self.Y_train , self.X_train, self.id_train = pci_model.prep_data(training_df, self.hyper_pars, embedding, tokenizer)
-        self.Y_test , self.X_test, self.id_test  = pci_model.prep_data(testing_df, self.hyper_pars, embedding, tokenizer)
-        self.Y_val , self.X_val, self.id_val  = pci_model.prep_data(val_df, self.hyper_pars, embedding, tokenizer)
-        self.Y_forecast , self.X_forecast, self.id_forecast  = pci_model.prep_data(forecast_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_train , self.rawX_train, self.id_train = pci_model.prep_data(training_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_test , self.rawX_test, self.id_test  = pci_model.prep_data(testing_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_val , self.rawX_val, self.id_val  = pci_model.prep_data(val_df, self.hyper_pars, embedding, tokenizer)
+        self.Y_forecast , self.rawX_forecast, self.id_forecast  = pci_model.prep_data(forecast_df, self.hyper_pars, embedding, tokenizer)
 
         all_Y = np.concatenate( (self.Y_train ,self.Y_test , self.Y_val) , 0 )
 
-        tmp_w = sklearn.utils.class_weight.compute_class_weight('balanced',np.unique(all_Y),np.squeeze(all_Y))
+        self.y_prop  = sklearn.utils.class_weight.compute_class_weight('balanced',np.unique(all_Y),np.squeeze(all_Y))
         self.W = dict()
+        self.set_hyper_pars(hyper_pars)
 
-        self.W[0] = tmp_w[0]
-        if self.hyper_pars.varirate['w'] > 0:
-            self.W[1] = tmp_w[1] * self.hyper_pars.varirate['w']
-        else:
-            self.W[1] = tmp_w[0]
+
+    def set_hyper_pars(self, hyper_pars):
+        self.hyper_pars = hyper_pars
+        self.update_weight() 
+        self.X_train = [pad_sequences(self.rawX_train[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_train[1] ]
+        self.X_test = [pad_sequences(self.rawX_test[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_test[1] ]
+        self.X_val = [pad_sequences(self.rawX_val[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_val[1] ]
+        self.X_forecast = [pad_sequences(self.rawX_forecast[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_forecast[1] ]
+
 
 
     def load_embedding_matrix(self):
@@ -74,6 +79,12 @@ class pci_model:
         return tokenizer
 
 
+    def update_weight(self):
+        self.W[0] = self.y_prop[0]
+        if self.hyper_pars.varirate['w'] > 0:
+            self.W[1] = self.y_prop[1] * self.hyper_pars.varirate['w']
+        else:
+            self.W[1] = self.y_prop[0]
 
 
 
@@ -149,16 +160,16 @@ class pci_model:
         # TODO: Add backup for the normalization
         year2 = (df.month + 12*(df.year - 1965)) / 27
         meta = np.column_stack((
-                    weekday0,
-                    weekday1,
+                    # weekday0,
+                    # weekday1,
                     year2, 
-                    df.month, 
-                    df.title_len*10/241 ,
+                    df.month))
+                    # df.title_len*10/241 ,
                     ### body not available
                     # df.body_len*10/88879, 
-                    df.n_articles_that_day*10/42 ,
-                    df.n_pages_that_day*10/48, 
-                    df.n_frontpage_articles_that_day*10/15))
+                    # df.n_articles_that_day*10/42 ,
+                    # df.n_pages_that_day*10/48, 
+                    # df.n_frontpage_articles_that_day*10/15))
 
         all_text = df.title_int # + df.body_int
 
@@ -168,9 +179,10 @@ class pci_model:
         # else:
         #     X = [pad_sequences(df.title_int, maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), pad_sequences(df.body_int, maxlen=hyper_pars.varirate['lstm2_max_len'], padding='post', truncating='post'), meta]
 
-        X = [pad_sequences(df.title_int, maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), meta]
+        # X = [pad_sequences(df.title_int, maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), meta]
+        raw_X  = [df.title_int, meta]
 
-        return Y, X, df.id
+        return Y, raw_X, df.id
 
     # @staticmethod
     # def load(path,filename='', year_from='', year_to='' ):
@@ -185,15 +197,12 @@ class pci_model:
     #     return x
 
 
-    def save( self, filename='', path='./Output/'):
+    def save( self, path='', filename='data.pkl'):
         mm = self.model 
         self.model = None
-        folder = os.path.join(path)
-        pathlib.Path(folder).mkdir(parents=True, exist_ok=True) 
-
-        with open(folder + '/' + filename + '.pkl' , 'wb') as f:
+        with open(path + 'data.pkl' , 'wb') as f:
             pickle.dump(self, f)
-        mm.save(folder + '/' + filename + '.hd5')
+
         self.model = mm 
 
     def summary_util(self, type):
@@ -314,10 +323,13 @@ def create_and_train_model(hyper_pars,gpu,path):
     if os.path.exists(path + 'data.pkl') :
         with open(path + 'data.pkl' , 'rb') as f:
             my_model = pickle.load(f)
+        my_model.set_hyper_pars(hyper_pars)
+        my_model.model = model_fun(my_model)
     else :
         my_model = pci_model(hyper_pars = hyper_pars)
-        with open(path + 'data.pkl' , 'wb') as f:
-            pickle.dump(my_model, f)
+        my_model.set_hyper_pars(hyper_pars)
+        my_model.model = model_fun(my_model)
+        my_model.save(path=path, filename='data.pkl')    
 
     my_model.model = model_fun(my_model)
 

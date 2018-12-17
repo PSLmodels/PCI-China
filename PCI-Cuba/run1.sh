@@ -1,12 +1,12 @@
 for j in `seq 1 1000` 
 do
-    for y in `seq 1970 1970` 
+    for y in `seq 1991 1991` 
     do
         for q in 1
         do
             for i in `seq 1 8` 
             do
-                python pci.py --model="window_5_years_quarterly" --year=$y --month=$q --gpu=1 --iterator=$i
+                python pci.py --model="window_5_years_quarterly" --year=$y --month=$q --gpu=0 --iterator=$i
             done
         done
     done
