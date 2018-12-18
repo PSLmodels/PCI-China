@@ -1,6 +1,6 @@
 for j in `seq 1 1000` 
 do
-    for y in `seq 1970 1980` 
+    for y in `seq 1981 1992` 
     do
         for q in 1 4 7 10
         do

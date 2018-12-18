@@ -56,10 +56,10 @@ class pci_model:
     def set_hyper_pars(self, hyper_pars):
         self.hyper_pars = hyper_pars
         self.update_weight() 
-        self.X_train = [pad_sequences(self.rawX_train[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_train[1] ]
-        self.X_test = [pad_sequences(self.rawX_test[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_test[1] ]
-        self.X_val = [pad_sequences(self.rawX_val[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_val[1] ]
-        self.X_forecast = [pad_sequences(self.rawX_forecast[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), self.rawX_forecast[1] ]
+        self.X_train = [pad_sequences(self.rawX_train[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'),  ]
+        self.X_test = [pad_sequences(self.rawX_test[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post') ]
+        self.X_val = [pad_sequences(self.rawX_val[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post')]
+        self.X_forecast = [pad_sequences(self.rawX_forecast[0], maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post')]
 
 
 
@@ -159,11 +159,11 @@ class pci_model:
 
         # TODO: Add backup for the normalization
         year2 = (df.month + 12*(df.year - 1965)) / 27
-        meta = np.column_stack((
+        # meta = np.column_stack(( df.year/df.year) )
                     # weekday0,
                     # weekday1,
-                    year2, 
-                    df.month))
+                    # year2, 
+                    # df.month))
                     # df.title_len*10/241 ,
                     ### body not available
                     # df.body_len*10/88879, 
@@ -180,7 +180,7 @@ class pci_model:
         #     X = [pad_sequences(df.title_int, maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), pad_sequences(df.body_int, maxlen=hyper_pars.varirate['lstm2_max_len'], padding='post', truncating='post'), meta]
 
         # X = [pad_sequences(df.title_int, maxlen=hyper_pars.varirate['lstm1_max_len'], padding='post', truncating='post'), meta]
-        raw_X  = [df.title_int, meta]
+        raw_X  = [df.title_int]
 
         return Y, raw_X, df.id
 
@@ -300,22 +300,22 @@ def create_and_train_model(hyper_pars,gpu,path):
         net_title = CuDNNGRU(pars['lstm1_neurons'])(net_title)
         net_title = Dropout(pars['lstm1_dropout'])(net_title)
 
-        input_meta = Input(shape=(  input_pci_model.X_train[1].shape[1] ,))
-        net_meta = Dense(pars['meta_neurons'], activation='relu')(input_meta)
-        net_meta = Dropout(pars['meta_dropout'])(net_meta)
+        # input_meta = Input(shape=(  input_pci_model.X_train[1].shape[1] ,))
+        # net_meta = Dense(pars['meta_neurons'], activation='relu')(input_meta)
+        # net_meta = Dropout(pars['meta_dropout'])(net_meta)
 
-        for i in range(1,pars['meta_layer']):
-            net_meta = Dense(pars['meta_neurons'], activation='relu')(net_meta)
-            net_meta = Dropout(pars['meta_dropout'])(net_meta)
+        # for i in range(1,pars['meta_layer']):
+        #     net_meta = Dense(pars['meta_neurons'], activation='relu')(net_meta)
+        #     net_meta = Dropout(pars['meta_dropout'])(net_meta)
 
 
-        net_combined = keras.layers.concatenate([net_title, net_meta])
-        for i in range(1,pars['fc_layer']+1):
-            net_combined = Dense(pars['fc_neurons'], activation='relu')(net_combined)
-            net_combined = Dropout(pars['fc_dropout'])(net_combined)
-        net_combined = Dense(1, activation='sigmoid')(net_combined)
+        # net_combined = keras.layers.concatenate([net_title, net_meta])
+        # for i in range(1,pars['fc_layer']+1):
+        #     net_combined = Dense(pars['fc_neurons'], activation='relu')(net_combined)
+        #     net_combined = Dropout(pars['fc_dropout'])(net_combined)
+        net_combined = Dense(1, activation='sigmoid')(net_title)
 
-        out = keras.models.Model(inputs=[input_title,input_meta], outputs=[net_combined] )
+        out = keras.models.Model(inputs=[input_title], outputs=[net_combined] )
 
         return out
 
@@ -332,7 +332,6 @@ def create_and_train_model(hyper_pars,gpu,path):
         my_model.save(path=path, filename='data.pkl')    
 
     my_model.model = model_fun(my_model)
-
     my_model.model.compile(
         loss='binary_crossentropy', 
         optimizer=keras.optimizers.adam(my_model.hyper_pars.varirate['lr'], decay= my_model.hyper_pars.varirate['decay']), 

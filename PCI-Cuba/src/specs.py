@@ -3,14 +3,14 @@ from src.hyper_parameters import *
 
 def get_fixed_5_years_quarterly(year_target, mt_target, root = "./"):
     fixed = {
-                'month_window' : 20 * 12, 
+                'month_window' : 5 * 12, 
                 'forecast_period' : 3, 
                 'batch_size': 256,
                 'patience' : 10,
                 'epochs' : 100,
-                'testing_group' : [1,2],
-                'validation_group' : [3,4],
-                'training_group' : [5,6,7,8,9,10],
+                'testing_group' : [1,5],
+                'validation_group' : [2,6],
+                'training_group' : [3,4,7,8,9,10],
                 'data_gm' : root + '/data/output/database.db', 
                 'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
                 'embedding_path' : root + '/data/output/embedding.pkl', 
@@ -28,9 +28,9 @@ def gen_hyper_pars_5_years_quarterly(year_target, mt_target, root):
     x = hyper_parameters(
         varirate ={
             'meta_layer' : 1,
-            'meta_neurons' : 20,
-            'meta_dropout' : 0.4,
-            'lstm1_max_len' : 100,
+            'meta_neurons' : 2,
+            'meta_dropout' : 0,
+            'lstm1_max_len' : 20,
             'lstm1_neurons' : 40 ,
             'lstm1_dropout' : 0.4 ,
             'lstm1_layer' : 1,
@@ -43,7 +43,7 @@ def gen_hyper_pars_5_years_quarterly(year_target, mt_target, root):
             'fc_layer' : 2,
             'max_words' : 10000,
             'lr' : 0.1,
-            'n_embedding' : 30,
+            'n_embedding' : 20,
             'decay': 0.0001,
             'w': 1.001
         },
