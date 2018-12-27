@@ -86,29 +86,34 @@ def calc_f1_df(x):
 
 
 
-def calc_prev_quarter(year, quarter, period=1 ):
+def calc_prev_month(year, month, period ):
     if period == 1 :
-        if quarter == 1 :
-            return year-1 , 4
+        if month == 1 :
+            return year-1 , 12
         else :
-            return year, quarter - 1 
+            return year, month - 1 
     else :
-        y,q = calc_prev_quarter(year, quarter, 1)
-        return calc_prev_quarter(y, q, period - 1 )
+        y,q = calc_prev_month(year, month, 1)
+        return calc_prev_month(y, q, period - 1 )
 
-def calc_next_quarter(year, quarter, period=1):
-    if period == 1 :
-        if quarter == 4 :
-            return year+1 , 1
-        else :
-            return year, quarter + 1
-    else :
-        y,q = calc_prev_quarter(year, quarter, 1)
-        return calc_prev_quarter(y, q, period + 1 )
+    # if period == 1 :
+    #     if month == 1 :
+    #         return year-1 , 4
+    #     else :
+    #         return year, month - 1 
+    # else :
+    #     y,q = calc_prev_month(year, month, 1)
+    #     return calc_prev_month(y, q, period - 1 )
 
-
-def gen_filename(year, quarter):
-    return str(year) + "_Q" + str(quarter) 
+# def calc_next_quarter(year, quarter, period=1):
+#     if period == 1 :
+#         if quarter == 4 :
+#             return year+1 , 1
+#         else :
+#             return year, quarter + 1
+#     else :
+#         y,q = calc_prev_quarter(year, quarter, 1)
+#         return calc_prev_quarter(y, q, period + 1 )
 
 
 

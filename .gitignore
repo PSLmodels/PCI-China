@@ -9,6 +9,5 @@ PCI-China/data/input/pd/pd_2018_10.pkl
 PCI-China/data/input/pd/pd_2018_Q1_to_Q3.pkl
 PCI-China/data/input/sgns_renmin_Word+Character+Ngram/sgns_renmin_Word+Character+Ngram.txt
 .RHistory
-prev_pars.pkl
 data.pkl
 **/history/*

@@ -22,7 +22,7 @@ hh = 4
 
 ######
 
-data_5y = prepare_data("window_5_years", .ROOT )
+data_5y = prepare_data("window_5_years_quarterly", .ROOT )
 # data_10y = prepare_data("window_10_years", .ROOT)
 
 ggsave(file.path(.OUTPUT,"diff_wo_events_5y.png"), plot = plot_pci(data_5y,event=FALSE,abs=FALSE) , width=hh*2.4 ,height=1.5*hh)
