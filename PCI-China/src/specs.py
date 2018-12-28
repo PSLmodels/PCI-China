@@ -61,7 +61,7 @@ def get_fixed_10_years_quarterly(year_target, mt_target, root = "./"):
                 'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
                 'embedding_path' : root + '/data/output/embedding.pkl', 
                 'tokenizer' : root + "data/output/tokenizer.pkl",
-                'model_folder' : root + '/models/window_5_years_quarterly/',
+                'model_folder' : root + '/models/window_10_years_quarterly/',
                 'year_target' : year_target,
                 'mt_target' : mt_target,
                 'body_text_combined' : 1,
