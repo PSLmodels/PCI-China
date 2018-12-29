@@ -176,17 +176,19 @@ class pci_model:
 
         return Y, X, df.id
 
-    # @staticmethod
-    # def load(path,filename='', year_from='', year_to='' ):
-    #     if filename == '':
-    #         filename = str(year_from) + '_' + str(year_to) 
+    @staticmethod
+    def load(path):
+        with open(path + 'data.pkl', 'rb') as f:
+            x = pickle.load(f)
 
-    #     with open(path + '/' + filename + '.pkl', 'rb') as f:
-    #         x = pickle.load(f)
+        mm = keras.models.load_model(path + 'model.hd5', custom_objects={'precision': precision, 'recall' : recall, 'F1' : F1})
+        x.model = mm 
 
-    #     mm = keras.models.load_model(path + '/' + filename + '.hd5', custom_objects={'precision': precision, 'recall' : recall, 'F1' : F1})
-    #     x.model = mm 
-    #     return x
+        pars = hyper_parameters.load(path + 'best_pars.pkl')
+
+        x.set_hyper_pars(pars)
+
+        return x
 
 
     def save( self, path='', filename='data.pkl'):
@@ -236,6 +238,8 @@ class pci_model:
         return out
 
     def summary_articles(self, root="./"):
+        print(self.X_test[0].shape)
+        print(self.X_test[1].shape)
         Y_hat_test = self.model.predict(self.X_test)
         testing_data = pd.DataFrame(data = self.id_test)
         testing_data['Y'] = self.Y_test
@@ -445,31 +449,8 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
 
 
-# def create_text_output(year_target, mt_target, gpu, model, root="../"):
-#     if model == "window_5_years_quarterly":
-#         get_fixed = get_fixed_5_years_quarterly
-#         gen_hyper_pars = gen_hyper_pars_5_years
-#     elif model == "window_10_years_quarterly":
-#         get_fixed = get_fixed_10_years_quarterly
-#         gen_hyper_pars = gen_hyper_pars_10_years_quarterly
-#     elif model == "window_5_years_pp1to3":
-#         get_fixed = get_fixed_5_years_pp1to3
-#         gen_hyper_pars = gen_hyper_pars_10_years_pp1to3
-#     else:
-#         print('Error: model must be "window_5_years_quarterly", "window_10_years_quarterly", or "window_5_years_pp1to3"' )
-#         sys.exit(1)
-
-#     models_path = get_fixed(year_target, mt_target, root)['model_folder']
-
-#     history_folder, curr_folder = build_output_folder_structure(year_target, mt_target, models_path, create=True)
-#     gpu = str(gpu)
-
-#     best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
-#     my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
-
-#     my_model.save("model", curr_folder)
-
-#     testing_data, forecast_data = my_model.summary_articles()
-
-#     testing_data.to_excel(curr_folder + 'testing_data.xlsx')
-#     forecast_data.to_excel(curr_folder + 'forecast_data.xlsx')
+def create_text_output(path, gpu="0"):
+    my_model = pci_model.load(path)
+    testing_data, forecast_data = my_model.summary_articles()
+    testing_data.to_excel(path + 'testing_data.xlsx')
+    forecast_data.to_excel(path + 'forecast_data.xlsx')
