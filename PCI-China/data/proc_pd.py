@@ -40,7 +40,7 @@ def proc_pd(input, create, seed, k_fold, output ):
 
     ## Remove 第x版 until the first punctuation
     print("Remove 第x版 until the first punctuation")
-    df['body'].str.replace('第.+?版.+?(　+| +|：|！|。|？)', '')
+    df['body'].str.replace('第.{,3}版.+?(　+| +|：|！|。|？)', '')
 
     ## Drop if null
     print("Drop if null")
