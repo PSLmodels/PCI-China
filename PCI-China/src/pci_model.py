@@ -238,8 +238,6 @@ class pci_model:
         return out
 
     def summary_articles(self, root="./"):
-        print(self.X_test[0].shape)
-        print(self.X_test[1].shape)
         Y_hat_test = self.model.predict(self.X_test)
         testing_data = pd.DataFrame(data = self.id_test)
         testing_data['Y'] = self.Y_test
@@ -271,6 +269,8 @@ class pci_model:
         testing_data = pd.merge(testing_data, testing_df, on='id', how='left')
         forecast_data = pd.merge(forecast_data, forecast_df, on='id', how='left')
 
+        testing_data.drop(["title_seg","body_seg"], axis=1, inplace= True)
+        forecast_data.drop(["title_seg","body_seg"], axis=1, inplace= True)
 
         return testing_data, forecast_data
 

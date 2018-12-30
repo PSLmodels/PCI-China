@@ -10,8 +10,6 @@ if __name__ == "__main__":
     parser.add_argument("--gpu", help="To year", default="0")
 
     args = parser.parse_args()
-    print("###")
-    print(args.model)
     if args.model != "window_5_years_quarterly" and args.model != "window_10_years_quarterly":
         print('Error: model must be "window_5_years_quarterly" or "window_10_years_quarterly"' )
         sys.exit(1)
@@ -21,6 +19,7 @@ if __name__ == "__main__":
 
     for y in range(args.from_year, args.to_year+1):
         for q in [1, 4, 7, 10]:
+            print(str(y) + "_M" + str(q))
             cur_path = path + str(y) + "_M" + str(q) + "/" 
             if os.path.exists(cur_path + "model.hd5"):
                 create_text_output(cur_path, args.gpu)

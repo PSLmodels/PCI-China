@@ -20,6 +20,8 @@ def compile_model_results(model, root="./"):
 
     df.to_csv(root + '/visualization/' +  model + '/results.csv', index=False)
 
+    # df.sort_values(by=["year_target","mt_target"], axis=1, ascending=True, inplace=True)
+
     return df
 
 if __name__ == "__main__":
