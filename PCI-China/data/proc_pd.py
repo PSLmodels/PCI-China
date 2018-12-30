@@ -1,11 +1,12 @@
 import os, sys, re, argparse, math, pickle
 
 import pandas as pd
-import jieba
+import jieba_fast as jieba
 import sqlite3
 import numpy as np
 import datetime as dt
 import math 
+from keras.preprocessing.text import text_to_word_sequence
 
 ## Settings
 # K_FOLD = 10
@@ -25,6 +26,7 @@ def proc_pd(input, create, seed, k_fold, output ):
 
 
     ## Remove duplicates
+    print("Remove duplicates ")
     print(df.shape)
     df['dup'] = df.duplicated(subset=['title','body','date'], keep=False)
     df1 = df[~ ( df['dup'] & (df['body'].str.len() > 5))]
@@ -36,7 +38,12 @@ def proc_pd(input, create, seed, k_fold, output ):
     del df1, df2, df['dup']
     print(df.shape)
 
+    ## Remove 第x版 until the first punctuation
+    print("Remove 第x版 until the first punctuation")
+    df['body'].str.replace('第.+?版.+?(　+| +|：|！|。|？)', '')
+
     ## Drop if null
+    print("Drop if null")
     print(df.shape)
     print('##### Missing page number #####')
     print(df['page'].isnull().sum(axis = 0))
@@ -45,8 +52,8 @@ def proc_pd(input, create, seed, k_fold, output ):
     assert df['page'].isnull().sum(axis = 0) == 0
     print(df.shape)
 
-
-    ## Generate strata
+    ## Generate stratum
+    print("Create stratum")
     df['frontpage'] = np.where(df['page']==1, 1, 0)
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month
@@ -65,14 +72,40 @@ def proc_pd(input, create, seed, k_fold, output ):
     def cut(x):
         return " ".join(jieba.cut(x))
 
-    print(df.shape)
+    print("jieba")
     df['title_seg'] = df.apply(lambda row: cut(row['title']), axis=1)
     df['body_seg'] = df.apply(lambda row: cut(row['body']), axis=1)
-    print(df.shape)
 
-    df = df[['date', 'id', 'page', 'title', 'body', 'strata', 'title_seg','body_seg']]
+    print("Replacing unk for words that is not in the embedding")
+    ## Replace word with unk if it is not in the embedding
+    with open('./Output/embedding.pkl' , 'rb') as f:
+        embedding = pickle.load(f)
+
+    df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+    df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+
+    print("Create new variables")
+
+    ## Create new variables
+    df['quarter'] = df['date'].dt.quarter
+    df['day'] = df['date'].dt.day
+    df['weekday'] = df['date'].dt.dayofweek + 1
+
+    df['page1to3'] = np.where(df['page'].isin(range(1,4)), 1, 0)
+
+    df['title_len'] = df["title"].str.len()
+    df['body_len'] = df["body"].str.len()
+
+    df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
+    df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
+
+    df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
+
+    ## Keep variable
+    df = df[['date', 'id', 'page', 'title', 'body', 'strata', 'title_seg','body_seg','year','quarter','month','day','weekday','frontpage','page1to3','title_len','body_len','n_articles_that_day','n_pages_that_day','n_frontpage_articles_that_day']]
 
     ## Export to SQL
+    print("Export to SQL")
     idx1 = df.set_index(['date'])
 
     conn = sqlite3.connect(output)

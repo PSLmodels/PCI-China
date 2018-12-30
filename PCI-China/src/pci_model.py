@@ -115,32 +115,32 @@ class pci_model:
     def prep_data(df, hyper_pars,embedding, tokenizer):
         df = copy.deepcopy(df)
 
-        df['year'] = df['date'].dt.year
-        df['quarter'] = df['date'].dt.quarter
-        df['month'] = df['date'].dt.month
-        df['day'] = df['date'].dt.day
-        df['weekday'] = df['date'].dt.dayofweek + 1
+        # df['year'] = df['date'].dt.year
+        # df['quarter'] = df['date'].dt.quarter
+        # df['month'] = df['date'].dt.month
+        # df['day'] = df['date'].dt.day
+        # df['weekday'] = df['date'].dt.dayofweek + 1
 
-        ## Create useful variable for ML
-        df['frontpage'] = np.where(df['page']==1, 1, 0)
-        df['page1to3'] = np.where(df['page'].isin(range(1,4)), 1, 0)
+        # ## Create useful variable for ML
+        # df['frontpage'] = np.where(df['page']==1, 1, 0)
+        # df['page1to3'] = np.where(df['page'].isin(range(1,4)), 1, 0)
 
 
-        df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
-        df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+        # df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+        # df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
 
-        df['title_len'] = df["title"].str.len()
-        df['body_len'] = df["body"].str.len()
+        # df['title_len'] = df["title"].str.len()
+        # df['body_len'] = df["body"].str.len()
 
-        df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
-        df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
+        # df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
+        # df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
 
-        df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
+        # df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
 
         ## Create Stratum  
         df['title_int'] = tokenizer.texts_to_sequences(df.title_seg)
         df['body_int'] = tokenizer.texts_to_sequences(df.body_seg)
-        del df["title_seg"], df['body_seg']
+        # del df["title_seg"], df['body_seg']
 
         if hyper_pars.fixed['frontpage'] == 1 :
             Y = df.frontpage  
