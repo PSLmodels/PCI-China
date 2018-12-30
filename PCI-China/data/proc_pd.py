@@ -81,8 +81,11 @@ def proc_pd(input, create, seed, k_fold, output ):
     with open('./Output/embedding.pkl' , 'rb') as f:
         embedding = pickle.load(f)
 
-    df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+    df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ] )
+    df['title_seg'] = df.title_seg.apply(lambda x : " ".join(x) )
+    
     df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
+    df['body_seg'] = df.body_seg.apply(lambda x : " ".join(x) )
 
     print("Create new variables")
 

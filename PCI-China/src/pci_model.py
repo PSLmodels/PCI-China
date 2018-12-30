@@ -137,6 +137,9 @@ class pci_model:
 
         # df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
 
+        df['title_seg'] = df.title_seg.apply(text_to_word_sequence)
+        df['body_seg'] = df.title_seg.apply(text_to_word_sequence)
+        
         ## Create Stratum  
         df['title_int'] = tokenizer.texts_to_sequences(df.title_seg)
         df['body_int'] = tokenizer.texts_to_sequences(df.body_seg)
