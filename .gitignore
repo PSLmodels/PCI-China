@@ -9,6 +9,8 @@ PCI-China/data/input/sgns_renmin_Word+Character+Ngram/sgns_renmin_Word+Character
 .RHistory
 data.pkl
 **/prev_pars.pkl
+**/testing_data.xlsx
+**/forecast_data.xlsx
 model.hd5
 **/history/*
 *.zip
