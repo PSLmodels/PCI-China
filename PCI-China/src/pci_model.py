@@ -453,7 +453,10 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
 
 def create_text_output(path, gpu="0"):
+
+    os.environ['CUDA_VISIBLE_DEVICES'] = gpu
+
     my_model = pci_model.load(path)
     testing_data, forecast_data = my_model.summary_articles()
-    testing_data.to_excel(path + 'testing_data.xlsx')
-    forecast_data.to_excel(path + 'forecast_data.xlsx')
+    testing_data.to_csv(path + 'testing_data.csv')
+    forecast_data.to_csv(path + 'forecast_data.csv')
