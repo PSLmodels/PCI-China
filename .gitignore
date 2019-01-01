@@ -4,9 +4,7 @@ PCI-China/data/output/embedding_matrix.pkl
 PCI-China/data/output/pd_up_to_2018_10.db
 PCI-China/data/output/database.db
 PCI-China/data/output/tokenizer.pkl
-PCI-China/data/input/pd/pd_1946_2017.pkl
-PCI-China/data/input/pd/pd_2018_10.pkl
-PCI-China/data/input/pd/pd_2018_Q1_to_Q3.pkl
+PCI-China/data/input/pd/*.pkl
 PCI-China/data/input/sgns_renmin_Word+Character+Ngram/sgns_renmin_Word+Character+Ngram.txt
 .RHistory
 data.pkl
