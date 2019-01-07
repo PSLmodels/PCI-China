@@ -364,8 +364,11 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
     elif model == "window_10_years_quarterly":
         get_fixed = get_fixed_10_years_quarterly
         gen_hyper_pars = gen_hyper_pars_10_years_quarterly
+    elif model == "window_2_years_quarterly":
+        get_fixed = get_fixed_2_years_quarterly
+        gen_hyper_pars = gen_hyper_pars_2_years_quarterly
     else:
-        print('Error: model must be "window_5_years_quarterly" or "window_10_years_quarterly"' )
+        print('Error: model must be "window_5_years_quarterly" or "window_10_years_quarterly" or "window_2_years_quarterly"' )
         sys.exit(1)
 
     def save_best(pars, model, path):
