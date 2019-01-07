@@ -131,7 +131,7 @@ prepare_data = function(model="window_5_years_quarterly", root="../"){
         mutate(date = as.Date(as.yearqtr(paste0(year_target, "M", mt_target+2), format = "%YM%m"), frac = 1),
                Variable = switch(model, 
                     "window_5_years_quarterly" = "Five-year window",  
-                    "window_10_years" = "Ten-year window")
+                    "window_10_years_quarterly" = "Ten-year window")
                )%>% 
         arrange(date)
 }
