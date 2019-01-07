@@ -4,10 +4,9 @@ import argparse
 
 def copy_pars(in_path, out_path)
 for i in range(1950,2019):
-    for q in range(1,5):
-        m = (q - 1 ) * 3 + 1 
+    for m in [1 4 7 10]:
         out_path2 = out_path + str(i) + "_M" + str(m) 
-        in_path2  = in_path + str(i) + "_Q" +str(q)
+        in_path2  = in_path + str(i) + "_M" +str(M)
 
         if os.path.exists(in_path2 + "/best_pars.pkl"):
             if not os.path.exists(out_path2):
