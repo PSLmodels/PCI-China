@@ -455,11 +455,17 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
 
 
-def create_text_output(path, gpu="0"):
+def create_text_output(model,year_month, gpu="0"):
 
     os.environ['CUDA_VISIBLE_DEVICES'] = gpu
 
-    my_model = pci_model.load(path)
+    my_model = pci_model.load("./models/" + model + "/" + year_month + "/")
     testing_data, forecast_data = my_model.summary_articles()
-    testing_data.to_csv(path + 'testing_data.csv')
-    forecast_data.to_csv(path + 'forecast_data.csv')
+
+    output_folder = "visualization/" + model + "/" + 'articles_review'  + "/"
+
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    testing_data.to_csv(output_folder +  year_month + '_testing_data.csv')
+    forecast_data.to_csv(output_folder  +  year_month +'_forecast_data.csv')

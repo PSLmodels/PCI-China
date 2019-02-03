@@ -11,8 +11,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print("###")
     print(args.model)
-    if args.model != "window_5_years_quarterly" and args.model != "window_10_years_quarterly":
-        print('Error: model must be "window_5_years_quarterly" or "window_10_years_quarterly"' )
+    if args.model != "window_5_years_quarterly" and args.model != "window_10_years_quarterly" and args.model != "window_2_years_quarterly":
+        print('Error: model must be "window_5_years_quarterly" or "window_10_years_quarterly" or "window_2_years_quarterly"' )
         sys.exit(1)
 
     compile_model_results(args.model)
