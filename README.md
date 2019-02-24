@@ -26,7 +26,7 @@ Usage
 ---------------
 Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI of China.
 
-- `proc_data.py`:              Process and prepare the raw data from the *People's Daily* for building the neural network models.
+- `proc_pd.py`:              Process and prepare the raw data from the *People's Daily* for building the neural network models.
 - `pci.py`:                    Train a neural network model to construct the PCI for a specified year-quarter.
 - `compile_model_results.py`:  Compile the results from all models and export them to a `.csv` file.
 - `generate_figures.r`:        Generate figures.
@@ -34,54 +34,59 @@ Three python functions and an R script are available for users to process data a
 Users can check out the descriptions of the arguments for each python function using the `--help` option. For example:
 
 ```{shell}
-~/Policy-Change-Index/PCI-China>python proc_data.py --help
+./PCI-China/data>python proc_pd.py --help
 Using TensorFlow backend.
-usage: proc_data.py [-h] [--data_path DATA_PATH] [--k_fold K_FOLD]
+usage: proc_pd.py [-h] [--input INPUT] [--create CREATE] [--seed SEED]
+                  [--k_fold K_FOLD] [--output OUTPUT]
 
 optional arguments:
-  -h, --help                show this help message and exit
-  --data_path DATA_PATH     Path to the data folder
-  --k_fold K_FOLD           Sample the data into k sub-samples. Define training,
-                            validation and testing data in the specification.
+  -h, --help       show this help message and exit
+  --input INPUT    Input file
+  --create CREATE  1:Create database 0:Append
+  --seed SEED      Seed
+  --k_fold K_FOLD  k_fold
+  --output OUTPUT  Output filename
 ```
 
 ```{shell}
-~/Policy-Change-Index/PCI-China>python pci.py --help
+./PCI-China>python pci.py --help
 Using TensorFlow backend.
-usage: pci.py [-h] [--model MODEL] [--year YEAR] [--quarter QUARTER]
-              [--gpu GPU] [--iterator ITERATOR] [--root ROOT]
-              [--temperature TEMPERATURE] [--discount DISCOUNT]
-              [--bandwidth BANDWIDTH]
+usage: pci.py [-h] [--model MODEL] [--year YEAR] [--month MONTH] [--gpu GPU]
+              [--iterator ITERATOR] [--root ROOT] [--temperature TEMPERATURE]
+              [--discount DISCOUNT] [--bandwidth BANDWIDTH]
 
 optional arguments:
-  -h, --help                 show this help message and exit
-  --model MODEL              Available models: window_5_years, window_10_years
-  --year YEAR                Target year
-  --quarter QUARTER          Target quarter
-  --gpu GPU                  Which gpu to use
-  --iterator ITERATOR        Iterator in simulated annealing
-  --root ROOT                Root directory
-  --temperature TEMPERATURE  Temperature in simulated annealing
-  --discount DISCOUNT        Discount factor in simulated annealing
-  --bandwidth BANDWIDTH      Bandwidth in simulated annealing
-```
+  -h, --help            show this help message and exit
+  --model MODEL         Model name: window_5_years_quarterly,
+                        window_10_years_quarterly, window_2_years_quarterly
+  --year YEAR           Target year
+  --month MONTH         Target month
+  --gpu GPU             Which gpu to use
+  --iterator ITERATOR   Iterator in simulated annealing
+  --root ROOT           Root directory
+  --temperature TEMPERATURE
+                        Temperature in simulated annealing
+  --discount DISCOUNT   Discount factor in simulated annealing
+  --bandwidth BANDWIDTH
+                        Bandwidth in simulated annealing```
 
 ```{shell}
-~/Policy-Change-Index/PCI-China>python compile_model_results.py --help
+./PCI-China>python compile_model_results.py --help
 usage: compile_model_results.py [-h] [--model MODEL] [--root ROOT]
 
 optional arguments:
-  -h, --help                 show this help message and exit
-  --model MODEL              Available models: window_5_years, window_10_years
-  --root ROOT                Root folder
+  -h, --help     show this help message and exit
+  --model MODEL  Model name: window_5_years_quarterly,
+                 window_10_years_quarterly
+  --root ROOT    Root folder
 ```
 
 Data
 ----
-The raw data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/raw/pd/`. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the `.pkl` format. For example, the raw data for the first quarter of 2018 should be in the file `2018_Q1.pkl`. Below is the list of column names and types of each raw data file:
+The raw data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/Input/pd/`. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the `.pkl` format. For example, the raw data for the first quarter of 2018 should be in the file `2018_Q1.pkl`. Below is the list of column names and types of each raw data file:
 
 ```{python}
->>> df1 = pd.read_pickle("./PCI-China/data/raw/pd/2018_Q1.pkl")
+>>> df1 = pd.read_pickle("./PCI-China/Input/pd/pd_1946_1975.pkl")
 >>> df1.dtypes
 date     datetime64[ns]
 year              int64
