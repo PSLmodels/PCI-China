@@ -130,6 +130,7 @@ prepare_data = function(model="window_5_years_quarterly", root="../"){
         filter(year_target>=1951) %>%
         mutate(date = as.Date(as.yearqtr(paste0(year_target, "M", mt_target+2), format = "%YM%m"), frac = 1),
                Variable = switch(model, 
+                    "window_2_years_quarterly" = "Two-year window", 
                     "window_5_years_quarterly" = "Five-year window",  
                     "window_10_years_quarterly" = "Ten-year window")
                )%>% 
@@ -193,10 +194,10 @@ plot_F1 = function(data) {
 }
 
 
-plot_compare = function(data1, data2, type=c("F1","PCI")){
+plot_compare = function(data1, data2, data3, type=c("F1","PCI")){
 
     type = match.arg(type)
-    data = bind_rows(data1,data2)
+    data = bind_rows(data1,data2,data3)
 
     if (type == "F1"){
         out = 
@@ -212,8 +213,8 @@ plot_compare = function(data1, data2, type=c("F1","PCI")){
                        legend.key=element_blank(),
                        panel.grid.minor=element_blank(), panel.grid.major=element_blank()
                        ) +
-                 scale_color_manual(values=c("orange2", "black")) +
-                 scale_linetype_manual(values=c("solid", "longdash"))  
+                 scale_color_manual(values=c("orange2", "black","blue")) +
+                 scale_linetype_manual(values=c("solid", "longdash","twodash"))  
     }
     if (type == "PCI"){
         out = 
@@ -230,8 +231,8 @@ plot_compare = function(data1, data2, type=c("F1","PCI")){
                        legend.key=element_blank(),
                        panel.grid.minor=element_blank(), panel.grid.major=element_blank()
                        ) +
-                 scale_color_manual(values=c("blue3", "red3")) +
-                 scale_linetype_manual(values=c("solid", "longdash"))  
+                 scale_color_manual(values=c("blue3", "red3","black")) +
+                 scale_linetype_manual(values=c("solid", "longdash","twodash"))  
     }
     out
 }
