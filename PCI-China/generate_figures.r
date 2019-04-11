@@ -47,8 +47,8 @@ ggsave(file.path(.OUTPUT,"window_2_years_quarterly", "pci_with_events_2y.png"), 
 ggsave(file.path(.OUTPUT,"window_2_years_quarterly", "F1_two_curves_2y.png"), plot = plot_F1(data_2y), width=hh*2.4 ,height=1.5*hh)
 
 
-ggsave(file.path(.OUTPUT,"Joint","F1_testing_5yrs_vs_10yrs.png"), plot = plot_compare(data_5y,data_10y,data_2y,"F1"), width=hh*2.4 ,height=1.5*hh)
-ggsave(file.path(.OUTPUT,"Joint","pci_wo_events_5yrs_vs_10yrs.png"), plot = plot_compare(data_5y,data_10y,data_2y,"PCI"), width=hh*2.4 ,height=1.5*hh)
+ggsave(file.path(.OUTPUT,"Joint","F1_testing_5yrs_vs_10yrs_vs_2yrs.png"), plot = plot_compare(data_5y,data_10y,data_2y,"F1"), width=hh*2.4 ,height=1.5*hh)
+ggsave(file.path(.OUTPUT,"Joint","pci_wo_events_5yrs_vs_10yrs_vs_2yrs.png"), plot = plot_compare(data_5y,data_10y,data_2y,"PCI"), width=hh*2.4 ,height=1.5*hh)
 
 
 
