@@ -132,9 +132,9 @@ prepare_data = function(model="window_5_years_quarterly", root="../"){
         filter(year_target>=1951) %>%
         mutate(date = as.Date(as.yearqtr(paste0(year_target, "M", mt_target+2), format = "%YM%m"), frac = 1),
                Variable = switch(model, 
-                                 "window_2_years_quarterly" = " Two-year window", 
-                                 "window_5_years_quarterly" = " Five-year window    ",  
-                                 "window_10_years_quarterly" = " Ten-year window    ")
+                                 "window_2_years_quarterly" = "Two-year window", 
+                                 "window_5_years_quarterly" = "Five-year window",  
+                                 "window_10_years_quarterly" = "Ten-year window")
                )%>% 
         arrange(date)
 }
@@ -190,6 +190,7 @@ plot_F1 = function(data) {
               legend.direction = "horizontal",
               legend.background=element_blank(),
               legend.key=element_blank(),
+              legend.spacing.x = unit(0.15,"cm"),
               panel.grid.minor=element_blank(), panel.grid.major=element_blank()
               ) +
         scale_color_manual(values=c("orange2", "purple2"))  
@@ -213,6 +214,7 @@ plot_compare = function(data1, data2, data3, type=c("F1","PCI")){
                        legend.direction = "horizontal",
                        legend.background=element_blank(),
                        legend.key=element_blank(),
+                       legend.spacing.x = unit(0.15,"cm"),
                        panel.grid.minor=element_blank(), panel.grid.major=element_blank()
                        ) +
                  scale_color_manual(values=c("orange2", "black","blue")) +
@@ -231,6 +233,7 @@ plot_compare = function(data1, data2, data3, type=c("F1","PCI")){
                        legend.direction = "horizontal",
                        legend.background=element_blank(),
                        legend.key=element_blank(),
+                       legend.spacing.x = unit(0.15,"cm"),
                        panel.grid.minor=element_blank(), panel.grid.major=element_blank()
                        ) +
                  scale_color_manual(values=c("blue3", "red3","black")) +
