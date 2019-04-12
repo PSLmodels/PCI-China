@@ -1,6 +1,6 @@
-Website: www.policychangeindex.com
+Website: [policychangeindex.org](https://policychangeindex.org)
 
-Authors: [Julian TszKin Chan](http://sites.google.com/site/ctszkin/) and [Weifeng Zhong](http://www.weifengzhong.com)
+Authors: [Julian TszKin Chan](https://sites.google.com/site/ctszkin/) and [Weifeng Zhong](https://www.weifengzhong.com)
 
 Please email all comments/questions to ctszkin [AT] gmail.com or weifeng [AT] weifengzhong.com
 
@@ -14,7 +14,7 @@ The source of the PCI's predictive power rests on the fact that the *People's Da
 
 For details about the methodology and findings of this project, please see the following research paper:
 
-- Chan, Julian TszKin and Weifeng Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](http://www.policychangeindex.com/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](https://policychangeindex.org/Reading_China.pdf)).
 
 
 Disclaimer
@@ -133,8 +133,8 @@ where `title_int` and `body_int` are the word embeddings (numeric vectors) of th
 Citing the Policy Change Index (PCI) of China
 ---------------------------------------------
 
-Please cite the source of the latest Policy Change Index (PCI) of China by the website: http://www.policychangeindex.com.
+Please cite the source of the latest Policy Change Index (PCI) of China by the website: https://policychangeindex.org.
 
 For academic work, please cite the following research paper:
 
-- Chan, Julian TszKin and Weifeng Zhong. 2018. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](http://www.policychangeindex.com/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](https://policychangeindex.org/Reading_China.pdf)).

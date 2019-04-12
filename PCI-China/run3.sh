@@ -1,3 +1,5 @@
+for j in `seq 1 10` 
+do
 for y in `seq 2000 2018` 
 do
     for q in 1 4 7 10
@@ -8,4 +10,4 @@ do
         done
     done
 done
-# python pci.py --model="window_5_years" --year=2010 --month=1 --gpu=0 --iterator=1
+done
