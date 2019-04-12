@@ -1,1 +1,0 @@
-python proc_data.py --data_path="./data"
