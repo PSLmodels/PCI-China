@@ -29,9 +29,11 @@ plot_sum_stats = ggplot(data, aes(x = Qdate)) +
     geom_line(aes(y = frontpage, colour = "Fraction of front-page articles")) +
     geom_line(aes(y = id*sf + sf_C , colour = "Number of articles")) +
     scale_x_date(
-        breaks = c(seq.Date(as.Date("1946-01-01"), as.Date("2018-12-31"), by="8 years")),
+        breaks = c(as.Date("1946-01-01"),
+                   seq.Date(as.Date("1950-01-01"), as.Date("2010-01-01"), by="10 years"),
+                   as.Date("2019-01-01")),
         date_label = "%Y",
-        limits = as.Date(c("1945-01-01","2020-12-31")),
+        limits = as.Date(c("1945-01-01","2020-01-01")),
         expand = c(0, 0)
     ) +
     xlab("Year") +
