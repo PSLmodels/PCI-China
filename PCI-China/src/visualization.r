@@ -140,9 +140,11 @@ common_format = function(){
     out = list()
 
     new = scale_x_date(
-            breaks = c( seq.Date(as.Date("1950-01-01"),  as.Date("2018-01-11"),by="5 years")  , as.Date("2018-01-01") ) , 
+            breaks = c(as.Date("1951-01-01"),
+                       seq.Date(as.Date("1960-01-01"), as.Date("2010-01-11"), by="10 years"),
+                       as.Date("2019-01-01")), 
             date_label = "%Y", 
-            limits= as.Date(c("1950-01-01","2019-12-31")),
+            limits= as.Date(c("1950-01-01","2020-01-01")),
             expand = c(0, 0)
         ) 
     out = c(out, list(new))
