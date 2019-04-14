@@ -1,0 +1,29 @@
+language: python
+
+python:
+    - 3.6
+
+matrix:
+    include:
+        - python: 3.6
+          env: KERAS_BACKEND=tensorflow
+
+before_install:
+    - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+    - chmod +x miniconda.sh
+    - ./miniconda.sh -b
+    - export PATH=/home/travis/miniconda2/bin:$PATH
+    - conda update --yes conda
+
+install:
+    # - conda env create -f environment.yml
+    - conda create --yes -n test_travis python=$TRAVIS_PYTHON_VERSION
+    - source activate test_travis
+    - conda install --yes -q pytest pytest-cov pandas numpy scikit-learn keras matplotlib sqlite3 argparse shutil
+    - pip install jieba-fast
+
+script:
+    - python -m pytest --cov=./
+
+after_success:
+    - curl -s https://codecov.io/bash | bash
