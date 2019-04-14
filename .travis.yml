@@ -19,7 +19,7 @@ install:
     # - conda env create -f environment.yml
     - conda create --yes -n test_travis python=$TRAVIS_PYTHON_VERSION
     - source activate test_travis
-    - conda install --yes -q pytest pytest-cov pandas numpy scikit-learn keras matplotlib sqlite3 argparse shutil
+    - conda install --yes -q pytest pytest-cov pandas numpy scikit-learn keras matplotlib sqlite3 argparse
     - pip install jieba-fast
 
 script:
