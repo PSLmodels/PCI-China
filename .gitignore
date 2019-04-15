@@ -18,3 +18,4 @@ model.hd5
 *.zip
 **/~archives/*
 **/articles_review/*
+PCI-China/config.py

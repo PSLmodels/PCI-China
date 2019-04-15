@@ -1,1 +1,0 @@
-python "util/copy_pars.py" --in_path="./models/window_5_years_quarterly/" --out_path="./models/window_2_years_quarterly/"

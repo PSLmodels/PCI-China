@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 import keras
 from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D
-from src.pci_model import *
+from src.pci import *
 
 if __name__ == "__main__":
     tf.set_random_seed(round(time()))
