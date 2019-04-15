@@ -1,15 +1,10 @@
-import plotly.plotly as py
 import plotly.graph_objs as go
 import pandas as pd 
 import datetime
-import plotly
 import sqlite3
 
 
-def create_plotly_figure(username, api_key, input, output):
-
-    plotly.tools.set_credentials_file(username=username, api_key=api_key)
-
+def create_plotly_figure(input):
     data = pd.read_csv(input)
 
     df = pd.DataFrame({
@@ -64,9 +59,6 @@ def create_plotly_figure(username, api_key, input, output):
         "2013-Sep: Renew reform program<br><br>Calls for re-commitment to market reforms while<br>retaining emphasis on support for state sector;.",
         "2015-Nov: Supply-side structural reform<br><br>Government-led efforts to reduce excess<br>industrial capacity, esp. steel and coal."
     ]
-
-
-
 
     label = list(df.label)
 
@@ -150,5 +142,5 @@ def create_plotly_figure(username, api_key, input, output):
     )
 
     fig = dict(data=data, layout=layout)
-    py.iplot(fig, filename = output, auto_open=True,show_link=False)
+    return fig
 
