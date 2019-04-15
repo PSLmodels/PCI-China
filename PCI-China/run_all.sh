@@ -48,6 +48,7 @@ done
 
 ## Compile all the results together
 python compile_tuning.py
+python create_text_output.py
 
 ## Generate figures 
 Rscript gen_figures.R --vanilla --verbose

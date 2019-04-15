@@ -96,25 +96,6 @@ def calc_prev_month(year, month, period ):
         y,q = calc_prev_month(year, month, 1)
         return calc_prev_month(y, q, period - 1 )
 
-    # if period == 1 :
-    #     if month == 1 :
-    #         return year-1 , 4
-    #     else :
-    #         return year, month - 1 
-    # else :
-    #     y,q = calc_prev_month(year, month, 1)
-    #     return calc_prev_month(y, q, period - 1 )
-
-# def calc_next_quarter(year, quarter, period=1):
-#     if period == 1 :
-#         if quarter == 4 :
-#             return year+1 , 1
-#         else :
-#             return year, quarter + 1
-#     else :
-#         y,q = calc_prev_quarter(year, quarter, 1)
-#         return calc_prev_quarter(y, q, period + 1 )
-
 
 
 def build_output_folder_structure(year_target, mt_target, models_path, create=True):
@@ -147,10 +128,10 @@ def compile_model_results(model, root="./"):
     df['diff'] = df.test_F1 - df.forecast_F1
     df['pci'] = abs(df.test_F1 - df.forecast_F1)
 
-    if not os.path.exists(root + '/visualization/' +  model ):
-        os.makedirs(root + '/visualization/' +  model )
+    if not os.path.exists(root + '/figures/' +  model ):
+        os.makedirs(root + '/figures/' +  model )
 
-    df.to_csv(root + '/visualization/' +  model + '/results.csv', index=False)
+    df.to_csv(root + '/figures/' +  model + '/results.csv', index=False)
 
     return df
     
@@ -278,27 +259,7 @@ class pci_model:
     def prep_data(df, hyper_pars,embedding, tokenizer):
         df = copy.deepcopy(df)
 
-        # df['year'] = df['date'].dt.year
-        # df['quarter'] = df['date'].dt.quarter
-        # df['month'] = df['date'].dt.month
-        # df['day'] = df['date'].dt.day
-        # df['weekday'] = df['date'].dt.dayofweek + 1
 
-        # ## Create useful variable for ML
-        # df['frontpage'] = np.where(df['page']==1, 1, 0)
-        # df['page1to3'] = np.where(df['page'].isin(range(1,4)), 1, 0)
-
-
-        # df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
-        # df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
-
-        # df['title_len'] = df["title"].str.len()
-        # df['body_len'] = df["body"].str.len()
-
-        # df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
-        # df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
-
-        # df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
 
         df['title_seg'] = df.title_seg.apply(text_to_word_sequence)
         df['body_seg'] = df.body_seg.apply(text_to_word_sequence)
@@ -306,7 +267,6 @@ class pci_model:
         ## Create Stratum  
         df['title_int'] = tokenizer.texts_to_sequences(df.title_seg)
         df['body_int'] = tokenizer.texts_to_sequences(df.body_seg)
-        # del df["title_seg"], df['body_seg']
 
         if hyper_pars.fixed['frontpage'] == 1 :
             Y = df.frontpage  
@@ -625,7 +585,7 @@ def create_text_output(model,year_month, gpu="0"):
     my_model = pci_model.load("./models/" + model + "/" + year_month + "/")
     testing_data, forecast_data = my_model.summary_articles()
 
-    output_folder = "visualization/" + model + "/" + 'articles_review'  + "/"
+    output_folder = "figures/" + model + "/" + 'articles_review'  + "/"
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
