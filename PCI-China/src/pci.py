@@ -13,7 +13,7 @@ from keras import backend as K
 from keras.preprocessing.sequence import pad_sequences
 from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D
 from keras.preprocessing.text import text_to_word_sequence
-
+from src.hyper_parameters import * 
 
 def recall(true_value, predicted_value):
     true_positives = K.sum(K.round(K.clip(true_value * predicted_value, 0, 1)))
@@ -121,7 +121,7 @@ def compile_model_results(model, root="./"):
 
     dic_list = []
     for file in listing:
-        tmp = hyper_parameters.load(file)
+        tmp = hyper_parameters_load(file)
         dic_list.append(tmp.to_dictionary())
 
     df = pd.DataFrame(dic_list)
@@ -135,31 +135,6 @@ def compile_model_results(model, root="./"):
 
     return df
     
-class hyper_parameters:
-    def __init__(self, varirate, fixed):
-        self.varirate = varirate
-        self.fixed = fixed
-        self.perf = dict() 
-
-    def to_dictionary(self):
-        my_dict = dict()
-        my_dict.update(self.varirate)
-        my_dict.update(self.fixed)
-        my_dict.update(self.perf)
-
-        return my_dict
-
-    def save(self,folder,file=None):
-        if file==None:
-            file = self.fixed['mod_id'] + '.pkl'
-        with open(folder +file , 'wb') as f:
-            pickle.dump(self, f)
-
-    @staticmethod
-    def load(file):
-        with open(file, 'rb') as f:
-            x = pickle.load(f)
-        return x
 
 class pci_model:
     def __init__(self, hyper_pars):
@@ -310,7 +285,7 @@ class pci_model:
         mm = keras.models.load_model(path + 'model.hd5', custom_objects={'precision': precision, 'recall' : recall, 'F1' : F1})
         x.model = mm 
 
-        pars = hyper_parameters.load(path + 'best_pars.pkl')
+        pars = hyper_parameters_load(path + 'best_pars.pkl')
 
         x.set_hyper_pars(pars)
 
@@ -516,7 +491,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         junk, prev_folder = build_output_folder_structure(prev_y, prev_m, models_path, create=False)
 
         if  os.path.exists(prev_folder+'best_pars.pkl') :
-            best_hyper_pars = hyper_parameters.load(prev_folder + 'best_pars.pkl')
+            best_hyper_pars = hyper_parameters_load(prev_folder + 'best_pars.pkl')
             best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         else:
             best_hyper_pars = gen_hyper_pars(year_target, mt_target, root)
@@ -529,7 +504,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         best_hyper_pars.save(history_folder)
         prev_hyper_pars = best_hyper_pars
     if  (not os.path.exists(curr_folder+'best_pars.pkl')) & (os.path.exists(curr_folder+'prev_pars.pkl')):
-        best_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
 
         my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
         best_hyper_pars.perf  = my_model.summary()
@@ -539,7 +514,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         best_hyper_pars.save(history_folder)
         prev_hyper_pars = best_hyper_pars
     if i == 1 :
-        best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
 
         prev_hyper_pars = best_hyper_pars
@@ -547,12 +522,12 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
     else:
-        best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         if (not os.path.exists(curr_folder+'prev_pars.pkl') ): 
             prev_hyper_pars = best_hyper_pars
         else:
-            prev_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
+            prev_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
             prev_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
 
