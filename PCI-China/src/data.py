@@ -128,6 +128,8 @@ def proc_embedding(input_file, output_path):
         quoting =3
     )
 
+    dim_embedding = embedding_raw.shape[1] - 1 
+
     embedding = {}
     for index,i in embedding_raw.iterrows():
         word = i[0]
@@ -148,7 +150,7 @@ def proc_embedding(input_file, output_path):
 
     ## Prepare embedding_matrix
     word_index = tokenizer.word_index
-    embedding_matrix = np.zeros((len(word_index) + 1, 300))
+    embedding_matrix = np.zeros((len(word_index) + 1, dim_embedding))
     for word, i in word_index.items():
         embedding_vector = embedding.get(word)
         if embedding_vector is not None:

@@ -19,3 +19,4 @@ model.hd5
 **/~archives/*
 **/articles_review/*
 PCI-China/config.py
+**/Tests/data/output/*
