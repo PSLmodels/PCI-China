@@ -29,8 +29,3 @@ def test_proc_data():
         output = "Tests/Data/Output/database.db",
         embedding = "Tests/Data/Output/"
     )
-
-
-def test_pci_5_years():
-    run_pci_model(args.year, args.month, args.iterator, args.gpu, model=args.model, root = args.root, T=args.temperature, discount=args.discount, bandwidth = args.bandwidth )
-
