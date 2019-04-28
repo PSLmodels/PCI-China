@@ -11,7 +11,7 @@ from sklearn.metrics import precision_recall_fscore_support
 import keras 
 from keras import backend as K
 from keras.preprocessing.sequence import pad_sequences
-from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D
+from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D, GRU
 from keras.preprocessing.text import text_to_word_sequence
 from src.hyper_parameters import * 
 
@@ -378,7 +378,8 @@ class pci_model:
 
 
 def create_and_train_model(hyper_pars,gpu,path):
-    os.environ['CUDA_VISIBLE_DEVICES'] = gpu
+    if gpu != "-1":
+        os.environ['CUDA_VISIBLE_DEVICES'] = gpu
 
     with open(hyper_pars.fixed['embedding_matrix_path'] , 'rb') as f:
         embedding_matrix = pickle.load(f)
@@ -395,8 +396,16 @@ def create_and_train_model(hyper_pars,gpu,path):
                 trainable=False)(input_title)
 
         for i in range(1, pars['lstm1_layer']):
-            net_title = CuDNNGRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
-        net_title = CuDNNGRU(pars['lstm1_neurons'])(net_title)
+            if gpu != "-1":
+                net_title = CuDNNGRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
+            else:
+                net_title = GRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
+
+        if gpu != "-1":
+            net_title = CuDNNGRU(pars['lstm1_neurons'])(net_title)
+        else:
+            net_title = GRU(pars['lstm1_neurons'])(net_title)
+
         net_title = Dropout(pars['lstm1_dropout'])(net_title)
 
         input_meta = Input(shape=(  input_pci_model.X_train[1].shape[1] ,))
@@ -706,3 +715,4 @@ def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )
     return x 
+
