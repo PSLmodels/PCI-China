@@ -23,7 +23,7 @@ install:
     - pip install jieba-fast
 
 script:
-    - cd PCI-China/; python -m pytest ./tests/ --cov=../
+    - cd PCI-China/; python -m pytest --cov=../
 
 after_success:
     - curl -s https://codecov.io/bash | bash
