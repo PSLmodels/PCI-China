@@ -8,6 +8,11 @@ def test_create_plotly():
 
 def test_proc_data():
     print(os.getcwd())
+    print(os.listdir(os.getcwd() ) )
+    print(os.listdir(os.getcwd() + "/tests/") )
+    print(os.listdir(os.getcwd() + "/tests/Data/") )
+    print(os.listdir(os.getcwd() + "/tests/Data/Input/") )
+
     print(os.listdir("./Tests/Data/Input/") )
 
     proc_embedding(
