@@ -2,6 +2,7 @@ import pytest, sys, os
 from src.data import *
 from src.figures import *
 from src.utils import *
+from src.pci_model import *
 
 def test_create_plotly():
     fig = create_plotly_figure(input = "./figures/pci.csv")
@@ -46,3 +47,5 @@ def test_proc_data():
         output = "./tests/Data/Output/database.db",
         embedding = "./tests/Data/Output/"
     )
+
+    run_pci_model(year_target=2011, mt_target=1, i=1, gpu=-1, model="window_2_years_quarterly", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )

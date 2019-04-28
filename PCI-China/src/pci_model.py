@@ -11,7 +11,11 @@ from sklearn.metrics import precision_recall_fscore_support
 import keras 
 from keras import backend as K
 from keras.preprocessing.sequence import pad_sequences
+<<<<<<< HEAD
 from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D
+=======
+from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D, GRU
+>>>>>>> unit_testing
 from keras.preprocessing.text import text_to_word_sequence
 from src.hyper_parameters import * 
 
@@ -378,7 +382,8 @@ class pci_model:
 
 
 def create_and_train_model(hyper_pars,gpu,path):
-    os.environ['CUDA_VISIBLE_DEVICES'] = gpu
+    if gpu != "-1":
+        os.environ['CUDA_VISIBLE_DEVICES'] = gpu
 
     with open(hyper_pars.fixed['embedding_matrix_path'] , 'rb') as f:
         embedding_matrix = pickle.load(f)
@@ -395,8 +400,16 @@ def create_and_train_model(hyper_pars,gpu,path):
                 trainable=False)(input_title)
 
         for i in range(1, pars['lstm1_layer']):
-            net_title = CuDNNGRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
-        net_title = CuDNNGRU(pars['lstm1_neurons'])(net_title)
+            if gpu != "-1":
+                net_title = CuDNNGRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
+            else:
+                net_title = GRU(pars['lstm1_neurons'], return_sequences=True)(net_title)
+
+        if gpu != "-1":
+            net_title = CuDNNGRU(pars['lstm1_neurons'])(net_title)
+        else:
+            net_title = GRU(pars['lstm1_neurons'])(net_title)
+
         net_title = Dropout(pars['lstm1_dropout'])(net_title)
 
         input_meta = Input(shape=(  input_pci_model.X_train[1].shape[1] ,))
@@ -579,10 +592,10 @@ def get_fixed_5_years_quarterly(year_target, mt_target, root = "./"):
                 'testing_group' : [1,2],
                 'validation_group' : [3,4],
                 'training_group' : [5,6,7,8,9,10],
-                'data_text' : root + '/data/output/database.db', 
-                'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
-                'embedding_path' : root + '/data/output/embedding.pkl', 
-                'tokenizer' : root + "data/output/tokenizer.pkl",
+                'data_text' : root + '/Data/Output/database.db', 
+                'embedding_matrix_path' : root + '/Data/Output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/Data/Output/embedding.pkl', 
+                'tokenizer' : root + "/Data/Output/tokenizer.pkl",
                 'model_folder' : root + '/models/window_5_years_quarterly/',
                 'year_target' : year_target,
                 'mt_target' : mt_target,
@@ -625,10 +638,10 @@ def get_fixed_10_years_quarterly(year_target, mt_target, root = "./"):
                 'testing_group' : [1,2],
                 'validation_group' : [3,4],
                 'training_group' : [5,6,7,8,9,10],
-                'data_text' : root + '/data/output/database.db', 
-                'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
-                'embedding_path' : root + '/data/output/embedding.pkl', 
-                'tokenizer' : root + "data/output/tokenizer.pkl",
+                'data_text' : root + '/Data/Output/database.db', 
+                'embedding_matrix_path' : root + '/Data/Output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/Data/Output/embedding.pkl', 
+                'tokenizer' : root + "Data/Output/tokenizer.pkl",
                 'model_folder' : root + '/models/window_10_years_quarterly/',
                 'year_target' : year_target,
                 'mt_target' : mt_target,
@@ -671,10 +684,17 @@ def get_fixed_2_years_quarterly(year_target, mt_target, root = "./"):
                 'testing_group' : [1,2],
                 'validation_group' : [3,4],
                 'training_group' : [5,6,7,8,9,10],
+<<<<<<< HEAD
                 'data_text' : root + '/data/output/database.db', 
                 'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
                 'embedding_path' : root + '/data/output/embedding.pkl', 
                 'tokenizer' : root + "data/output/tokenizer.pkl",
+=======
+                'data_text' : root + '/Data/Output/database.db', 
+                'embedding_matrix_path' : root + '/Data/Output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/Data/Output/embedding.pkl', 
+                'tokenizer' : root + "Data/Output/tokenizer.pkl",
+>>>>>>> unit_testing
                 'model_folder' : root + '/models/window_2_years_quarterly/',
                 'year_target' : year_target,
                 'mt_target' : mt_target,
@@ -706,3 +726,7 @@ def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )
     return x 
+<<<<<<< HEAD
+=======
+
+>>>>>>> unit_testing
