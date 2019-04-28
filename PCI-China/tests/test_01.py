@@ -8,12 +8,9 @@ def test_create_plotly():
 
 def test_proc_data():
     print(os.getcwd())
-    print(os.listdir(os.getcwd() ) )
-    print(os.listdir(os.getcwd() + "/tests/") )
-    print(os.listdir(os.getcwd() + "/tests/Data/") )
-    print(os.listdir(os.getcwd() + "/tests/Data/Input/") )
 
-    print(os.listdir("./tests/Data/Input/") )
+    if not os.path.exists("./tests/Data/Output/"):
+        os.makedirs("./tests/Data/Output/")
 
     proc_embedding(
         input_file = "./tests/Data/Input/embedding_example.txt",
