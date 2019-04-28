@@ -11,11 +11,7 @@ from sklearn.metrics import precision_recall_fscore_support
 import keras 
 from keras import backend as K
 from keras.preprocessing.sequence import pad_sequences
-<<<<<<< HEAD
-from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D
-=======
 from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D, GRU
->>>>>>> unit_testing
 from keras.preprocessing.text import text_to_word_sequence
 from src.hyper_parameters import * 
 
@@ -684,17 +680,10 @@ def get_fixed_2_years_quarterly(year_target, mt_target, root = "./"):
                 'testing_group' : [1,2],
                 'validation_group' : [3,4],
                 'training_group' : [5,6,7,8,9,10],
-<<<<<<< HEAD
-                'data_text' : root + '/data/output/database.db', 
-                'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
-                'embedding_path' : root + '/data/output/embedding.pkl', 
-                'tokenizer' : root + "data/output/tokenizer.pkl",
-=======
                 'data_text' : root + '/Data/Output/database.db', 
                 'embedding_matrix_path' : root + '/Data/Output/embedding_matrix.pkl', 
                 'embedding_path' : root + '/Data/Output/embedding.pkl', 
                 'tokenizer' : root + "Data/Output/tokenizer.pkl",
->>>>>>> unit_testing
                 'model_folder' : root + '/models/window_2_years_quarterly/',
                 'year_target' : year_target,
                 'mt_target' : mt_target,
@@ -726,7 +715,3 @@ def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )
     return x 
-<<<<<<< HEAD
-=======
-
->>>>>>> unit_testing
