@@ -12,10 +12,129 @@ import keras
 from keras import backend as K
 from keras.preprocessing.sequence import pad_sequences
 from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding, CuDNNLSTM, CuDNNGRU,  GlobalMaxPooling1D, GlobalAveragePooling1D
-from src.specs import *
-from src.functions import *
-from src.hyper_parameters import *
 from keras.preprocessing.text import text_to_word_sequence
+from src.hyper_parameters import * 
+
+def recall(true_value, predicted_value):
+    true_positives = K.sum(K.round(K.clip(true_value * predicted_value, 0, 1)))
+    all_positives = K.sum(K.round(K.clip(true_value, 0, 1)))
+    recall = true_positives / (all_positives + K.epsilon())
+    return recall
+
+def precision(true_value, predicted_value):
+    true_positives = K.sum(K.round(K.clip(true_value * predicted_value, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(predicted_value, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+    return precision
+
+
+def F1(true_value, pred_value):
+    return( 2.0 * recall(true_value, pred_value) * precision(true_value, pred_value) / ( recall(true_value, pred_value) + precision(true_value, pred_value) + K.epsilon() ) )
+
+def gen_candidate(x, bandwidth=0.1, type='int', min_value = None, max_value = None):
+    r = random.uniform(-bandwidth, bandwidth)
+    new_x = x * (1+r)
+
+    if type == 'int':
+        if x * bandwidth < 1 :
+            new_x = x + random.choice([-1,0,1])
+        else:
+            new_x = round(new_x) 
+        
+
+
+    if min_value != None:
+        new_x = max(new_x, min_value)       
+
+    if max_value != None:
+        new_x = min(new_x, max_value)    
+
+    return(new_x)   
+
+def update_hyper_pars(hyper_pars, bandwidth= 0.1):
+    v = copy.deepcopy(hyper_pars.varirate)
+    v['meta_neurons']    =  gen_candidate( v['meta_neurons']   , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['meta_dropout']    =  gen_candidate( v['meta_dropout']   , bandwidth = bandwidth , type = '' , min_value = 0, max_value=0.99)
+    v['meta_layer']      =  gen_candidate( v['meta_layer']     , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['lstm1_max_len']    =  gen_candidate( v['lstm1_max_len']   , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['lstm1_neurons']    =  gen_candidate( v['lstm1_neurons']   , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['lstm1_dropout']    =  gen_candidate( v['lstm1_dropout']   , bandwidth = bandwidth , type = '' , min_value = 0, max_value=0.99)
+    v['lstm1_layer']      =  gen_candidate( v['lstm1_layer']     , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    # v['lstm2_max_len']    =  gen_candidate( v['lstm2_max_len']   , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    # v['lstm2_neurons']    =  gen_candidate( v['lstm2_neurons']   , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    # v['lstm2_dropout']    =  gen_candidate( v['lstm2_dropout']   , bandwidth = bandwidth , type = '' , min_value = 0, max_value=0.99)
+    # v['lstm2_layer']      =  gen_candidate( v['lstm2_layer']     , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['fc_neurons']       =  gen_candidate( v['fc_neurons']      , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['fc_dropout']       =  gen_candidate( v['fc_dropout']      , bandwidth = bandwidth , type = '' , min_value = 0, max_value=0.99)
+    v['fc_layer']         =  gen_candidate( v['fc_layer']        , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['max_words']        =  gen_candidate( v['max_words']       , bandwidth = bandwidth , type = 'int' , min_value = 1)
+    v['lr']               =  gen_candidate( v['lr']              , bandwidth = bandwidth , type = '' , min_value = 0.000001)
+    v['n_embedding']      =  gen_candidate( v['n_embedding']     , bandwidth = bandwidth , type = 'int' , min_value = 1, max_value = 300)
+    v['decay']            =  gen_candidate( v['decay']           , bandwidth = bandwidth , type = '' , min_value = 0)
+    v['w']                =  gen_candidate( v['w']               , bandwidth = bandwidth , type = '' , min_value = 0)
+    print(v)
+
+    f = copy.deepcopy(hyper_pars.fixed)
+    f['mod_id'] = str(round((time())))
+    return hyper_parameters(v, f) 
+
+
+def calc_f1_df(x): 
+    j1,j2,F1,j3 =  precision_recall_fscore_support(x.Y,x.Y_hat)
+    f1 = F1[1]
+    return pd.Series([f1], index=['f1'])
+
+
+
+def calc_prev_month(year, month, period ):
+    if period == 1 :
+        if month == 1 :
+            return year-1 , 12
+        else :
+            return year, month - 1 
+    else :
+        y,q = calc_prev_month(year, month, 1)
+        return calc_prev_month(y, q, period - 1 )
+
+
+
+def build_output_folder_structure(year_target, mt_target, models_path, create=True):
+    if not os.path.exists(models_path):
+        os.makedirs(models_path)
+
+    output_folder = models_path + str(year_target) + "_M" + str(mt_target) + '/'
+    history_folder = output_folder + '/history/'
+
+    if create:
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
+        if not os.path.exists(history_folder):
+            os.makedirs(history_folder)
+
+    return history_folder , output_folder
+
+
+def compile_model_results(model, root="./"):
+
+    listing = glob.glob(root + '/models/' + model + '/*/best_pars.pkl')
+
+    dic_list = []
+    for file in listing:
+        tmp = hyper_parameters_load(file)
+        dic_list.append(tmp.to_dictionary())
+
+    df = pd.DataFrame(dic_list)
+    df['diff'] = df.test_F1 - df.forecast_F1
+    df['pci'] = abs(df.test_F1 - df.forecast_F1)
+
+    if not os.path.exists(root + '/figures/' +  model ):
+        os.makedirs(root + '/figures/' +  model )
+
+    df.to_csv(root + '/figures/' +  model + '/results.csv', index=False)
+
+    return df
+    
 
 class pci_model:
     def __init__(self, hyper_pars):
@@ -115,27 +234,7 @@ class pci_model:
     def prep_data(df, hyper_pars,embedding, tokenizer):
         df = copy.deepcopy(df)
 
-        # df['year'] = df['date'].dt.year
-        # df['quarter'] = df['date'].dt.quarter
-        # df['month'] = df['date'].dt.month
-        # df['day'] = df['date'].dt.day
-        # df['weekday'] = df['date'].dt.dayofweek + 1
 
-        # ## Create useful variable for ML
-        # df['frontpage'] = np.where(df['page']==1, 1, 0)
-        # df['page1to3'] = np.where(df['page'].isin(range(1,4)), 1, 0)
-
-
-        # df['title_seg'] = df.title_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
-        # df['body_seg'] = df.body_seg.apply(lambda x : [ word if word in embedding.keys() else 'unk'  for word in text_to_word_sequence(x) ])
-
-        # df['title_len'] = df["title"].str.len()
-        # df['body_len'] = df["body"].str.len()
-
-        # df['n_articles_that_day'] = df.groupby(['date'])['id'].transform('count')
-        # df['n_pages_that_day'] = df.groupby(['date'])['page'].transform(max)
-
-        # df['n_frontpage_articles_that_day'] = df.groupby(['date'])['frontpage'].transform(sum)
 
         df['title_seg'] = df.title_seg.apply(text_to_word_sequence)
         df['body_seg'] = df.body_seg.apply(text_to_word_sequence)
@@ -143,7 +242,6 @@ class pci_model:
         ## Create Stratum  
         df['title_int'] = tokenizer.texts_to_sequences(df.title_seg)
         df['body_int'] = tokenizer.texts_to_sequences(df.body_seg)
-        # del df["title_seg"], df['body_seg']
 
         if hyper_pars.fixed['frontpage'] == 1 :
             Y = df.frontpage  
@@ -187,7 +285,7 @@ class pci_model:
         mm = keras.models.load_model(path + 'model.hd5', custom_objects={'precision': precision, 'recall' : recall, 'F1' : F1})
         x.model = mm 
 
-        pars = hyper_parameters.load(path + 'best_pars.pkl')
+        pars = hyper_parameters_load(path + 'best_pars.pkl')
 
         x.set_hyper_pars(pars)
 
@@ -393,7 +491,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         junk, prev_folder = build_output_folder_structure(prev_y, prev_m, models_path, create=False)
 
         if  os.path.exists(prev_folder+'best_pars.pkl') :
-            best_hyper_pars = hyper_parameters.load(prev_folder + 'best_pars.pkl')
+            best_hyper_pars = hyper_parameters_load(prev_folder + 'best_pars.pkl')
             best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         else:
             best_hyper_pars = gen_hyper_pars(year_target, mt_target, root)
@@ -406,7 +504,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         best_hyper_pars.save(history_folder)
         prev_hyper_pars = best_hyper_pars
     if  (not os.path.exists(curr_folder+'best_pars.pkl')) & (os.path.exists(curr_folder+'prev_pars.pkl')):
-        best_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
 
         my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
         best_hyper_pars.perf  = my_model.summary()
@@ -416,7 +514,7 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         best_hyper_pars.save(history_folder)
         prev_hyper_pars = best_hyper_pars
     if i == 1 :
-        best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
 
         prev_hyper_pars = best_hyper_pars
@@ -424,12 +522,12 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
     else:
-        best_hyper_pars = hyper_parameters.load(curr_folder + 'best_pars.pkl')
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         if (not os.path.exists(curr_folder+'prev_pars.pkl') ): 
             prev_hyper_pars = best_hyper_pars
         else:
-            prev_hyper_pars = hyper_parameters.load(curr_folder + 'prev_pars.pkl')
+            prev_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
             prev_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
 
@@ -462,10 +560,149 @@ def create_text_output(model,year_month, gpu="0"):
     my_model = pci_model.load("./models/" + model + "/" + year_month + "/")
     testing_data, forecast_data = my_model.summary_articles()
 
-    output_folder = "visualization/" + model + "/" + 'articles_review'  + "/"
+    output_folder = "figures/" + model + "/" + 'articles_review'  + "/"
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
     testing_data.to_csv(output_folder +  year_month + '_testing_data.csv')
     forecast_data.to_csv(output_folder  +  year_month +'_forecast_data.csv')
+
+
+def get_fixed_5_years_quarterly(year_target, mt_target, root = "./"):
+    fixed = {
+                'month_window' : 5 * 12, 
+                'forecast_period' : 3, 
+                'batch_size': 256,
+                'patience' : 3,
+                'epochs' : 100,
+                'testing_group' : [1,2],
+                'validation_group' : [3,4],
+                'training_group' : [5,6,7,8,9,10],
+                'data_text' : root + '/data/output/database.db', 
+                'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/data/output/embedding.pkl', 
+                'tokenizer' : root + "data/output/tokenizer.pkl",
+                'model_folder' : root + '/models/window_5_years_quarterly/',
+                'year_target' : year_target,
+                'mt_target' : mt_target,
+                'body_text_combined' : 1,
+                'frontpage' : 1, # 1:first page; 0: page1-3
+                'mod_id' : str(round((time())))
+            }    
+    return fixed
+
+def gen_hyper_pars_5_years_quarterly(year_target, mt_target, root):
+    x = hyper_parameters(
+        varirate ={
+            'meta_layer' : 2,
+            'meta_neurons' : 50,
+            'meta_dropout' : 0.4,
+            'lstm1_max_len' : 100,
+            'lstm1_neurons' : 80 ,
+            'lstm1_dropout' : 0.1 ,
+            'lstm1_layer' : 5,
+            'fc_neurons' : 40,
+            'fc_dropout' : 0.3,
+            'fc_layer' : 2,
+            'max_words' : 10000,
+            'lr' : 0.002,
+            'n_embedding' : 150,
+            'decay': 0.0001,
+            'w': 0.3
+        },
+        fixed = get_fixed_5_years_quarterly(year_target, mt_target, root)
+    )
+    return x 
+
+def get_fixed_10_years_quarterly(year_target, mt_target, root = "./"):
+    fixed = {
+                'month_window' : 10 * 12, 
+                'forecast_period' : 3, 
+                'batch_size': 256,
+                'patience' : 3,
+                'epochs' : 100,
+                'testing_group' : [1,2],
+                'validation_group' : [3,4],
+                'training_group' : [5,6,7,8,9,10],
+                'data_text' : root + '/data/output/database.db', 
+                'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/data/output/embedding.pkl', 
+                'tokenizer' : root + "data/output/tokenizer.pkl",
+                'model_folder' : root + '/models/window_10_years_quarterly/',
+                'year_target' : year_target,
+                'mt_target' : mt_target,
+                'body_text_combined' : 1,
+                'frontpage' : 1, # 1:first page; 0: page1-3
+                'mod_id' : str(round((time())))
+            }    
+    return fixed
+
+def gen_hyper_pars_10_years_quarterly(year_target, mt_target, root):
+    x = hyper_parameters(
+        varirate ={
+            'meta_layer' : 2,
+            'meta_neurons' : 50,
+            'meta_dropout' : 0.4,
+            'lstm1_max_len' : 100,
+            'lstm1_neurons' : 80 ,
+            'lstm1_dropout' : 0.1 ,
+            'lstm1_layer' : 5,
+            'fc_neurons' : 40,
+            'fc_dropout' : 0.3,
+            'fc_layer' : 2,
+            'max_words' : 10000,
+            'lr' : 0.002,
+            'n_embedding' : 150,
+            'decay': 0.0001,
+            'w': 0.3
+        },
+        fixed = get_fixed_10_years_quarterly(year_target, mt_target, root)
+    )
+    return x 
+
+def get_fixed_2_years_quarterly(year_target, mt_target, root = "./"):
+    fixed = {
+                'month_window' : 2 * 12, 
+                'forecast_period' : 3, 
+                'batch_size': 256,
+                'patience' : 3,
+                'epochs' : 100,
+                'testing_group' : [1,2],
+                'validation_group' : [3,4],
+                'training_group' : [5,6,7,8,9,10],
+                'data_text' : root + '/data/output/database.db', 
+                'embedding_matrix_path' : root + '/data/output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/data/output/embedding.pkl', 
+                'tokenizer' : root + "data/output/tokenizer.pkl",
+                'model_folder' : root + '/models/window_2_years_quarterly/',
+                'year_target' : year_target,
+                'mt_target' : mt_target,
+                'body_text_combined' : 1,
+                'frontpage' : 1, # 1:first page; 0: page1-3
+                'mod_id' : str(round((time())))
+            }    
+    return fixed
+
+def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
+    x = hyper_parameters(
+        varirate ={
+            'meta_layer' : 2,
+            'meta_neurons' : 50,
+            'meta_dropout' : 0.4,
+            'lstm1_max_len' : 100,
+            'lstm1_neurons' : 80 ,
+            'lstm1_dropout' : 0.1 ,
+            'lstm1_layer' : 5,
+            'fc_neurons' : 40,
+            'fc_dropout' : 0.3,
+            'fc_layer' : 2,
+            'max_words' : 10000,
+            'lr' : 0.002,
+            'n_embedding' : 150,
+            'decay': 0.0001,
+            'w': 0.3
+        },
+        fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
+    )
+    return x 

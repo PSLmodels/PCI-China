@@ -1,15 +1,20 @@
-import pickle, glob, os, sys, pathlib, copy, argparse
-import pandas as pd
-from src.pci_model import *
+from src.pci import *
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model", help="Model name")
-    parser.add_argument("--year", help="year", default=1950, type=int)
-    parser.add_argument("--month", help="month", default=1, type=int)
-    parser.add_argument("--gpu", help="To year", default="0")
+create_text_output(model = "window_5_years_quarterly", year_month =  "1978_M1" , gpu = "0" )
 
-    args = parser.parse_args()
-    
-    create_text_output(model = args.model, year_month = str(args.year) + "_M" +  str(args.month) , gpu = args.gpu)
+create_text_output(model = "window_5_years_quarterly", year_month =  "1993_M1" , gpu = "0" )
 
+create_text_output(model = "window_5_years_quarterly", year_month =  "2004_M1" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2013_M1" , gpu = "0" )
+
+create_text_output(model = "window_5_years_quarterly", year_month =  "2018_M1" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2018_M4" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2018_M7" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2018_M10" , gpu = "0" )
+
+create_text_output(model = "window_5_years_quarterly", year_month =  "2017_M1" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2017_M4" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2017_M7" , gpu = "0" )
+create_text_output(model = "window_5_years_quarterly", year_month =  "2017_M10" , gpu = "0" )
+
+create_text_output(model = "window_5_years_quarterly", year_month =  "2019_M1" , gpu = "0" )

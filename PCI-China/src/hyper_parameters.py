@@ -20,8 +20,7 @@ class hyper_parameters:
         with open(folder +file , 'wb') as f:
             pickle.dump(self, f)
 
-    @staticmethod
-    def load(file):
-        with open(file, 'rb') as f:
-            x = pickle.load(f)
-        return x
+def hyper_parameters_load(file):
+    with open(file, 'rb') as f:
+        x = pickle.load(f)
+    return x
