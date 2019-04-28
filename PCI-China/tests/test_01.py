@@ -13,27 +13,27 @@ def test_proc_data():
     print(os.listdir(os.getcwd() + "/tests/Data/") )
     print(os.listdir(os.getcwd() + "/tests/Data/Input/") )
 
-    print(os.listdir("./Tests/Data/Input/") )
+    print(os.listdir("./tests/Data/Input/") )
 
     proc_embedding(
-        input_file = "./Tests/Data/Input/embedding_example.txt",
-        output_path = "./Tests/Data/Output/"
+        input_file = "./tests/Data/Input/embedding_example.txt",
+        output_path = "./tests/Data/Output/"
     )
 
     proc_pd(
-        input  = "./Tests/data/Output/2000_2010.pkl",
+        input  = "./tests/data/Output/2000_2010.pkl",
         create = 0,
         seed   = 1,
         k_fold = 10,
-        output = "./Tests/Data/Output/database.db",
-        embedding = "./Tests/Data/Output/"
+        output = "./tests/Data/Output/database.db",
+        embedding = "./tests/Data/Output/"
     )
 
     proc_pd(
-        input  = "./Tests/data/Output/2011.pkl",
+        input  = "./tests/data/Output/2011.pkl",
         create = 0,
         seed   = 2,
         k_fold = 10,
-        output = "./Tests/Data/Output/database.db",
-        embedding = "./Tests/Data/Output/"
+        output = "./tests/Data/Output/database.db",
+        embedding = "./tests/Data/Output/"
     )
