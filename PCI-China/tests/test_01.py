@@ -8,7 +8,8 @@ def test_create_plotly():
 
 def test_proc_data():
     print(os.getcwd())
-    
+    print(os.listdir("./Tests/Data/Input/") )
+
     proc_embedding(
         input_file = "./Tests/Data/Input/embedding_example.txt",
         output_path = "./Tests/Data/Output/"
