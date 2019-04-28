@@ -18,7 +18,7 @@ def test_proc_data():
     )
 
     proc_pd(
-        input  = "./tests/data/Output/2000_2010.pkl",
+        input  = "./tests/Data/Output/2000_2010.pkl",
         create = 0,
         seed   = 1,
         k_fold = 10,
@@ -27,7 +27,7 @@ def test_proc_data():
     )
 
     proc_pd(
-        input  = "./tests/data/Output/2011.pkl",
+        input  = "./tests/Data/Output/2011.pkl",
         create = 0,
         seed   = 2,
         k_fold = 10,
