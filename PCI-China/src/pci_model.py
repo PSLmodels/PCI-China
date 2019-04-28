@@ -715,4 +715,3 @@ def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )
     return x 
-

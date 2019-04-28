@@ -48,5 +48,4 @@ def test_proc_data():
         embedding = "./tests/Data/Output/"
     )
 
-
     run_pci_model(year_target=2011, mt_target=1, i=1, gpu=-1, model="window_2_years_quarterly", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
