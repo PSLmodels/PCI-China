@@ -32,7 +32,7 @@ def test_proc_data():
 
     proc_pd(
         input  = "./tests/Data/Output/2000_2010.pkl",
-        create = 0,
+        create = 1,
         seed   = 1,
         k_fold = 10,
         output = "./tests/Data/Output/database.db",
