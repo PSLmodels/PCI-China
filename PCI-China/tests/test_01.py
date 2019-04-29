@@ -49,3 +49,8 @@ def test_proc_data():
     )
 
     run_pci_model(year_target=2011, mt_target=1, i=1, gpu=-1, model="window_2_years_quarterly", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2011, mt_target=1, i=2, gpu=-1, model="window_2_years_quarterly", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+
+    compile_model_results("window_2_years_quarterly", root = "./tests")
+
+    create_text_output("window_2_years_quarterly", "2011_M1", gpu=-1, root ="./tests/")
