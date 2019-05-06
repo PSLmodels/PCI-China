@@ -6,9 +6,9 @@ Authors: [Julian TszKin Chan](https://sites.google.com/site/ctszkin/) and [Weife
 
 Please email all comments/questions to ctszkin [AT] gmail.com or weifeng [AT] weifengzhong.com
 
-What is the Policy Change Index (PCI) of China?
+What is the Policy Change Index (PCI) for China?
 -----------------------------------------------
-China's industrialization process has long been a product of government direction, be it coercive central planning or ambitious industrial policy. For the first time in the literature, we develop a quantitative indicator of China's policy priorities over a long period of time, which we call the Policy Change Index (PCI) of China. The PCI is a leading indicator that runs from 1951 to the most recent quarter and can be updated in the future. In other words, the PCI not only helps us understand the past of China's industrialization but also allows us to make short-term predictions about its future directions.
+China's industrialization process has long been a product of government direction, be it coercive central planning or ambitious industrial policy. For the first time in the literature, we develop a quantitative indicator of China's policy priorities over a long period of time, which we call the Policy Change Index (PCI) for China. The PCI is a leading indicator that runs from 1951 to the most recent quarter and can be updated in the future. In other words, the PCI not only helps us understand the past of China's industrialization but also allows us to make short-term predictions about its future directions.
 
 The design of the PCI has two building blocks: (1) it takes as input data the full text of the *People's Daily* --- the official newspaper of the Communist Party of China --- since it was founded in 1946; (2) it employs a set of machine learning techniques to "read" the articles and detect changes in the way the newspaper prioritizes policy issues.
 
@@ -26,7 +26,7 @@ Results will change as the underlying models improve. A fundamental reason for a
 
 Usage
 ---------------
-Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI of China.
+Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI for China.
 
 - `proc_pd.py`:              Process and prepare the raw data from the *People's Daily* for building the neural network models.
 - `pci.py`:                    Train a neural network model to construct the PCI for a specified year-quarter.
@@ -132,10 +132,10 @@ dtype: object
 where `title_int` and `body_int` are the word embeddings (numeric vectors) of the title and body of each article.
 
 
-Citing the Policy Change Index (PCI) of China
+Citing the Policy Change Index (PCI) for China
 ---------------------------------------------
 
-Please cite the source of the latest Policy Change Index (PCI) of China by the website: https://policychangeindex.org.
+Please cite the source of the latest Policy Change Index (PCI) for China by the website: https://policychangeindex.org.
 
 For academic work, please cite the following research paper:
 
