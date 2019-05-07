@@ -1,0 +1,156 @@
+{
+	"project_one_line": {
+		"start_header": null,
+		"end_header": null,
+		"source": null,
+		"type": "html",
+		"data": "<p>A machine learning project that analyzes state-run media to predict policy changes.</p>"
+	},
+	"project_overview": {
+		"start_header": "What is the Policy Change Index (PCI) for China?",
+		"end_header": "Disclaimer",
+		"source": "README.md",
+		"type": "github_file",
+		"data": null
+	},
+	"citation": {
+		"start_header": "Citing the Policy Change Index (PCI) for China",
+		"end_header": null,
+		"source": "README.md",
+		"type": "github_file",
+		"data": null
+	},
+    "license": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/blob/master/LICENSE.md\">GNU Affero General Public License v3.0</a>"
+    },
+    "user_documentation": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/blob/master/README.md\">PCI User Documentation</a>"
+    },
+    "user_changelog": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/blob/master/CHANGES.md\">PCI Change History</a>"
+    },
+	"disclaimer": {
+		"start_header": "Disclaimer",
+		"end_header": "Getting Started",
+		"source": "README.md",
+		"type": "github_file",
+		"data": null
+	},
+    "public_issue_tracker": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/issues\">Issues</a>"
+    },
+    "public_qanda": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/issues\">Issues</a>"
+    },
+	"core_maintainers": {
+		"start_header": null,
+		"end_header": null,
+		"source": null,
+		"type": "html",
+		"data": "<ul><li>Julian TszKin Chan</li><li>Weifeng Zhong</li></ul>"
+	},
+    "unit_test": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/tree/master/PCI-China/tests\">PCI unit tests</a>"
+    },
+    "integration_test": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/PCI/tree/master/PCI-China/tests\">PCI integration test</a>"
+    },
+    "contributor_overview": {
+        "start_header": "Getting Started",
+        "end_header": "Usage",
+        "source": "README.md",
+        "type": "github_file",
+        "data": null
+    },
+    "key_features": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "user_changelog_recent": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "dev_changelog": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "user_case_studies": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "project_roadmap": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "contributor_guide": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "governance_overview": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "public_funding": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "link_to_webapp": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    }
+}
