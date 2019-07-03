@@ -78,3 +78,12 @@ proc_pd(
     output = "Data/Output/database.db",
     embedding = "Data/Output/"
 )
+
+proc_pd(
+    input  = "Data/Input/pd/2019_Q2.pkl",
+    create = 0,
+    seed   = 201902,
+    k_fold = 10,
+    output = "Data/Output/database.db",
+    embedding = "Data/Output/"
+)
