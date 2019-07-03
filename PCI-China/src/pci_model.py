@@ -494,8 +494,8 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
     history_folder, curr_folder = build_output_folder_structure(year_target, mt_target, models_path, create=True)
     gpu = str(gpu)
 
-    ## if the best_pars, prev_pars, and model.hd5 are already in the folder:
-    if not (os.path.exists(curr_folder+'best_pars.pkl') & os.path.exists(curr_folder+'prev_pars.pkl')):
+    ## if both best_pars and prev_pars are absent...
+    if (not os.path.exists(curr_folder+'best_pars.pkl')) & (not os.path.exists(curr_folder+'prev_pars.pkl')):
         prev_y, prev_m = calc_prev_month(year_target, mt_target,forecast_period)
         junk, prev_folder = build_output_folder_structure(prev_y, prev_m, models_path, create=False)
 
@@ -511,9 +511,12 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         # best_hyper_pars.save(curr_folder, 'best_pars.pkl')
         # best_hyper_pars.save(curr_folder, 'prev_pars.pkl')
         best_hyper_pars.save(history_folder)
-        prev_hyper_pars = best_hyper_pars
-    if  (not os.path.exists(curr_folder+'best_pars.pkl')) & (os.path.exists(curr_folder+'prev_pars.pkl')):
+        # prev_hyper_pars = best_hyper_pars
+
+    ## if best_pars is absent but prev_pars is present...
+    if (not os.path.exists(curr_folder+'best_pars.pkl')) & os.path.exists(curr_folder+'prev_pars.pkl'):
         best_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
+        best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
 
         my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
         best_hyper_pars.perf  = my_model.summary()
@@ -521,23 +524,35 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
         # best_hyper_pars.save(curr_folder, 'prev_pars.pkl')
         save_best(best_hyper_pars, my_model, curr_folder)
         best_hyper_pars.save(history_folder)
-        prev_hyper_pars = best_hyper_pars
-    if i == 1 :
+        # prev_hyper_pars = best_hyper_pars
+
+    ## if best_pars is present but prev_pars is absent...
+    if os.path.exists(curr_folder+'best_pars.pkl') & (not os.path.exists(curr_folder+'prev_pars.pkl')):
         best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
 
+        my_model = create_and_train_model(best_hyper_pars, gpu, curr_folder)
+        best_hyper_pars.perf  = my_model.summary()
+        # best_hyper_pars.save(curr_folder, 'best_pars.pkl')
+        # best_hyper_pars.save(curr_folder, 'prev_pars.pkl')
+        save_best(best_hyper_pars, my_model, curr_folder)
+        best_hyper_pars.save(history_folder)
+        # prev_hyper_pars = best_hyper_pars
+
+    if i == 1 :
+        best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
+        best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
         prev_hyper_pars = best_hyper_pars
         prev_hyper_pars.save(curr_folder, 'prev_pars.pkl')
 
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
+        
     else:
         best_hyper_pars = hyper_parameters_load(curr_folder + 'best_pars.pkl')
         best_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
-        if (not os.path.exists(curr_folder+'prev_pars.pkl') ): 
-            prev_hyper_pars = best_hyper_pars
-        else:
-            prev_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
-            prev_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
+        prev_hyper_pars = hyper_parameters_load(curr_folder + 'prev_pars.pkl')
+        prev_hyper_pars.fixed = get_fixed(year_target, mt_target, root)
+
         new_hyper_pars = update_hyper_pars(prev_hyper_pars, bandwidth)
 
     ## run model

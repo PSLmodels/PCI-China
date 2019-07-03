@@ -24,6 +24,17 @@ Disclaimer
 Results will change as the underlying models improve. A fundamental reason for adopting open source methods in this project is so that people from all backgrounds can contribute to the models that our society uses to assess and predict changes in public policy; when community-contributed improvements are incorporated, the model will produce better results.
 
 
+Getting Started
+---------------
+The first step for everyone (users and developers) is to open a free GitHub account. And then you can specify how you want to "watch" the PCI repository by clicking on the Watch button in the upper-right corner of the repository's main page.
+
+The second step is to get familiar with the PCI repository by reading the documentation.
+
+If you want to ask a question or report a bug, create a new issue [here](https://github.com/PSLmodels/PCI/issues) and post your question or tell us what you think is wrong with the repository.
+
+If you want to request an enhancement, create a new issue [here](https://github.com/PSLmodels/PCI/issues) and provide details on what you think should be added to the repository.
+
+
 Usage
 ---------------
 Three python functions and an R script are available for users to process data and build the neural network models to construct the PCI for China.
