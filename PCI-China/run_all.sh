@@ -4,7 +4,7 @@ python proc_data.py
 # Train models and construct PCI (2 years rolling window) 
 for j in `seq 1 5` 
 do
-    for y in `seq 1950 2019` 
+    for y in `seq 1951 2019` 
     do
         for q in 1 4 7 10
         do
@@ -19,7 +19,7 @@ done
 # Train models and construct PCI (5 years rolling window) 
 for j in `seq 1 5` 
 do
-    for y in `seq 1950 2019` 
+    for y in `seq 1951 2019` 
     do
         for q in 1 4 7 10
         do
@@ -34,7 +34,7 @@ done
 # Train models and construct PCI (10 years rolling window) 
 for j in `seq 1 5` 
 do
-    for y in `seq 1950 2019` 
+    for y in `seq 1951 2019` 
     do
         for q in 1 4 7 10
         do
