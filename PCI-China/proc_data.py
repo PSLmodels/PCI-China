@@ -24,7 +24,7 @@ proc_pd(
 )
 
 proc_pd(
-    input  = "Data/Input/pd/pd_2001_2017.pkl",
+    input  = "Data/Input/pd/pd_2000_2017.pkl",
     create = 0,
     seed   = 5,
     k_fold = 10,
