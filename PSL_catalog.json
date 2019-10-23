@@ -7,14 +7,14 @@
 		"data": "<p>A machine learning project that analyzes state-run media to predict policy changes.</p>"
 	},
 	"project_overview": {
-		"start_header": "What is the Policy Change Index (PCI) for China?",
+		"start_header": "What is the Policy Change Index for China (PCI-China)?",
 		"end_header": "Disclaimer",
 		"source": "README.md",
 		"type": "github_file",
 		"data": null
 	},
 	"citation": {
-		"start_header": "Citing the Policy Change Index (PCI) for China",
+		"start_header": "Citing the PCI-China",
 		"end_header": null,
 		"source": "README.md",
 		"type": "github_file",
