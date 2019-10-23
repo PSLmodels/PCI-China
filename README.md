@@ -114,7 +114,7 @@ dtype: object
 
 where `title` and `body` are the Chinese texts of the title and body of each article.
 
-The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/proc/by_year/`. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the `.pkl` format. For example, the processed data for the first quarter of 2018 should be in the file `2018_Q1.pkl`. Provided with the raw data, the processed data are the output of running `proc_data.sh`. Below is the list of column names and types of each processed data file:
+The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/Output/database.db`. The file is in SQLite format. The schema of the database is shown as the table below
 
 ```{python}
 import sqlite3
@@ -123,21 +123,6 @@ import pandas as pd
 conn = sqlite3.connect("data/output/database.db")
 pd.read_sql_query("PRAGMA TABLE_INFO(main)", conn)
 ```
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
