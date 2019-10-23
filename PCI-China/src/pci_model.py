@@ -742,8 +742,8 @@ def get_testing_years_quarterly(year_target, mt_target, root = "./"):
                 'month_window' : 5 * 12, 
                 'forecast_period' : 3, 
                 'batch_size': 256,
-                'patience' : 3,
-                'epochs' : 100,
+                'patience' : 10,
+                'epochs' : 50,
                 'testing_group' : [1,2],
                 'validation_group' : [3,4],
                 'training_group' : [5,6,7,8,9,10],
@@ -763,21 +763,21 @@ def get_testing_years_quarterly(year_target, mt_target, root = "./"):
 def gen_hyper_pars_testing(year_target, mt_target, root):
     x = hyper_parameters(
         varirate ={
-            'meta_layer' : 1,
+            'meta_layer' : 2,
             'meta_neurons' : 10,
             'meta_dropout' : 0.1,
-            'lstm1_max_len' : 1,
-            'lstm1_neurons' : 20 ,
+            'lstm1_max_len' : 10,
+            'lstm1_neurons' : 10 ,
             'lstm1_dropout' : 0.1 ,
-            'lstm1_layer' : 5,
-            'fc_neurons' : 40,
-            'fc_dropout' : 0.3,
+            'lstm1_layer' : 2,
+            'fc_neurons' : 10,
+            'fc_dropout' : 0.1,
             'fc_layer' : 2,
             'max_words' : 10000,
             'lr' : 0.002,
             'n_embedding' : 150,
             'decay': 0.0001,
-            'w': 1
+            'w': 1.2
         },
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )
