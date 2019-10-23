@@ -48,13 +48,13 @@ def test_proc_data():
         embedding = "./tests/Data/Output/"
     )
 
-    run_pci_model(year_target=2010, mt_target=3, i=1, gpu=0, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
-    run_pci_model(year_target=2010, mt_target=4, i=1, gpu=0, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
-    run_pci_model(year_target=2011, mt_target=1, i=2, gpu=0, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2010, mt_target=3, i=1, gpu=-1, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2010, mt_target=4, i=1, gpu=-1, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2011, mt_target=1, i=2, gpu=-1, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
 
     compile_model_results("testing", root = "./tests")
 
-    create_text_output("testing", "2011_M1", gpu=0, root ="./tests/")
+    create_text_output("testing", "2011_M1", gpu=-1, root ="./tests/")
 
 
 # Verify PCI could identify the break
