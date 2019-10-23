@@ -60,6 +60,4 @@ def test_proc_data():
 # Verify PCI could identify the break
 def test_verify_results():
     pci = pd.read_csv('./tests/figures/testing/results.csv')['pci']
-    assert (pci[2] - pci[1]) > 0.2
-    assert (pci[2] - pci[0]) > 0.2
-    
+    assert (pci[2] - (pci[1]+pci[0])/2 ) > 0.1
