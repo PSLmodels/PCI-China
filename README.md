@@ -13,7 +13,7 @@ China's industrialization process has long been a product of government directio
 
 The design of the PCI-China has two building blocks: (1) it takes as input data the full text of the *People's Daily* --- the official newspaper of the Communist Party of China --- since it was founded in 1946; (2) it employs a set of machine learning techniques to "read" the articles and detect changes in the way the newspaper prioritizes policy issues.
 
-The source of the PCI-China's predictive power rests on the fact that the *People's Daily* is at the nerve center of the China's propaganda system and that propaganda changes often precede policy changes. Before the great transformation from the central planning under Mao to the economic reform program after Mao, for example, considerable efforts were made by the Chinese government to promote the idea of reform, move public opinion, and mobilize resources toward the new agenda. Therefore, by detecting (real-time) changes in propaganda, the PCI-China is, effectively, predicting (future) changes in policy.
+The source of the PCI-China's predictive power rests on the fact that the *People's Daily* is at the nerve center of China's propaganda system and that propaganda changes often precede policy changes. Before the great transformation from the central planning under Mao to the economic reform program after Mao, for example, considerable efforts were made by the Chinese government to promote the idea of reform, move public opinion, and mobilize resources toward the new agenda. Therefore, by detecting (real-time) changes in propaganda, the PCI-China is, effectively, predicting (future) changes in policy.
 
 For details about the methodology and findings of this project, please see the following research paper:
 
@@ -56,7 +56,7 @@ The python and an R script listed below are contained in the `run_all.sh` file. 
 - `compile_tuning.py`:      Compile the results from all models and export them to a `.csv` file.
 - `create_text_output.py`:  Generate the raw data together with the model's classification result for each article in a specified year-quarter.
 - `gen_figures.R`:          Generate figures.
-- `create_plotly.py`:       Create an interactive Plotly fiture.
+- `create_plotly.py`:       Create an interactive Plotly figure.
 
 For the `pci.py` file, users can also check out the descriptions of the arguments for the function using the `--help` option:
 
@@ -104,7 +104,7 @@ dtype: object
 
 where `title` and `body` are the Chinese texts of the title and body of each article.
 
-The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/Output/database.db`. The file is in SQLite format. The schema of the database is shown as the table below
+The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/Output/database.db`. The file is in SQLite format. The schema of the database is shown as the table below:
 
 ```{python}
 import sqlite3
@@ -310,11 +310,11 @@ pd.read_sql_query("PRAGMA TABLE_INFO(main)", conn)
 </table>
 </div>
 
-
-
-
-
 where `title_int` and `body_int` are the word embeddings (numeric vectors) of the title and body of each article.
+
+The summary statistics for the processed data can be found in the following `.csv` file:
+
+`PCI-China/figures/Summary statistics.csv`
 
 
 Citing the PCI-China
