@@ -736,10 +736,10 @@ def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )
     return x 
-    
+
 def get_testing_years_quarterly(year_target, mt_target, root = "./"):
     fixed = {
-                'month_window' : 2 * 12, 
+                'month_window' : 5 * 12, 
                 'forecast_period' : 3, 
                 'batch_size': 256,
                 'patience' : 3,
