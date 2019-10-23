@@ -60,3 +60,7 @@ suppressGraphics( ggsave(file.path(.OUTPUT,"window_2_years_quarterly", "F1_two_c
 ### Compare years
 suppressGraphics( ggsave(file.path(.OUTPUT,"Others","figure_4.png"), plot = plot_compare(data_5y,data_10y,data_2y,"F1"), width=hh*2.4 ,height=1.5*hh))
 suppressGraphics( ggsave(file.path(.OUTPUT,"Others","figure_5.png"), plot = plot_compare(data_5y,data_10y,data_2y,"PCI"), width=hh*2.4 ,height=1.5*hh))
+
+
+
+gen_summary_statistics()

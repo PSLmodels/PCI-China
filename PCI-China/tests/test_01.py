@@ -23,10 +23,10 @@ def test_proc_data():
         
     words = list( embedding.keys())
 
-    example_data_2000 = gen_testing_data(words = words, from_year = 2000, to_year = 2010, type = 0, seed = 1 )
+    example_data_2000 = gen_testing_data(embedding = embedding, from_year = 2000, to_year = 2010, type = 0, seed = 1 )
     example_data_2000.to_pickle("./tests/Data/Output/2000_2010.pkl")
 
-    example_data_2011 = gen_testing_data(words = words, from_year = 2011, to_year = 2011, type = 1, seed = 2 )
+    example_data_2011 = gen_testing_data(embedding = embedding, from_year = 2011, to_year = 2012, type = 1, seed = 2 )
     example_data_2011.to_pickle("./tests/Data/Output/2011.pkl")
 
 
@@ -48,9 +48,17 @@ def test_proc_data():
         embedding = "./tests/Data/Output/"
     )
 
-    run_pci_model(year_target=2011, mt_target=1, i=1, gpu=-1, model="window_2_years_quarterly", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
-    run_pci_model(year_target=2011, mt_target=1, i=2, gpu=-1, model="window_2_years_quarterly", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2010, mt_target=3, i=1, gpu=-1, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2010, mt_target=4, i=1, gpu=-1, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
+    run_pci_model(year_target=2011, mt_target=1, i=2, gpu=-1, model="testing", root = "./tests/", T=0.01, discount=0.05, bandwidth = 0.2 )
 
-    compile_model_results("window_2_years_quarterly", root = "./tests")
+    compile_model_results("testing", root = "./tests")
 
-    create_text_output("window_2_years_quarterly", "2011_M1", gpu=-1, root ="./tests/")
+    create_text_output("testing", "2011_M1", gpu=-1, root ="./tests/")
+
+
+# Verify PCI could identify the break
+def test_verify_results():
+    pci = pd.read_csv('./tests/figures/testing/results.csv')['pci']
+    assert (pci[2] - pci[0] ) > 0.5
+    assert (pci[2] - pci[1] ) > 0.5

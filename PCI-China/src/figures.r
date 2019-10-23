@@ -456,3 +456,15 @@ plot_pci_since_2012 = function(data, event=TRUE,abs=TRUE){
         #       panel.grid.minor = element_blank()) 
     return (out)
 }
+
+
+gen_summary_statistics = function(input = "data/output/database.db", output="figures/Summary statistics.csv"){
+  con <- dbConnect(RSQLite::SQLite(), input)
+  res <- dbGetQuery(con, "SELECT year, quarter, count(1) number_of_articles, 
+    avg(frontpage) frontpage , avg(page1to3) page1to3, avg(n_articles_that_day) avg_n_articles_per_day, avg(n_pages_that_day) avg_n_pages_per_day, avg(n_frontpage_articles_that_day) avg_n_frontpage_articles_per_day, 
+    avg(title_len) avg_n_of_word_seg_in_title,  min(title_len) min_n_of_word_seg_in_title, max(title_len) max_n_of_word_seg_in_title,
+    avg(body_len) avg_n_of_word_seg_in_body,  min(body_len) min_n_of_word_seg_in_body, max(body_len) max_n_of_word_seg_in_body
+    FROM main group by year, quarter")
+  write_csv(res, output)
+  dbDisconnect(con)
+}

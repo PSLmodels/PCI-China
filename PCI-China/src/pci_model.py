@@ -474,6 +474,12 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
     elif model == "window_2_years_quarterly":
         get_fixed = get_fixed_2_years_quarterly
         gen_hyper_pars = gen_hyper_pars_2_years_quarterly
+    elif model == "testing":
+        get_fixed = get_testing_years_quarterly
+        gen_hyper_pars = gen_hyper_pars_testing
+
+
+
     else:
         print('Error: model must be "window_5_years_quarterly" or "window_10_years_quarterly" or "window_2_years_quarterly"' )
         sys.exit(1)
@@ -726,6 +732,52 @@ def gen_hyper_pars_2_years_quarterly(year_target, mt_target, root):
             'n_embedding' : 150,
             'decay': 0.0001,
             'w': 0.3
+        },
+        fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
+    )
+    return x 
+
+def get_testing_years_quarterly(year_target, mt_target, root = "./"):
+    fixed = {
+                'month_window' : 5 * 12, 
+                'forecast_period' : 3, 
+                'batch_size': 256,
+                'patience' : 10,
+                'epochs' : 50,
+                'testing_group' : [1,2],
+                'validation_group' : [3,4],
+                'training_group' : [5,6,7,8,9,10],
+                'data_text' : root + '/Data/Output/database.db', 
+                'embedding_matrix_path' : root + '/Data/Output/embedding_matrix.pkl', 
+                'embedding_path' : root + '/Data/Output/embedding.pkl', 
+                'tokenizer' : root + "Data/Output/tokenizer.pkl",
+                'model_folder' : root + '/models/testing/',
+                'year_target' : year_target,
+                'mt_target' : mt_target,
+                'body_text_combined' : 1,
+                'frontpage' : 1, # 1:first page; 0: page1-3
+                'mod_id' : str(round((time())))
+            }    
+    return fixed
+
+def gen_hyper_pars_testing(year_target, mt_target, root):
+    x = hyper_parameters(
+        varirate ={
+            'meta_layer' : 2,
+            'meta_neurons' : 10,
+            'meta_dropout' : 0.1,
+            'lstm1_max_len' : 10,
+            'lstm1_neurons' : 10 ,
+            'lstm1_dropout' : 0.1 ,
+            'lstm1_layer' : 2,
+            'fc_neurons' : 10,
+            'fc_dropout' : 0.1,
+            'fc_layer' : 2,
+            'max_words' : 10000,
+            'lr' : 0.002,
+            'n_embedding' : 150,
+            'decay': 0.0001,
+            'w': 1.2
         },
         fixed = get_fixed_2_years_quarterly(year_target, mt_target, root)
     )

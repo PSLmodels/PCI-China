@@ -27,10 +27,19 @@ def gen_sentence(words, length, n ):
         out.append(" ".join( random.sample(words,length)) )
     return out
 
-def gen_testing_data(words, from_year, to_year, type, seed ):
+def gen_testing_data(embedding, from_year, to_year, type, seed ):
+    words = list( embedding.keys())
+
+    list1 = []
+    list2 = []
+    for key, value in embedding.items():
+        list1.append(key)
+        list2.append(sum(value))
+    words_sorted = list( pd.DataFrame(list(zip(list1,list2)), columns=['word','value'] ).sort_values(by='value')['word'] )
+
     random.seed(seed)
-    n = len(words)
-    words0, words1 = words[:n//2] , words[n//2:]
+    n = len(words_sorted)
+    words0, words1 = words_sorted[:n//2] , words_sorted[n//2:]
 
     dates = pd.date_range(start= str(from_year) + "-01-01", end = str(to_year) + "-12-31")
 
