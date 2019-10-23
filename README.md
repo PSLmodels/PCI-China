@@ -104,31 +104,215 @@ dtype: object
 
 where `title` and `body` are the Chinese texts of the title and body of each article.
 
-The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/proc/by_year/`. Each file in this sub-folder should contain one year-quarter of data, be named by the respective year-quarter, and be in the `.pkl` format. For example, the processed data for the first quarter of 2018 should be in the file `2018_Q1.pkl`. Provided with the raw data, the processed data are the output of running `proc_data.sh`. Below is the list of column names and types of each processed data file:
+The processed data of the *People's Daily*, which are not provided in this repository, should be placed in the sub-folder `PCI-China/data/Output/database.db`. The file is in SQLite format. The schema of the database is shown as the table below
 
 ```{python}
->>> df2 = pd.read_pickle("./PCI-China/data/proc/by_year/2018_Q1.pkl")
->>> df2.dtypes
-date                             datetime64[ns]
-year                                      int64
-month                                     int64
-day                                       int64
-page                                      int64
-id                                        int64
-quarter                                   int64
-weekday                                   int64
-frontpage                                 int32
-page1to3                                  int32
-title_len                                 int64
-body_len                                  int64
-n_articles_that_day                       int64
-n_pages_that_day                          int64
-n_frontpage_articles_that_day             int32
-training_group                            int32
-title_int                                object
-body_int                                 object
-dtype: object
+import sqlite3
+import pandas as pd 
+
+conn = sqlite3.connect("data/output/database.db")
+pd.read_sql_query("PRAGMA TABLE_INFO(main)", conn)
 ```
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cid</th>
+      <th>name</th>
+      <th>type</th>
+      <th>notnull</th>
+      <th>dflt_value</th>
+      <th>pk</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>date</td>
+      <td>TIMESTAMP</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>id</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>page</td>
+      <td>REAL</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>title</td>
+      <td>TEXT</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>body</td>
+      <td>TEXT</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>strata</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6</td>
+      <td>title_seg</td>
+      <td>TEXT</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>7</td>
+      <td>body_seg</td>
+      <td>TEXT</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>8</td>
+      <td>year</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9</td>
+      <td>quarter</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>10</td>
+      <td>month</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>11</td>
+      <td>day</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>12</td>
+      <td>weekday</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>13</td>
+      <td>frontpage</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>14</td>
+      <td>page1to3</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>15</td>
+      <td>title_len</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>16</td>
+      <td>body_len</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>17</td>
+      <td>n_articles_that_day</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>18</td>
+      <td>n_pages_that_day</td>
+      <td>REAL</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>19</td>
+      <td>n_frontpage_articles_that_day</td>
+      <td>INTEGER</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 
 where `title_int` and `body_int` are the word embeddings (numeric vectors) of the title and body of each article.
 
