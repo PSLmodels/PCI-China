@@ -326,7 +326,7 @@ where `title_int` and `body_int` are the word embeddings (numeric vectors) of th
 
 The summary statistics for the processed data can be found in the following `.csv` file:
 
-`PCI-China/figures/Summary statistics.csv`
+[https://github.com/PSLmodels/PCI-China/blob/master/PCI-China/figures/Summary%20statistics.csv](https://github.com/PSLmodels/PCI-China/blob/master/PCI-China/figures/Summary%20statistics.csv)
 
 Neither the raw data nor the processed data of the *People's Daily* can be released by the authors. Users who have questions about applying the repository to their own data are welcome to contact the authors:
 
