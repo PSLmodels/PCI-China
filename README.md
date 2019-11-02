@@ -38,13 +38,25 @@ If you want to request an enhancement, create a new issue [here](https://github.
 
 Installation Guide
 ---------------
-Run the following command in the shell.
+First, install the dependencies and set up the proper environment by running the following command in the shell:
+
+```{shell}
+./PCI-China>conda env create -f environment.yml
+```
+
+Second, activate the new environment `tf18`:
+
+```{shell}
+./PCI-China>conda activate tf18
+```
+
+Third, run the following in the `tf18` environment:
 
 ```{shell}
 ./PCI-China>sh run_all.sh
 ```
 
-The command will perform the following tasks: (1) processing data, (2) training models for two-, five-, and ten-year rolling windows, (3) compiling results, (4) creating text output, and (5) visualizing results.
+The above command will perform the following tasks: (1) processing data, (2) training models for two-, five-, and ten-year rolling windows, (3) compiling results, (4) creating text output, and (5) visualizing results.
 
 
 Function Usage
