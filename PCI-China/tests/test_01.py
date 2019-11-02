@@ -54,7 +54,7 @@ def test_proc_data():
 
     compile_model_results("testing", root = "./tests")
 
-    create_text_output("testing", "2011_M1", gpu=-1, root ="./tests/")
+    create_text_output("testing", "2011_M1", gpu="-1", root ="./tests/")
 
 
 # Verify PCI could identify the break

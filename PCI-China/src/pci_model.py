@@ -584,8 +584,8 @@ def run_pci_model(year_target, mt_target, i, gpu, model, root="../", T=0.01, dis
 
 
 def create_text_output(model,year_month, gpu="0", root="./"):
-
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu)
+    if gpu != "-1":
+        os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu)
 
     my_model = pci_model.load(root + "models/" + model + "/" + year_month + "/")
     testing_data, forecast_data = my_model.summary_articles()
