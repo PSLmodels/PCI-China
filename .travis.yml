@@ -19,7 +19,7 @@ install:
     # - conda env create -f environment.yml
     - conda create --yes -n test_travis python=$TRAVIS_PYTHON_VERSION
     - source activate test_travis
-    - conda install --yes -q pytest pytest-cov pandas numpy scikit-learn keras matplotlib sqlite plotly tensorflow=1.8.0
+    - conda install --yes -q pytest pytest-cov pandas numpy scikit-learn keras=2.2.0 matplotlib sqlite plotly tensorflow=1.8.0
     - pip install jieba-fast
     - pip install monthdelta
 
