@@ -330,8 +330,8 @@ The summary statistics for the processed data can be found in the following `.cs
 
 Neither the raw data nor the processed data of the *People's Daily* can be released by the authors. Users who have questions about applying the repository to their own data are welcome to contact the authors:
 
-- [Julian TszKin Chan](https://sites.google.com/site/ctszkin/): ctszkin [AT] gmail.com;
-- [Weifeng Zhong](https://www.weifengzhong.com): weifeng [AT] weifengzhong.com.
+- [Julian TszKin Chan](https://sites.google.com/site/ctszkin/): julian.chan [AT] policychangeindex.org;
+- [Weifeng Zhong](https://www.weifengzhong.com): weifeng.zhong [AT] policychangeindex.org.
 
 
 Citing the PCI-China
