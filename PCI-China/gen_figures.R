@@ -1,6 +1,6 @@
 checkpoint:::checkpoint(
     snapshotDate = utils::packageDescription("RevoUtils")$MRANDate , 
-    R.version = "3.5.1")
+    R.version = "3.5.3")
 
 .OUTPUT = "figures"
 source("src/figures.r")
