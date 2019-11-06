@@ -44,19 +44,25 @@ First, install the dependencies and set up the proper environment by running the
 ./PCI-China>conda env create -f environment.yml
 ```
 
-Second, activate the new environment `tf18`:
+Second, activate the new environment `pci_env`:
 
 ```{shell}
-./PCI-China>conda activate tf18
+./PCI-China>conda activate pci_env
 ```
 
-Third, run the following in the `tf18` environment:
+Third, run the following in the `pci_env` environment:
 
 ```{shell}
 ./PCI-China>sh run_all.sh
 ```
 
 The above command will perform the following tasks: (1) processing data, (2) training models for two-, five-, and ten-year rolling windows, (3) compiling results, (4) creating text output, and (5) visualizing results.
+
+If you do not have the People's Daily data, you can run our tests which estimate a PCI using a simulated data set:
+
+```{python}
+pytest 
+```
 
 
 Function Usage
