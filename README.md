@@ -61,8 +61,12 @@ The above command will perform the following tasks: (1) processing data, (2) tra
 If you do not have the People's Daily data, you can run our tests which estimate a PCI using a simulated data set:
 
 ```{python}
-pytest 
+./PCI-China>pytest 
 ```
+
+Notes
+- The default setting uses the first GPU to run the code. If you don't have a GPU, the code can be ran on CPU by changing the GPU setting to -1 (see details below)
+- One of the package imported by PCI (jieba-fast) requires [Visual Studio C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019). Please checkout jieba-fast's [website](https://github.com/deepcs233/jieba_fast) for details.
 
 
 Function Usage
