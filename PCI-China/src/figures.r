@@ -468,3 +468,64 @@ gen_summary_statistics = function(input = "data/output/database.db", output="fig
   write_csv(res, output)
   dbDisconnect(con)
 }
+
+
+
+
+plot_pci_2005_reform_slow_down = function(data, event=TRUE,abs=TRUE){
+	common_format = function(){
+		out = list()
+		
+		new = scale_x_date(
+			breaks = seq.Date(as.Date("1997-01-01"),  as.Date("2008-03-01"),by="1 year"), 
+			date_label = "%Y", 
+			limits= as.Date(c("1997-01-01","2008-03-01")),
+			expand = c(0, 0)
+		) 
+		out = c(out, list(new))
+	}
+	
+	china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
+		
+		out = list()
+		font_size = 4.3
+		font_size2 =2.8
+		rect_width = 4
+		text_delta = 7
+		
+		out = c(out, list(
+			geom_rect(aes(xmin = as.Date('2005-10-08'), xmax = as.Date('2005-10-08')+rect_width, 
+						  ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==8, "mediumspringgreen" , "grey15")  ) ,
+			annotate("text", x = as.Date('2005-10-08')+text_delta, y = vectical_position, hjust = -0.05,
+					 label = "2005 reform slow-down",
+					 color =  ifelse(ep==8, "red" , "black"), size = font_size   )
+		))
+		
+		
+		
+		out
+	}
+	
+	
+	out = data  %>% ggplot(aes(x=date)) 
+	if (abs){
+		out = out + geom_line(aes(y=pci ), colour="blue3", show.legend = FALSE) +
+			scale_y_continuous(limits = c(-0.05, 0.4), breaks = seq(0,0.5,0.1), expand = c(0, 0)) 
+		
+	} else {
+		out = out + geom_line(aes(y=diff), colour="blue3", show.legend = FALSE) +
+			scale_y_continuous(limits = c(-0.25, 0.5), breaks = seq(-0.2,0.4,0.1), expand = c(0, 0)) 
+	}
+	if (event){
+		out = out + china_event(vectical_position=0.25, adj= 0.05)
+	}
+	
+	out = out + 
+		geom_hline(yintercept = 0, linetype = 2, color = "black")  +
+		xlab("Year") + ylab("Quarterly PCI for China") +
+		common_format() + theme_bw() + theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())
+	# theme(panel.background = element_rect(fill = 'grey90', colour = 'white'),
+	#       panel.grid.minor = element_blank()) 
+	return (out)
+}
+

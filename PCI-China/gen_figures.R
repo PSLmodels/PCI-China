@@ -63,4 +63,11 @@ suppressGraphics( ggsave(file.path(.OUTPUT,"Others","figure_5.png"), plot = plot
 
 
 
+hh = 4 
+suppressGraphics( ggsave(file.path("figures","others","figure 3.png"),
+						 plot = plot_pci_since_2012(data_5y,event=TRUE,abs=TRUE), width=hh*2.4 ,height=1.5*hh))
+
+suppressGraphics( ggsave(file.path("figures","others","plot_pci_2005_reform_slow_down.png"),
+						 plot = plot_pci_2005_reform_slow_down(data_5y,event=TRUE,abs=TRUE), width=hh*2.4 ,height=1.5*hh))
+
 gen_summary_statistics()
