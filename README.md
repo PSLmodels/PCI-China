@@ -17,7 +17,7 @@ The source of the PCI-China's predictive power rests on the fact that the *Peopl
 
 For details about the methodology and findings of this project, please see the following research paper:
 
-- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." [AEI Economics Working Paper No. 2018-11](https://www.aei.org/research-products/working-paper/reading-china-predicting-policy-change-with-machine-learning/) (latest version available [here](https://policychangeindex.org/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." [AEI Economics Working Paper No. 2018-11](https://www.aei.org/research-products/working-paper/reading-china-predicting-policy-change-with-machine-learning/) (latest version available [here](https://policychangeindex.org/pdf/Reading_China.pdf)).
 
 
 Disclaimer
@@ -351,4 +351,4 @@ Please cite the source of the latest PCI-China by the website: https://policycha
 
 For academic work, please cite the following research paper:
 
-- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." [AEI Economics Working Paper No. 2018-11](https://www.aei.org/research-products/working-paper/reading-china-predicting-policy-change-with-machine-learning/) (latest version available [here](https://policychangeindex.org/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." [AEI Economics Working Paper No. 2018-11](https://www.aei.org/research-products/working-paper/reading-china-predicting-policy-change-with-machine-learning/) (latest version available [here](https://policychangeindex.org/pdf/Reading_China.pdf)).
