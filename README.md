@@ -4,7 +4,7 @@ Website: [policychangeindex.org](https://policychangeindex.org)
 
 Authors: [Julian TszKin Chan](https://sites.google.com/site/ctszkin/) and [Weifeng Zhong](https://www.weifengzhong.com)
 
-Please email all comments/questions to ctszkin [AT] gmail.com or weifeng [AT] weifengzhong.com
+Please email all comments/questions to julian.chan [AT] policychangeindex.org or weifeng.zhong [AT] policychangeindex.org
 
 
 What is the Policy Change Index for China (PCI-China)?
@@ -17,7 +17,7 @@ The source of the PCI-China's predictive power rests on the fact that the *Peopl
 
 For details about the methodology and findings of this project, please see the following research paper:
 
-- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](https://policychangeindex.org/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." [AEI Economics Working Paper No. 2018-11](https://www.aei.org/research-products/working-paper/reading-china-predicting-policy-change-with-machine-learning/) (latest version available [here](https://policychangeindex.org/pdf/Reading_China.pdf)).
 
 
 Disclaimer
@@ -351,4 +351,4 @@ Please cite the source of the latest PCI-China by the website: https://policycha
 
 For academic work, please cite the following research paper:
 
-- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." AEI Economics Working Paper [No. 2018-11](http://www.aei.org/wp-content/uploads/2018/10/Reading-China-AEI-WP.pdf) (latest version available [here](https://policychangeindex.org/Reading_China.pdf)).
+- Chan, Julian TszKin and Weifeng Zhong. 2019. "Reading China: Predicting Policy Change with Machine Learning." [AEI Economics Working Paper No. 2018-11](https://www.aei.org/research-products/working-paper/reading-china-predicting-policy-change-with-machine-learning/) (latest version available [here](https://policychangeindex.org/pdf/Reading_China.pdf)).

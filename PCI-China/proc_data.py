@@ -100,7 +100,7 @@ proc_pd(
 proc_pd(
    input  = "Data/Input/pd/2019_Q4.pkl",
    create = 0,
-   seed   = 201903,
+   seed   = 201904,
    k_fold = 10,
    output = "Data/Output/database.db",
    embedding = "Data/Output/"

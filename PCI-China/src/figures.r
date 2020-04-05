@@ -234,7 +234,7 @@ china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
         geom_rect(aes(xmin = as.Date('2005-10-08'), xmax = as.Date('2005-10-08')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==8, "mediumspringgreen" , "grey15")  ) ,
         annotate("text", x = as.Date('2005-10-08')+text_delta, y = vectical_position, hjust = 0,
-                 label = "2005 reform slow-down",
+                 label = "2005 reform slowdown",
                  color =  ifelse(ep==8, "red" , "black"), size = ifelse(ep==8, font_size , font_size2)   )
     ))
     
@@ -497,7 +497,7 @@ plot_pci_2005_reform_slow_down = function(data, event=TRUE,abs=TRUE){
 			geom_rect(aes(xmin = as.Date('2005-10-08'), xmax = as.Date('2005-10-08')+rect_width, 
 						  ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==8, "mediumspringgreen" , "grey15")  ) ,
 			annotate("text", x = as.Date('2005-10-08')+text_delta, y = vectical_position, hjust = -0.05,
-					 label = "2005 reform slow-down",
+					 label = "2005 reform slowdown",
 					 color =  ifelse(ep==8, "red" , "black"), size = font_size   )
 		))
 		
