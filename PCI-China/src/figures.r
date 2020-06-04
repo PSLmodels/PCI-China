@@ -20,7 +20,7 @@ common_format = function(){
                        seq.Date(as.Date("1960-01-01"), as.Date("2020-01-01"), by="10 years"),
                        as.Date("2020-01-01")), 
             date_label = "%Y", 
-            limits= as.Date(c("1950-01-01","2021-04-01")),
+            limits= as.Date(c("1950-01-01","2022-01-01")),
             expand = c(0, 0)
         ) 
     out = c(out, list(new))
@@ -67,7 +67,7 @@ figure_1 = function(input = "data/output/database.db"){
                        seq.Date(as.Date("1950-01-01"), as.Date("2020-01-01"), by="10 years"),
                        as.Date("2020-01-01")),
             date_label = "%Y",
-            limits = as.Date(c("1945-01-01","2021-04-01")),
+            limits = as.Date(c("1945-01-01","2022-01-01")),
             expand = c(0, 0)
         ) +
         xlab("Year") +
@@ -206,7 +206,7 @@ china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
     out = c(out, list(
         geom_rect(aes(xmin = as.Date('1978-12-18'), xmax = as.Date('1978-12-18')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==5, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('1978-12-18')+text_delta, y = vectical_position, hjust = 0,
+        annotate("text", x = as.Date('1978-12-18')+text_delta, y = vectical_position*0.6, hjust = 0,
                  label = "1978 reform program starts",
                  color =  ifelse(ep==5, "red" , "black"), size = ifelse(ep==5, font_size , font_size2)   )
     ))
@@ -215,7 +215,7 @@ china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
     out = c(out, list(
         geom_rect(aes(xmin = as.Date('1989-06-04'), xmax = as.Date('1989-06-04')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==6, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('1989-06-04')+text_delta, y = vectical_position*0.9, hjust = 0,
+        annotate("text", x = as.Date('1989-06-04')+text_delta, y = vectical_position, hjust = 0,
                  label = "1989 Tiananmen Sq. protests",
                  color =  ifelse(ep==6, "red" , "black"), size = ifelse(ep==6, font_size , font_size2)   )
     ))
@@ -224,55 +224,74 @@ china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
     out = c(out, list(
         geom_rect(aes(xmin = as.Date('1993-11-11'), xmax = as.Date('1993-11-11')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==7, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('1993-11-11')+text_delta, y = vectical_position*0.8, hjust = 0,
+        annotate("text", x = as.Date('1993-11-11')+text_delta, y = vectical_position*0.9, hjust = 0,
                  label = "1993 reform speed-up",
                  color =  ifelse(ep==7, "red" , "black"), size = ifelse(ep==7, font_size , font_size2)   )
+    ))
+    
+    # SARS
+    out = c(out, list(
+        geom_rect(aes(xmin = as.Date('2002-11-16'), xmax = as.Date('2002-11-16')+rect_width, 
+                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==8, "mediumspringgreen" , "grey15")  ) ,
+        annotate("text", x = as.Date('2002-11-16')+text_delta, y = vectical_position, hjust = 0,
+                 label = "2002 SARS outbreak",
+                 color =  ifelse(ep==8, "red" , "black"), size = ifelse(ep==8, font_size , font_size2)   )
     ))
     
     # Harmonious Society
     out = c(out, list(
         geom_rect(aes(xmin = as.Date('2005-10-08'), xmax = as.Date('2005-10-08')+rect_width, 
-                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==8, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('2005-10-08')+text_delta, y = vectical_position, hjust = 0,
+                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==9, "mediumspringgreen" , "grey15")  ) ,
+        annotate("text", x = as.Date('2005-10-08')+text_delta, y = vectical_position*0.8, hjust = 0,
                  label = "2005 reform slowdown",
-                 color =  ifelse(ep==8, "red" , "black"), size = ifelse(ep==8, font_size , font_size2)   )
+                 color =  ifelse(ep==9, "red" , "black"), size = ifelse(ep==9, font_size , font_size2)   )
     ))
     
     # Stimulus package
     out = c(out, list(
         geom_rect(aes(xmin = as.Date('2008-11-05'), xmax = as.Date('2008-11-05')+rect_width, 
-                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==9, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('2008-11-05')+text_delta, y = vectical_position*0.92, hjust = 0,
-                 label = "2008 stimulus package",
-                 color =  ifelse(ep==9, "red" , "black"), size = ifelse(ep==9, font_size , font_size2)   )
-    ))
-    
-    # Renewed reforms
-    out = c(out, list(
-        geom_rect(aes(xmin = as.Date('2013-04-22'), xmax = as.Date('2013-04-22')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==10, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('2013-04-22')+text_delta, y = vectical_position*0.82, hjust = 0,
-                 label = "2013 revive\nMaoism",
+        annotate("text", x = as.Date('2008-11-05')+text_delta, y = vectical_position*0.6, hjust = 0,
+                 label = "2008 stimulus package",
                  color =  ifelse(ep==10, "red" , "black"), size = ifelse(ep==10, font_size , font_size2)   )
     ))
     
     # Renewed reforms
     out = c(out, list(
-        geom_rect(aes(xmin = as.Date('2013-09-11'), xmax = as.Date('2013-09-11')+rect_width, 
+        geom_rect(aes(xmin = as.Date('2013-04-22'), xmax = as.Date('2013-04-22')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==11, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('2013-09-11')+text_delta, y = vectical_position*0.7, hjust = 0,
-                 label = "2013 renew\nreform program",
+        annotate("text", x = as.Date('2013-04-22')+text_delta, y = vectical_position, hjust = 0,
+                 label = "2013 revive Maoism",
                  color =  ifelse(ep==11, "red" , "black"), size = ifelse(ep==11, font_size , font_size2)   )
+    ))
+    
+    # Renewed reforms
+    out = c(out, list(
+        geom_rect(aes(xmin = as.Date('2013-09-11'), xmax = as.Date('2013-09-11')+rect_width, 
+                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==12, "mediumspringgreen" , "grey15")  ) ,
+        annotate("text", x = as.Date('2013-09-11')+text_delta, y = vectical_position*0.9, hjust = 0,
+                 label = "2013 renew reform",
+                 color =  ifelse(ep==12, "red" , "black"), size = ifelse(ep==12, font_size , font_size2)   )
     ))
     
     # Supply-side reform
     out = c(out, list(
         geom_rect(aes(xmin = as.Date('2015-11-10'), xmax = as.Date('2015-11-10')+rect_width, 
-                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==12, "mediumspringgreen" , "grey15")  ) ,
-        annotate("text", x = as.Date('2015-11-10')+text_delta, y = vectical_position*0.53, hjust = 0,
-                 label = "2015\nsupply-\nside\nstructural\nreform",
-                 color =  ifelse(ep==12, "red" , "black"), size = ifelse(ep==12, font_size , font_size2)   )
+                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==13, "mediumspringgreen" , "grey15")  ) ,
+        annotate("text", x = as.Date('2015-11-10')+text_delta, y = vectical_position*0.78, hjust = 0,
+                 label = "2015 supply-\nside reform",
+                 color =  ifelse(ep==13, "red" , "black"), size = ifelse(ep==13, font_size , font_size2)   )
     ))
+    
+    # COVID-19
+    out = c(out, list(
+        geom_rect(aes(xmin = as.Date('2019-12-27'), xmax = as.Date('2019-12-27')+rect_width, 
+                      ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==14, "mediumspringgreen" , "grey15")  ) ,
+        annotate("text", x = as.Date('2019-12-27')+text_delta*4, y = vectical_position*0.4, hjust = 0, angle = 90,
+                 label = "COVID-19 outbreak",
+                 color =  ifelse(ep==14, "red" , "black"), size = ifelse(ep==14, font_size , font_size2)   )
+    ))
+    
     out
 }
 
