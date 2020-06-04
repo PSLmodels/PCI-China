@@ -17,10 +17,10 @@ common_format = function(){
 
     new = scale_x_date(
             breaks = c(as.Date("1951-01-01"),
-                       seq.Date(as.Date("1960-01-01"), as.Date("2010-01-01"), by="10 years"),
-                       as.Date("2019-01-01")), 
+                       seq.Date(as.Date("1960-01-01"), as.Date("2020-01-01"), by="10 years"),
+                       as.Date("2020-01-01")), 
             date_label = "%Y", 
-            limits= as.Date(c("1950-01-01","2020-09-30")),
+            limits= as.Date(c("1950-01-01","2021-04-01")),
             expand = c(0, 0)
         ) 
     out = c(out, list(new))
@@ -64,10 +64,10 @@ figure_1 = function(input = "data/output/database.db"){
         geom_line(aes(y = n*sf + sf_C , colour = "Number of articles")) +
         scale_x_date(
             breaks = c(as.Date("1946-01-01"),
-                       seq.Date(as.Date("1950-01-01"), as.Date("2010-01-01"), by="10 years"),
-                       as.Date("2019-01-01")),
+                       seq.Date(as.Date("1950-01-01"), as.Date("2020-01-01"), by="10 years"),
+                       as.Date("2020-01-01")),
             date_label = "%Y",
-            limits = as.Date(c("1945-01-01","2020-09-30")),
+            limits = as.Date(c("1945-01-01","2021-04-01")),
             expand = c(0, 0)
         ) +
         xlab("Year") +
@@ -380,9 +380,9 @@ plot_pci_since_2012 = function(data, event=TRUE,abs=TRUE){
         out = list()
 
         new = scale_x_date(
-                breaks = seq.Date(as.Date("2012-01-01"),  as.Date("2019-01-01"),by="1 year"), 
+                breaks = seq.Date(as.Date("2012-01-01"),  as.Date("2020-01-01"),by="1 year"), 
                 date_label = "%Y", 
-                limits= as.Date(c("2012-01-01","2020-09-30")),
+                limits= as.Date(c("2011-10-01","2020-07-01")),
                 expand = c(0, 0)
             ) 
         out = c(out, list(new))

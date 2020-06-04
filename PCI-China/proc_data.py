@@ -59,8 +59,6 @@ proc_pd(
     embedding = "Data/Output/"
 )
 
-
-
 proc_pd(
     input  = "Data/Input/pd/pd_2018_12.pkl",
     create = 0,
