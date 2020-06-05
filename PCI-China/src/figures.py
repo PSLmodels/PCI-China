@@ -42,7 +42,9 @@ def create_plotly_figure(input):
         '2008-11-05',
         '2013-04-22',
         '2013-09-11',
-        '2015-11-10'
+        '2015-11-10',
+        '2002-11-16',
+        '2019-12-27'
     ])
 
     event_text = [
@@ -57,7 +59,9 @@ def create_plotly_figure(input):
         "2008-Nov: stimulus package<br><br>Four trillion yuan economic stimulus package<br>as policy response to global financial crisis.",
         "2013-Apr: Revive Maoism<br><br>Orders officials to fight ''subversive currents,''<br>incl ''ardently market-friendly neo-liberalism.''",
         "2013-Sep: Renew reform program<br><br>Calls for re-commitment to market reforms while<br>retaining emphasis on support for state sector;.",
-        "2015-Nov: Supply-side structural reform<br><br>Government-led efforts to reduce excess<br>industrial capacity, esp. steel and coal."
+        "2015-Nov: Supply-side structural reform<br><br>Government-led efforts to reduce excess<br>industrial capacity, esp. steel and coal.",
+        "2002-Nov: SARS outbreak starts",
+        "2019-Dec: COVID-19 outbreak starts"
     ]
 
     label = list(df.label)
@@ -65,7 +69,7 @@ def create_plotly_figure(input):
     trace = go.Scatter(x = x, y = y, text=df.label,hoverinfo ="text" )
     data = []
     data.append(trace)
-    data.append(go.Scatter(x=event_d, y = [.4] * 12 , text =event_text  ,hoverinfo ="text", mode='markers', marker=dict(opacity= 0)  ))
+    data.append(go.Scatter(x=event_d, y = [.4] * 14 , text =event_text  ,hoverinfo ="text", mode='markers', marker=dict(opacity= 0)  ))
 
     shapes = []
     for i in event_d:

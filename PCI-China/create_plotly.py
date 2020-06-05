@@ -13,5 +13,5 @@ plotly.tools.set_credentials_file(
 
 fig = create_plotly_figure(input = "./figures/pci.csv")
 
-plotly.plotly.iplot(fig, filename = "pci_v0.2.0", auto_open=True,show_link=False)
+plotly.plotly.iplot(fig, filename = "pci_v0.7.0", auto_open=True,show_link=True)
 
