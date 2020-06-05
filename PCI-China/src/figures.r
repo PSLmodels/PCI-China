@@ -312,7 +312,7 @@ plot_pci = function(data, event=TRUE,abs=TRUE){
 
     out = out + 
         geom_hline(yintercept = 0, linetype = 2, color = "black")  +
-        xlab("Year") + ylab("Quarterly PCI for China") +
+        xlab("Year") + ylab("Quarterly PCI-China") +
         common_format() + theme_bw() + theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())
         # theme(panel.background = element_rect(fill = 'grey90', colour = 'white'),
         #       panel.grid.minor = element_blank()) 
@@ -373,7 +373,7 @@ plot_compare = function(data1, data2, data3, type=c("F1","PCI")){
         data %>% ggplot( aes(x=date, y=pci, col=Variable, linetype=Variable)) +
                  geom_line() +
                  geom_hline(yintercept = 0, linetype = 2, color = "black")  +
-                 xlab("Year") + ylab("Quarterly PCI for China") +
+                 xlab("Year") + ylab("Quarterly PCI-China") +
                  scale_y_continuous(limits = c(-0.05, 0.45), breaks = seq(0,0.4,0.2), expand = c(0, 0)) +
                  common_format() +theme_bw()+
                  theme(
@@ -469,7 +469,7 @@ plot_pci_since_2012 = function(data, event=TRUE,abs=TRUE){
 
     out = out + 
         geom_hline(yintercept = 0, linetype = 2, color = "black")  +
-        xlab("Year") + ylab("Quarterly PCI for China") +
+        xlab("Year") + ylab("Quarterly PCI-China") +
         common_format() + theme_bw() + theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())
         # theme(panel.background = element_rect(fill = 'grey90', colour = 'white'),
         #       panel.grid.minor = element_blank()) 
@@ -541,7 +541,7 @@ plot_pci_2005_reform_slow_down = function(data, event=TRUE,abs=TRUE){
 	
 	out = out + 
 		geom_hline(yintercept = 0, linetype = 2, color = "black")  +
-		xlab("Year") + ylab("Quarterly PCI for China") +
+		xlab("Year") + ylab("Quarterly PCI-China") +
 		common_format() + theme_bw() + theme(panel.grid.minor=element_blank(), panel.grid.major=element_blank())
 	# theme(panel.background = element_rect(fill = 'grey90', colour = 'white'),
 	#       panel.grid.minor = element_blank()) 
