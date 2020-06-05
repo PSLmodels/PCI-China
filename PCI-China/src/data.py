@@ -1,7 +1,7 @@
 import os, sys, re, argparse, math, pickle
 
 import pandas as pd
-import jieba
+import jieba_fast as jieba
 import sqlite3
 import numpy as np
 import datetime as dt
