@@ -20,7 +20,7 @@ common_format = function(){
                        seq.Date(as.Date("1960-01-01"), as.Date("2020-01-01"), by="10 years"),
                        as.Date("2020-01-01")), 
             date_label = "%Y", 
-            limits= as.Date(c("1950-01-01","2022-01-01")),
+            limits= as.Date(c("1950-01-01","2022-04-01")),
             expand = c(0, 0)
         ) 
     out = c(out, list(new))
@@ -67,7 +67,7 @@ figure_1 = function(input = "data/output/database.db"){
                        seq.Date(as.Date("1950-01-01"), as.Date("2020-01-01"), by="10 years"),
                        as.Date("2020-01-01")),
             date_label = "%Y",
-            limits = as.Date(c("1945-01-01","2022-01-01")),
+            limits = as.Date(c("1945-01-01","2022-04-01")),
             expand = c(0, 0)
         ) +
         xlab("Year") +
