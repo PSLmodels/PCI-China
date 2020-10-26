@@ -19,3 +19,5 @@ create_text_output(model = "window_5_years_quarterly", year_month =  "2017_M10" 
 
 create_text_output(model = "window_5_years_quarterly", year_month =  "2019_M1" , gpu = "0" )
 create_text_output(model = "window_5_years_quarterly", year_month =  "2019_M4" , gpu = "0" )
+
+create_text_output(model = "window_5_years_quarterly", year_month =  "2020_M4" , gpu = "0" )
