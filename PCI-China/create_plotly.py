@@ -1,17 +1,17 @@
 from src.figures import *
 import config
-import plotly
+import chart_studio 
 
 # config.py:
 # plotly_username = "PLOTLY_USER_NAME"
 # plotly_api_key = "PLOTLY_API_KEY"
 
-plotly.tools.set_credentials_file(
+chart_studio.tools.set_credentials_file(
     username=config.plotly_username, 
     api_key=config.plotly_api_key
 )
 
 fig = create_plotly_figure(input = "./figures/pci.csv")
 
-plotly.plotly.iplot(fig, filename = "pci_v0.7.0", auto_open=True,show_link=True)
+chart_studio.plotly.plot(fig, filename = "pci_v_2022_02_24", auto_open=True)
 
