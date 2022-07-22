@@ -20,7 +20,7 @@ common_format = function(){
                        seq.Date(as.Date("1960-01-01"), as.Date("2020-01-01"), by="10 years"),
                        as.Date("2020-01-01")), 
             date_label = "%Y", 
-            limits= as.Date(c("1950-01-01","2023-04-01")),
+            limits= as.Date(c("1950-01-01","2023-07-01")),
             expand = c(0, 0)
         ) 
     out = c(out, list(new))
@@ -67,7 +67,7 @@ figure_1 = function(input = "data/output/database.db"){
                        seq.Date(as.Date("1950-01-01"), as.Date("2020-01-01"), by="10 years"),
                        as.Date("2020-01-01")),
             date_label = "%Y",
-            limits = as.Date(c("1945-01-01","2023-04-01")),
+            limits = as.Date(c("1945-01-01","2023-07-01")),
             expand = c(0, 0)
         ) +
         xlab("Year") +
@@ -279,7 +279,7 @@ china_event <- function( vectical_position = -0.35, adj= 0.1, ep=0){
         geom_rect(aes(xmin = as.Date('2015-11-10'), xmax = as.Date('2015-11-10')+rect_width, 
                       ymin = -Inf, ymax = Inf), alpha = 0.005 , fill = ifelse(ep==13, "mediumspringgreen" , "grey15")  ) ,
         annotate("text", x = as.Date('2015-11-10')+text_delta, y = vectical_position*0.78, hjust = 0,
-                 label = "2015 supply-\nside reform",
+                 label = "2015 supply-side\nreform",
                  color =  ifelse(ep==13, "red" , "black"), size = ifelse(ep==13, font_size , font_size2)   )
     ))
     
@@ -401,7 +401,7 @@ plot_pci_since_2012 = function(data, event=TRUE,abs=TRUE){
         new = scale_x_date(
                 breaks = seq.Date(as.Date("2012-01-01"),  as.Date("2022-01-01"),by="1 year"), 
                 date_label = "%Y", 
-                limits= as.Date(c("2011-10-01","2022-04-01")),
+                limits= as.Date(c("2011-10-01","2022-07-01")),
                 expand = c(0, 0)
             ) 
         out = c(out, list(new))
