@@ -109,7 +109,7 @@ def create_plotly_figure(input):
         xaxis = dict(
             title = "Year", 
             type = "date",
-            range = ["1950-01-01", "2023-01-01"],
+            range = ["1950-01-01", "2024-04-01"],
             # dtick = "M120",
             # tickvals = [1951, 1961, 1971, 1981, 1991, 2001, 2011, 2021], 
             showgrid=False, 
