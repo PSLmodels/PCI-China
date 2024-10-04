@@ -15,7 +15,7 @@ for j in `seq 1 16`
 do
     for i in `seq 1 4` 
     do
-        python pci.py --model="window_5_years_quarterly" --year=2024 --month=4 --gpu=0 --iterator=$i
+        python pci.py --model="window_5_years_quarterly" --year=2024 --month=7 --gpu=0 --iterator=$i
     done
 done
 
